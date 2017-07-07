@@ -16,7 +16,7 @@ declare function line(x0: number, y0: number, x1: number, y1: number, color: num
 
 declare type cbRemap = (tile: number) => void;
 
-declare function map(x?: number, y?: number, w?: number, h?: number, sx?: number, sy?: number, colorkey?: number, scale?: number, remap?: cbRemap): void;
+declare function map(x: number, y: number, w: number, h: number, sx: number, sy: number, colorkey: number, scale: number, remap: cbRemap): void;
 
 declare function memcpy(toaddr: number, fromaddr: number, len: number): void;
 
@@ -56,6 +56,6 @@ declare function sync();
 
 declare function time(): number;
 
-declare function trace(msg: string, color: number): void;
+declare function trace(msg: string, color?: number): void;
 
 declare function tri(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number, color: number);
