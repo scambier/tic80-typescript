@@ -3,10 +3,12 @@ Create your TIC-80 games with TypeScript
 
 ## What is this?
 
-The goal of this tool is to ease the use of TypeScript for the TIC-80. It gives you:
-- A .d.ts file containing the definition of all TIC-80 functions
-- A small tsconfig.json to compile your .ts files in a single .js file
-- A single command that will compress the code (while keeping it readable by default), inject it to TIC-80, and launch your game 
+The goal of this tool is to ease the use of TypeScript for the TIC-80. It contains:
+- `.d.ts`: a file containing the definition of all TIC-80 functions
+- `tsconfig.json`: basic settings to compile your `.ts` files in a single `.js` file
+- `config.json`: defined just below
+- `main.ts`: a sample TypeScript file
+- `runtic.js`: the script that will compress your code (while keeping it readable by default), inject it to TIC-80, and launch your game 
 
 ## Installation
 
@@ -40,7 +42,8 @@ The goal of this tool is to ease the use of TypeScript for the TIC-80. It gives 
 
 - First, create an empty game in TIC-80, and report its name in `config.json` (`"game"` > `"cart"`)
 - Write your code (a sample `main.ts` is provided)
-- Run `npm start` to launch your game. 
+- Ensure that your code is compiled to `build/compiled.js`. This tool does **not** perform the compilation from `ts` to `js`.
+- Run `npm start` to compress your code (to `build/compressed.js` by default) and launch your game.
 
 ## Requirements
 
