@@ -4,7 +4,7 @@ Create your TIC-80 games with TypeScript
 ## What is this?
 
 The goal of this tool is to ease the use of TypeScript for the TIC-80. It contains:
-- `.d.ts`: a file containing the definition of all TIC-80 functions
+- `tic.d.ts`: a file containing the definition of all TIC-80 functions
 - `tsconfig.json`: basic settings to compile your `.ts` files in a single `.js` file
 - `config.json`: defined just below
 - `main.ts`: a sample TypeScript file
