@@ -15,10 +15,11 @@ const
 const
   buildStr = fs.readFileSync(tsconfig['compilerOptions']['outFile'], 'utf8'),
   result = uglifyJS.minify(buildStr, {
-    compress: false,
-    mangle: false,
+    compress: cCompress['compress'],
+    mangle: cCompress['mangle'],
     output: {
-      beautify: true,
+      semicolons: false,
+      beautify: !cCompress['mangle'] && !cCompress['compress'],
       indent_level: cCompress['indentLevel'],
       comments: cCompress['keepComments'],
       preamble: cCompress['keepComments'] ? '' :`// author: ${cGame['author']}\n// desc: ${cGame['desc']}\n// script: js\n`
@@ -35,5 +36,4 @@ child_process.exec(cmd, function (error, stdout, stderr) {
   console.log(stdout);
   console.log(stderr);
 })
-
 
