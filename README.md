@@ -45,6 +45,15 @@ The goal of this tool is to ease the use of TypeScript for the [TIC-80](https://
 - Ensure that your code is compiled to `build/compiled.js`. This tool does **not** perform the compilation from `ts` to `js`.
 - Run `npm start` to compress your code (to `build/compressed.js` by default) and launch your game.
 
+## Code size with different compression options
+
+- Default compiled file, straight from TypeScript: 100% of code size
+- With indent level of 1 and comments removed: 71%
+- Compressed: 55%
+- Compressed and mangled: 44%
+
+(Your mileage may vary.)
+
 ## Requirements
 
 NodeJS 6+, TypeScript
@@ -56,3 +65,4 @@ NodeJS 6+, TypeScript
 
 - Added uglify-js to compress the compiled code
 - Rewrote the launch script
+
