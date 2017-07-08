@@ -1,0 +1,18 @@
+{
+  "game": {
+    "author": "game developer",
+    "desc": "short description",
+    "cart": "javascript.tic"
+  },
+  "tic": {
+    "ticPath": "path/to/tic/executable",
+    "cartsPath": "path/to/tic/carts/folder"
+  },
+  "compression": {
+    "compressedFile": "build/compressed.js",
+    "indentLevel": 1,
+    "keepComments": false,
+    "compress": false,
+    "mangle": false
+  }
+}

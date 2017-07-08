@@ -1,0 +1,14 @@
+{
+  "name": "tic80-typescript",
+  "version": "0.1.0",
+  "description": "A workflow to create TIC-80 games with Typescript",
+  "scripts": {
+    "start": "node runtic.js"
+  },
+  "author": "Simon Cambier <cambier.simon@gmail.com> (https://scambier.github.io/)",
+  "license": "MIT",
+  "dependencies": {
+    "strip-json-comments": "^2.0.1",
+    "uglify-js": "^3.0.24"
+  }
+}

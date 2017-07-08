@@ -1,12 +1,55 @@
 # tic80-typescript
-A tsconfig.js, a declarations file and a build script to use Typescript in TIC-80 with ease!
+Create your TIC-80 games with TypeScript
 
-## How to
-- First, create and save an empty cart in TIC-80
-- Edit the variables in `run.js` to fit your environment (tic executable, cart file, carts directory)
-- Write some Typescript, it should compile to `build.js`
-- `node run.js` to run TIC-80, inject your code, and launch the game
+## What is this?
+
+The goal of this tool is to ease the use of TypeScript for the TIC-80. It gives you:
+- A .d.ts file containing the definition of all TIC-80 functions
+- A small tsconfig.json to compile your .ts files in a single .js file
+- A single command that will compress the code (while keeping it readable by default), inject it to TIC-80, and launch your game 
+
+## Installation
+
+- Download [the zip](https://github.com/scambier/tic80-typescript/archive/master.zip) containing this repository, and extract it in your working directory.
+
+- Run `npm install`
+
+- Edit the values in `config.json`:
+```js
+{
+  "game": { // Some information about your game
+    "author": "game developer",
+    "desc": "short description",
+    "cart": "javascript.tic" // The name of your TIC cart. Must end with ".tic"
+  },
+  "tic": {
+    "ticPath": "path/to/tic/executable", // The path to your TIC executable
+    "cartsPath": "path/to/tic/carts/folder" // The directory where TIC stores its carts
+  },
+  "compression": { // These settings will alter how the final js file will look like
+    "compressedFile": "build/compress.js", // Path to compressed file. You should not have to change this.
+    "indentLevel": 1,
+    "keepComments": false,
+    "compress": false,
+    "mangle": false
+  }
+}
+```
+
+## Usage
+
+- First, create an empty game in TIC-80, and report its name in `config.json` (`"game"` > `"cart"`)
+- Write your code (a sample `main.ts` is provided)
+- Run `npm start` to launch your game. 
 
 ## Requirements
 
-NodeJS 6+, Typescript
+NodeJS 6+, TypeScript
+
+
+## Changelog
+
+### 2017-07-09
+
+- Added uglify-js to compress the compiled code
+- Rewrote the launch script

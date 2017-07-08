@@ -1,7 +1,8 @@
 {
+//  "files": ["utils.ts", "Rect.ts", "DungeonGenerator.ts", "draw.ts", "code.ts"],
   "compileOnSave": true,
   "compilerOptions": {
     "target": "es5",
-    "outFile": "./build.js"
+    "outFile": "build/compiled.js"
   }
 }
