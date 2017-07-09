@@ -1,8 +1,3 @@
-// title:  game title
-// author: game developer
-// desc:   short description
-// script: js
-
 let t = 0,
   x = 104,
   y = 24;

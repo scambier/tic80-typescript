@@ -30,8 +30,8 @@ const
       semicolons: false,
       beautify: !cCompress['mangle'] && !cCompress['compress'],
       indent_level: cCompress['indentLevel'],
-      comments: cCompress['keepComments'],
-      preamble: cCompress['keepComments'] ? '' :`// author: ${cGame['author']}\n// desc: ${cGame['desc']}\n// script: js\n`
+      comments: false,
+      preamble: `// author: ${cGame['author']}\n// desc: ${cGame['desc']}\n// script: js\n`
     }
   });
 
