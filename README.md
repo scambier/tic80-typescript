@@ -29,7 +29,7 @@ The goal of this tool is to ease the use of TypeScript for the [TIC-80](https://
     "cartsPath": "path/to/tic/carts/folder" // The directory where TIC stores its carts
   },
   "compression": { // These settings will alter how the final js file will look like
-    "compressedFile": "build/compress.js", // Path to compressed file. You should not have to change this.
+    "compressedFile": "build/compressed.js", // Path to compressed file. You should not have to change this.
     "indentLevel": 1,
     "keepComments": false,
     "compress": false,
