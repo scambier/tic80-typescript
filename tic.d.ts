@@ -50,7 +50,7 @@ declare function rectb(x: number, y: number, w: number, h: number, color: number
 
 declare function sfx(id: number, note?: number | string, duration?: number, channel?: number, volume?: number, speed?: number);
 
-declare function spr(id: number, x: number, y: number, colorkey: number, scale?: number, flip?: number, rotate?: number, w?: number, h?: number);
+declare function spr(id: number, x: number, y: number, colorkey?: number, scale?: number, flip?: number, rotate?: number, w?: number, h?: number);
 
 declare function sync();
 
