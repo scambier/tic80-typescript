@@ -10,10 +10,19 @@ const
   tsconfig = JSON.parse(stripJsonComments(fs.readFileSync('tsconfig.json', 'utf8'))),
   cGame = config['game'],
   cTic = config['tic'],
-  cCompress = config['compression'];
+  cCompress = config['compression'],
+  outFile = tsconfig['compilerOptions']['outFile'];
+
+// Try to execute the compiled script
+try {
+  require('./' + outFile);
+} catch(e) {
+  console.error(e.stack);
+  return;
+}
 
 const
-  buildStr = fs.readFileSync(tsconfig['compilerOptions']['outFile'], 'utf8'),
+  buildStr = fs.readFileSync(outFile, 'utf8'),
   result = uglifyJS.minify(buildStr, {
     compress: cCompress['compress'],
     mangle: cCompress['mangle'],
