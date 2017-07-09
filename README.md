@@ -22,7 +22,7 @@ The goal of this tool is to ease the use of TypeScript for the [TIC-80](https://
   "game": { // Some information about your game
     "author": "game developer",
     "desc": "short description",
-    "cart": "javascript.tic" // The name of your TIC cart. Must end with ".tic"
+    "cart": "mygame.tic" // The name of your TIC cart. Must end with ".tic"
   },
   "tic": {
     "ticPath": "path/to/tic/executable", // The path to your TIC executable
@@ -31,7 +31,6 @@ The goal of this tool is to ease the use of TypeScript for the [TIC-80](https://
   "compression": { // These settings will alter how the final js file will look like
     "compressedFile": "build/compressed.js", // Path to compressed file. You should not have to change this.
     "indentLevel": 1,
-    "keepComments": false,
     "compress": false,
     "mangle": false
   }
