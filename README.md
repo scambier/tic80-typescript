@@ -1,4 +1,4 @@
-# tic80-typescript
+# TypeScript for TIC-80
 Create your TIC-80 games with TypeScript
 
 ## What is this?
