@@ -17,7 +17,7 @@ The goal of this tool is to ease the use of TypeScript for the [TIC-80](https://
 - Run `npm install`
 
 - Edit the values in `config.json`:
-```json
+```js
 {
   "game": { // Some information about your game
     "author": "game developer",
