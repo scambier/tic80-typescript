@@ -7,7 +7,7 @@ The goal of this tool is to ease the use of TypeScript for the [TIC-80](https://
 - `tic.d.ts`: a file containing the definition of all TIC-80 functions
 - `tsconfig.json`: basic settings to compile your `.ts` files in a single `.js` file
 - `config.json`: defined just below
-- `main.ts`: a sample TypeScript file
+- `sample.ts`: a sample TypeScript file
 - `runtic.js`: the script that will compress your code (while keeping it readable by default), inject it to TIC-80, and launch your game 
 
 ## Installation
@@ -17,7 +17,7 @@ The goal of this tool is to ease the use of TypeScript for the [TIC-80](https://
 - Run `npm install`
 
 - Edit the values in `config.json`:
-```js
+```json
 {
   "game": { // Some information about your game
     "author": "game developer",
@@ -47,7 +47,21 @@ The goal of this tool is to ease the use of TypeScript for the [TIC-80](https://
 This command will try to execute your compiled file (to catch any exception and print its stack trace), 
 run it through Uglify-js to compress it, and then inject the resulting code into TIC-80.
 
-## Code size with different compression options
+## More
+
+### Code organization
+
+By default, the `tsconfig.json` will build all `.ts` files in your project folder, in no particular order. 
+This may cause some problems, as some initialization code may be called before all the required classes/functions are read, leading to `undefined` errors.
+
+What you can do is call an `init()` function once, in your `TIC()` function. See an example of this in `sample.ts`
+
+
+### Code size with different compression options
+
+The minification/compression options provided by Uglify work well to save you a lot of precious TIC-80's space.
+
+Straight "TypeScript to JavaScript" code is indented with 4 spaces. By default, `npm start` will reduce indentation to 1 space.
 
 - Default compiled file, straight from TypeScript: 100% of code size
 - With indent level of 1 and comments removed: 71%
@@ -62,6 +76,11 @@ NodeJS 6+, TypeScript
 
 
 ## Changelog
+
+### 2017-07-11
+
+- Renamed "main.ts" to "sample.ts"
+- Added a hack to ensure init code waits for its dependencies
 
 ### 2017-07-09
 
