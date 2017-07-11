@@ -13,9 +13,8 @@ The goal of this tool is to ease the use of TypeScript for the [TIC-80](https://
 ## Installation
 
 - Download [the zip](https://github.com/scambier/tic80-typescript/archive/master.zip) containing this repository, and extract it in your working directory.
-
 - Run `npm install`
-
+- Create an empty game in TIC-80
 - Edit the values in `config.json`:
 ```js
 {
@@ -39,13 +38,7 @@ The goal of this tool is to ease the use of TypeScript for the [TIC-80](https://
 
 ## Usage
 
-- First, create an empty game in TIC-80, and report its name in `config.json` (`"game"` > `"cart"`)
-- Write your code (a sample `main.ts` is provided)
-- Ensure that your code is compiled to `build/compiled.js`. This tool does **not** perform the compilation from `ts` to `js`.
-- Run `npm start` to compress your code (to `build/compressed.js` by default) and launch your game.
-
-This command will try to execute your compiled file (to catch any exception and print its stack trace), 
-run it through Uglify-js to compress it, and then inject the resulting code into TIC-80.
+Simply run `npm start` (or `node runtic.js`) to compile, compress and launch your game.
 
 ## More
 
@@ -79,8 +72,11 @@ NodeJS 6+, TypeScript
 
 ### 2017-07-11
 
+- Compile from TS to JS (*finally...*)
 - Renamed "main.ts" to "sample.ts"
-- Added a hack to ensure init code waits for its dependencies
+- Described a small trick to ensure that the init code waits for its dependencies
+- Removed the `require` of the compiled file
+- Cleared README a bit
 
 ### 2017-07-09
 
@@ -88,3 +84,6 @@ NodeJS 6+, TypeScript
 - Added uglify-js to compress the compiled code
 - Rewrote the launch script
 
+### 2017-07-06
+
+- Project birth: created a definitions file for TIC-80, and a `tsconfig.json`

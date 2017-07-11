@@ -13,36 +13,44 @@ const
   cCompress = config['compression'],
   outFile = tsconfig['compilerOptions']['outFile'];
 
-// Try to execute the compiled script
-try {
-  require('./' + outFile);
-} catch(e) {
-  console.error(e.stack);
-  return;
+// Compile
+function compile () {
+  child_process.exec('tsc', function (error, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+    if (!stderr) {
+      compressAndLaunch()
+    }
+  })
 }
 
-const
-  buildStr = fs.readFileSync(outFile, 'utf8'),
-  result = uglifyJS.minify(buildStr, {
-    compress: cCompress['compress'],
-    mangle: cCompress['mangle'],
-    output: {
-      semicolons: false,
-      beautify: !cCompress['mangle'] && !cCompress['compress'],
-      indent_level: cCompress['indentLevel'],
-      comments: false,
-      preamble: `// author: ${cGame['author']}\n// desc: ${cGame['desc']}\n// script: js\n`
-    }
+
+function compressAndLaunch () {
+  const
+    buildStr = fs.readFileSync(outFile, 'utf8'),
+    result = uglifyJS.minify(buildStr, {
+      compress: cCompress['compressAndLaunch'],
+      mangle: cCompress['mangle'],
+      output: {
+        semicolons: false,
+        beautify: !cCompress['mangle'] && !cCompress['compressAndLaunch'],
+        indent_level: cCompress['indentLevel'],
+        comments: false,
+        preamble: `// author: ${cGame['author']}\n// desc: ${cGame['desc']}\n// script: js\n`
+      }
+    });
+
+
+  fs.writeFileSync(cCompress['compressedFile'], result.code);
+
+  const cmd = `"${cTic['ticPath']}" "${cTic['cartsPath']}/${cGame['cart']}" -code ${cCompress['compressedFile']}`;
+  console.log(`Launch TIC: ${cmd}`);
+
+  child_process.exec(cmd, function (error, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
   });
 
+}
 
-fs.writeFileSync(cCompress['compressedFile'], result.code);
-
-const cmd = `"${cTic['ticPath']}" "${cTic['cartsPath']}/${cGame['cart']}" -code ${cCompress['compressedFile']}`;
-console.log(`Launch TIC: ${cmd}`);
-
-child_process.exec(cmd, function (error, stdout, stderr) {
-  console.log(stdout);
-  console.log(stderr);
-})
-
+compile();
