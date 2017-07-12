@@ -8,7 +8,7 @@ The goal of this tool is to ease the use of TypeScript for the [TIC-80](https://
 - `tsconfig.json`: basic settings to compile your `.ts` files in a single `.js` file
 - `config.json`: defined just below
 - `sample.ts`: a sample TypeScript file
-- `runtic.js`: the script that will compress your code (while keeping it readable by default), inject it to TIC-80, and launch your game 
+- `runtic.js`: the script that will transform your TS files to a TIC-80 game
 
 ## Installation
 
