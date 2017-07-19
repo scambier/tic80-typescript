@@ -70,6 +70,10 @@ NodeJS 6+, TypeScript
 
 ## Changelog
 
+### 2017-07-19
+
+- Updated `tic.d.ts`
+
 ### 2017-07-11
 
 - Compile from TS to JS (*finally...*)
