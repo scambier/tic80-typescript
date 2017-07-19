@@ -14,9 +14,7 @@ declare function font(text: string, x?: number, y?: number, colorkey?: number, w
 
 declare function line(x0: number, y0: number, x1: number, y1: number, color: number): void;
 
-declare type cbRemap = (tile: number) => void;
-
-declare function map(x?: number, y?: number, w?: number, h?: number, sx?: number, sy?: number, colorkey?: number, scale?: number, remap?: cbRemap): void;
+declare function map(x?: number, y?: number, w?: number, h?: number, sx?: number, sy?: number, colorkey?: number, scale?: number, remap?: (tile: number) => void): void;
 
 declare function memcpy(toaddr: number, fromaddr: number, len: number): void;
 

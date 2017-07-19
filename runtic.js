@@ -29,11 +29,11 @@ function compressAndLaunch () {
   const
     buildStr = fs.readFileSync(outFile, 'utf8'),
     result = uglifyJS.minify(buildStr, {
-      compress: cCompress['compressAndLaunch'],
+      compress: cCompress['compress'],
       mangle: cCompress['mangle'],
       output: {
         semicolons: false,
-        beautify: !cCompress['mangle'] && !cCompress['compressAndLaunch'],
+        beautify: !cCompress['mangle'] && !cCompress['compress'],
         indent_level: cCompress['indentLevel'],
         comments: false,
         preamble: `// author: ${cGame['author']}\n// desc: ${cGame['desc']}\n// script: js\n`
