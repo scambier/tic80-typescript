@@ -14,7 +14,7 @@ The goal of this tool is to ease the use of TypeScript for the [TIC-80](https://
 
 - Download [the zip](https://github.com/scambier/tic80-typescript/archive/master.zip) containing this repository, and extract it in your working directory.
 - Run `npm install`
-- Create an empty game in TIC-80 (`new` > `save mygame.js`)
+- Create an empty game in TIC-80 (`new` > `save mygame`)
 - Edit the values in `config.json`:
 ```js
 {
