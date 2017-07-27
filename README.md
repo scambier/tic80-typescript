@@ -70,6 +70,11 @@ NodeJS 6+, TypeScript
 
 ## Changelog
 
+### 2017-07-27
+
+- Added `exit()` declaration to `tic.d.ts`
+- Updated `README.md`
+
 ### 2017-07-19
 
 - Updated `tic.d.ts`

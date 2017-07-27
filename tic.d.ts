@@ -10,6 +10,8 @@ declare function circ(x: number, y: number, r: number, color: number): void;
 
 declare function circb(x: number, y: number, r: number, color: number): void;
 
+declare function exit(): void;
+
 declare function font(text: string, x?: number, y?: number, colorkey?: number, w?: number, h?: number, fixed?: boolean, scale?: number): void; // Not in the wiki
 
 declare function line(x0: number, y0: number, x1: number, y1: number, color: number): void;
@@ -30,7 +32,7 @@ declare function music(track?: number, frame?: number, loop?: boolean): void;
 
 declare function peek(addr: number): number;
 
-declare function peek4(addr:number): number; // Not in the wiki
+declare function peek4(addr: number): number; // Not in the wiki
 
 declare function pix(x: number, y: number, color?: number): number;
 
