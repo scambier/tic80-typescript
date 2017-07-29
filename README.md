@@ -70,6 +70,9 @@ NodeJS 6+, TypeScript
 
 ## Changelog
 
+### 2017-07-29
+- Updated print() and spr() declarations
+
 ### 2017-07-27
 
 - Added `exit()` declaration to `tic.d.ts`
