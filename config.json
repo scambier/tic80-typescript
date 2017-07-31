@@ -2,7 +2,8 @@
   "game": {
     "author": "game developer",
     "desc": "short description",
-    "cart": "javascript.tic"
+    "cart": "javascript.tic",
+    "backup": true
   },
   "tic": {
     "ticPath": "path/to/tic/executable",

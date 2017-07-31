@@ -21,7 +21,8 @@ The goal of this tool is to ease the use of TypeScript for the [TIC-80](https://
   "game": { // Some information about your game
     "author": "game developer",
     "desc": "short description",
-    "cart": "mygame.tic" // The name of your TIC cart. Must end with ".tic"
+    "cart": "mygame.tic", // The name of your TIC cart. Must end with ".tic"
+    "backup": true // Copy your cart from the TIC folder to your project folder. Backup it with git!
   },
   "tic": {
     "ticPath": "path/to/tic/executable", // The path to your TIC executable
@@ -54,7 +55,7 @@ What you can do is call an `init()` function once, in your `TIC()` function. See
 
 The minification/compression options provided by Uglify work well to save you a lot of precious TIC-80's space.
 
-Straight "TypeScript to JavaScript" code is indented with 4 spaces. By default, `npm start` will reduce indentation to 1 space.
+Straight "TypeScript to JavaScript" code is indented with 4 spaces. The default option will reduce indentation to 1 space.
 
 - Default compiled file, straight from TypeScript: 100% of code size
 - With indent level of 1 and comments removed: 71%
@@ -69,6 +70,9 @@ NodeJS 6+, TypeScript
 
 
 ## Changelog
+
+## 2017-07-31
+- Added a `backup` option to copy your cart to your project's folder
 
 ### 2017-07-29
 - Updated print() and spr() declarations

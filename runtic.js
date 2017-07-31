@@ -13,8 +13,7 @@ const
   cCompress = config['compression'],
   outFile = tsconfig['compilerOptions']['outFile'];
 
-// Compile
-function compile () {
+function compile() {
   child_process.exec('tsc', function (error, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
@@ -25,7 +24,7 @@ function compile () {
 }
 
 
-function compressAndLaunch () {
+function compressAndLaunch() {
   const
     buildStr = fs.readFileSync(outFile, 'utf8'),
     result = uglifyJS.minify(buildStr, {
@@ -49,8 +48,23 @@ function compressAndLaunch () {
   child_process.exec(cmd, function (error, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
+    if (cGame['backup'] === true) {
+      backupCart()
+    }
   });
+}
 
+function backupCart() {
+  const cartPath = `${cTic['cartsPath']}/${cGame['cart']}`;
+  if (fs.existsSync(cartPath)) {
+    if (fs.existsSync(cGame['cart'])) {
+      fs.unlinkSync(cGame['cart'])
+    }
+    fs.createReadStream(cartPath).pipe(fs.createWriteStream(cGame['cart']));
+  } else {
+    console.error(`Unable to copy ${cartPath}`);
+    console.error(`Did you save itt at least once in TIC-80?`);
+  }
 }
 
 compile();
