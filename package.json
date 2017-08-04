@@ -6,13 +6,16 @@
     "start": "node runtic.js"
   },
   "bin": {
-    "tsc80": "dist/tsc80.js"
+    "tsc80": "bin/tsc80.js"
   },
   "author": "Simon Cambier <cambier.simon@gmail.com> (https://scambier.github.io/)",
   "license": "MIT",
   "dependencies": {
+    "commander": "^2.11.0",
+    "fs-extra": "^4.0.1",
     "strip-json-comments": "^2.0.1",
-    "uglify-js": "^3.0.24"
+    "uglify-js": "^3.0.24",
+    "yesno": "0.0.1"
   },
   "devDependencies": {
     "@types/node": "^8.0.19"
