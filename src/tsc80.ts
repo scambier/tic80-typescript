@@ -118,7 +118,7 @@ function run(): void {
 
     fs.writeFileSync(cCompress['compressedFile'], result.code)
 
-    if (!cTic['ticExecutable'] || cTic['cartsDirectory']) {
+    if (!cTic['ticExecutable'] || !cTic['cartsDirectory']) {
       console.log('Missing "ticExecutable" and/or "cartsDirectory" in tsc80-config.json')
       process.exit(0)
     }
