@@ -79,11 +79,11 @@ function run() {
                 beautify: !cCompress['mangle'] && !cCompress['compress'],
                 indent_level: cCompress['indentLevel'],
                 comments: false,
-                preamble: "// author: " + cGame['author'] + "\n// desc: " + cGame['desc'] + "\n// script: js\n"
+                preamble: "// title: " + cGame['title'] + "\n// author: " + cGame['author'] + "\n// desc: " + cGame['desc'] + "\n// script: js\n"
             }
         });
         fs.writeFileSync(cCompress['compressedFile'], result.code);
-        if (!cTic['ticExecutable'] || cTic['cartsDirectory']) {
+        if (!cTic['ticExecutable'] || !cTic['cartsDirectory']) {
             console.log('Missing "ticExecutable" and/or "cartsDirectory" in tsc80-config.json');
             process.exit(0);
         }
@@ -109,7 +109,7 @@ function run() {
         }
         else {
             console.error("Unable to copy " + cartPath);
-            console.error("Did you save itt at least once in TIC-80?");
+            console.error("Did you save your game at least once in TIC-80?");
         }
     }
     compile();
