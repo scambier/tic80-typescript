@@ -54,11 +54,11 @@ Do note that if you happen to manually edit the `tsconfig.json` file, it is requ
 
 ### Code organization
 
-By default, the `tsc80-config.json` will build all `.ts` files in your project folder, in no particular order. 
+The default `tsconfig.json` will build all `.ts` files in your project folder, in no particular order. 
 This may cause some problems, as some initialization code may be called before all the required classes/functions are read, leading to `undefined` errors.
 
 What you can do is call an `init()` function once, in your `TIC()` function.  
-A sample file is provided with `$ tsc80 --sample`
+A sample file is provided with `$ tsc80 --sample`, or you can read the code  [here](https://github.com/scambier/tic80-typescript/blob/master/sample/tsc80-sample.ts).
 
 ### Compression options
 
