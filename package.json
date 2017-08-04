@@ -1,12 +1,13 @@
 {
   "name": "tic80-typescript",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A workflow to create TIC-80 games with Typescript",
-  "scripts": {
-    "start": "node runtic.js"
-  },
   "bin": {
     "tsc80": "bin/tsc80.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/scambier/tic80-typescript"
   },
   "author": "Simon Cambier <cambier.simon@gmail.com> (https://scambier.github.io/)",
   "license": "MIT",
