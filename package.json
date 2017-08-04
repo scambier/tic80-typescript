@@ -5,10 +5,16 @@
   "scripts": {
     "start": "node runtic.js"
   },
+  "bin": {
+    "tsc80": "dist/tsc80.js"
+  },
   "author": "Simon Cambier <cambier.simon@gmail.com> (https://scambier.github.io/)",
   "license": "MIT",
   "dependencies": {
     "strip-json-comments": "^2.0.1",
     "uglify-js": "^3.0.24"
+  },
+  "devDependencies": {
+    "@types/node": "^8.0.19"
   }
 }
