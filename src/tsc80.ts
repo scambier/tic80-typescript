@@ -144,7 +144,7 @@ function run(): void {
       fs.createReadStream(cartPath).pipe(fs.createWriteStream(cGame['cart']))
     } else {
       console.error(`Unable to copy ${cartPath}`)
-      console.error(`Did you save itt at least once in TIC-80?`)
+      console.error(`Did you save your game at least once in TIC-80?`)
     }
   }
 
