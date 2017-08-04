@@ -40,7 +40,7 @@ if (program.sample) {
  * Initialization code
  * Copy required files to working dir
  */
-function init() {
+function init(): void {
   console.log('The following files will be added to the current directory:')
 
   // Fetch all files to copy
@@ -48,14 +48,14 @@ function init() {
     console.log(file)
   })
 
-  yesno.ask("Proceed to copy? (y/n)", false, ok => {
+  yesno.ask("Proceed to copy? (y/n)", false, (ok: boolean) => {
     if (!ok) {
       console.log("Stopping installation")
       process.exit(0)
     }
 
     console.log()
-    fs.readdirSync(toCopyDir).forEach(file => {
+    fs.readdirSync(toCopyDir).forEach((file: string) => {
       const
         from = path.join(toCopyDir, file),
         to = path.join(process.cwd(), file)
@@ -72,24 +72,23 @@ function init() {
 
     console.log('\nAll files copied. Setup the tsc80-config.json, then type "tsc80 run"')
     process.exit(0)
-
   })
 }
 
 /**
  * Compile, compress, run
  */
-function run() {
+function run(): void {
 
   const
-    config = JSON.parse(stripJsonComments(fs.readFileSync('tsc80-config.json', 'utf8'))),
-    tsconfig = JSON.parse(stripJsonComments(fs.readFileSync('tsconfig.json', 'utf8'))),
-    cGame = config['game'],
-    cTic = config['tic'],
-    cCompress = config['compression'],
-    outFile = tsconfig['compilerOptions']['outFile']
+    config: object = JSON.parse(stripJsonComments(fs.readFileSync('tsc80-config.json', 'utf8'))),
+    tsconfig: object = JSON.parse(stripJsonComments(fs.readFileSync('tsconfig.json', 'utf8'))),
+    cGame: object = config['game'],
+    cTic: object = config['tic'],
+    cCompress: object = config['compression'],
+    outFile: string = tsconfig['compilerOptions']['outFile']
 
-  function compile() {
+  function compile(): void {
     console.log('Compiling TypeScript...')
     child_process.exec('tsc', function (error, stdout, stderr) {
       if (stdout) console.log(stdout)
@@ -102,7 +101,7 @@ function run() {
     })
   }
 
-  function compressAndLaunch() {
+  function compressAndLaunch(): void {
     const
       buildStr = fs.readFileSync(outFile, 'utf8'),
       result = uglifyJS.minify(buildStr, {
@@ -136,7 +135,7 @@ function run() {
     })
   }
 
-  function backupCart() {
+  function backupCart(): void {
     const cartPath = `${cTic['cartsDirectory']}/${cGame['cart']}`
     if (fs.existsSync(cartPath)) {
       if (fs.existsSync(cGame['cart'])) {
@@ -152,7 +151,7 @@ function run() {
   compile()
 }
 
-function copySample() {
+function copySample(): void {
   const
     file = 'tsc80-sample.ts',
     from = path.join(__dirname, '../sample', file),
