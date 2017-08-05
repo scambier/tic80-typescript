@@ -33,7 +33,7 @@ function init() {
 
   console.log('The following files will be added to the current directory:')
 
-// Fetch all files to copy
+  // Fetch all files to copy
   fs.readdirSync(toCopyDir).forEach(file => {
     console.log(file)
   })
@@ -113,16 +113,27 @@ function run() {
       process.exit(0)
     }
 
-    const cmd = `"${cTic['ticExecutable']}" "${cTic['cartsDirectory']}/${cGame['cart']}" -code ${cCompress['compressedFile']}`
-    console.log(`Launch TIC: ${cmd}`)
-
-    child_process.exec(cmd, function (error, stdout, stderr) {
-      if (stdout) console.log(stdout)
-      if (stderr) console.log(stderr)
-      if (cGame['backup'] === true) {
-        backupCart()
-      }
+    let child = child_process.spawn(cTic['ticExecutable'],
+      [
+        `${cTic['cartsDirectory']}/${cGame['cart']}`,
+        '-code',
+        cCompress['compressedFile']
+      ],
+      {
+      stdio: 'inherit'
     })
+
+    child.on('exit', (code, signal) => {
+      process.on('exit', () => {
+        backupCart()
+        child = null;
+        if (signal) {
+          process.kill(process.pid, signal);
+        } else {
+          process.exit(code);
+        }
+      });
+    });
   }
 
   function backupCart(): void {
@@ -132,6 +143,7 @@ function run() {
         fs.unlinkSync(cGame['cart'])
       }
       fs.createReadStream(cartPath).pipe(fs.createWriteStream(cGame['cart']))
+      console.log('Copied cart')
     } else {
       console.error(`Unable to copy ${cartPath}`)
       console.error(`Did you save your game at least once in TIC-80?`)

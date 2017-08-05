@@ -91,16 +91,24 @@ function run() {
             console.log('Missing "ticExecutable" and/or "cartsDirectory" in tsc80-config.json');
             process.exit(0);
         }
-        var cmd = "\"" + cTic['ticExecutable'] + "\" \"" + cTic['cartsDirectory'] + "/" + cGame['cart'] + "\" -code " + cCompress['compressedFile'];
-        console.log("Launch TIC: " + cmd);
-        child_process.exec(cmd, function (error, stdout, stderr) {
-            if (stdout)
-                console.log(stdout);
-            if (stderr)
-                console.log(stderr);
-            if (cGame['backup'] === true) {
+        var child = child_process.spawn(cTic['ticExecutable'], [
+            cTic['cartsDirectory'] + "/" + cGame['cart'],
+            '-code',
+            cCompress['compressedFile']
+        ], {
+            stdio: 'inherit'
+        });
+        child.on('exit', function (code, signal) {
+            process.on('exit', function () {
                 backupCart();
-            }
+                child = null;
+                if (signal) {
+                    process.kill(process.pid, signal);
+                }
+                else {
+                    process.exit(code);
+                }
+            });
         });
     }
     function backupCart() {
@@ -110,6 +118,7 @@ function run() {
                 fs.unlinkSync(cGame['cart']);
             }
             fs.createReadStream(cartPath).pipe(fs.createWriteStream(cGame['cart']));
+            console.log('Copied cart');
         }
         else {
             console.error("Unable to copy " + cartPath);
