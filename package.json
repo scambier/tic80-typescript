@@ -12,7 +12,6 @@
   "author": "Simon Cambier <cambier.simon@gmail.com> (https://scambier.github.io/)",
   "license": "MIT",
   "dependencies": {
-    "commander": "^2.11.0",
     "fs-extra": "^4.0.1",
     "strip-json-comments": "^2.0.1",
     "uglify-js": "^3.0.24",

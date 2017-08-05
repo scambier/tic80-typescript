@@ -1,30 +1,34 @@
 #!/usr/bin/env node
-'use strict';
-var uglifyJS = require('uglify-js'), stripJsonComments = require('strip-json-comments'), fs = require('fs-extra'), path = require('path'), child_process = require('child_process'), program = require('commander'), yesno = require('yesno'), toCopyDir = path.join(__dirname, '../tocopy');
-program
-    .version(require('../package.json').version)
-    .option('-i, --init', 'Create required files in the current repository')
-    .option('-r, --run', 'Compile, compress, and launch your TIC-80 game')
-    .option('--sample', 'Do you need a sample file to start with? We have it.')
-    .parse(process.argv);
-if (!process.argv.slice(2).length) {
-    program.outputHelp();
-    process.exit(0);
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var child_process = require("child_process");
+var path = require("path");
+var uglifyJS = require("uglify-js");
+var stripJsonComments = require("strip-json-comments");
+var fs = require("fs-extra");
+var yesno = require("yesno");
+var arg = process.argv[2];
+if (arg) {
+    arg = arg.toLowerCase();
+    if (arg === 'init') {
+        init();
+    }
+    else if (arg === 'run') {
+        run();
+    }
+    else {
+        showHelp();
+    }
 }
-if (program.init) {
-    init();
-}
-if (program.run) {
-    run();
-}
-if (program.sample) {
-    copySample();
+else {
+    showHelp();
 }
 /**
  * Initialization code
  * Copy required files to working dir
  */
 function init() {
+    var toCopyDir = path.join(__dirname, '../tocopy');
     console.log('The following files will be added to the current directory:');
     // Fetch all files to copy
     fs.readdirSync(toCopyDir).forEach(function (file) {
@@ -114,16 +118,12 @@ function run() {
     }
     compile();
 }
-function copySample() {
-    var file = 'tsc80-sample.ts', from = path.join(__dirname, '../sample', file), to = path.join(process.cwd(), file);
-    fs.copySync(from, to, {
-        filter: function () {
-            if (fs.existsSync(to)) {
-                console.log("/!\\ " + file + " already exists in directory, skipping");
-                return false;
-            }
-            console.log("/!\\ " + file + " created");
-            return true;
-        }
-    });
+function showHelp() {
+    console.log();
+    console.log('  Usage: tsc80 [command]');
+    console.log();
+    console.log('  Commands:');
+    console.log('');
+    console.log('    help  Copy the required files inside current directory. If a file already exists, it will be skipped.');
+    console.log('    run   Compile, compress, and launch your TIC-80 game');
 }

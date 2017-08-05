@@ -16,12 +16,12 @@ Write your [TIC-80](https://tic.computer/) games in TypeScript
 ### Install TSC-80
 
 - `$ npm install -g tic80-typescript`
-- `$ tsc80 --init` to copy the necessary files into the current directory
+- `$ tsc80 init` to copy the necessary files into the current directory
 - Setup correct values inside the `tsc80-config.json` (see below)
 
 ### Run TSC-80
 
-- `$ tsc80 --run` wil compile, compress, and launch your game through the TIC-80.
+- `$ tsc80 run` will compile, compress, and launch your game through the TIC-80.
 
 ### Configuration options
 
@@ -30,6 +30,7 @@ You need to complete the `tsc80-config.json` for each project. **All fields are 
 {
   "game": { // Some information about your game
     "author": "game developer",
+    "title": "Your cart's title",
     "desc": "short description",
     "cart": "mygame.tic", // The name of your TIC cart. Must end with ".tic"
     "backup": true // Copy your cart from the TIC folder to your project folder. Backup it with git!
@@ -54,11 +55,11 @@ Do note that if you happen to manually edit the `tsconfig.json` file, it is requ
 
 ### Code organization
 
-The default `tsconfig.json` will build all `.ts` files in your project folder, in no particular order. 
+With the default `tsconfig.json`, TSC-80 will build all `.ts` files in your project folder, in no particular order. 
 This may cause some problems, as some initialization code may be called before all the required classes/functions are read, leading to `undefined` errors.
 
 What you can do is call an `init()` function once, in your `TIC()` function.  
-A sample file is provided with `$ tsc80 --sample`, or you can read the code  [here](https://github.com/scambier/tic80-typescript/blob/master/sample/tsc80-sample.ts).
+A sample file is provided [here](https://github.com/scambier/tic80-typescript/blob/master/sample/tsc80-sample.ts).
 
 ### Compression options
 
@@ -74,10 +75,10 @@ The minification/compression options provided by Uglify work well to save you a 
 
 ## Changelog
 
-## 2017-08-04
+### 2017-08-04
 - Making a real npm package
 
-## 2017-07-31
+### 2017-07-31
 - Added a `backup` option to copy your cart to your project's folder
 
 ### 2017-07-29

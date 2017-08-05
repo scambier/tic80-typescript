@@ -1,49 +1,39 @@
 #!/usr/bin/env node
 
-'use strict'
+import * as child_process from 'child_process'
+import * as path from 'path'
+import * as uglifyJS from 'uglify-js'
+import * as stripJsonComments from 'strip-json-comments'
+import * as fs from 'fs-extra'
+import * as yesno from 'yesno'
 
-const
-  uglifyJS = require('uglify-js'),
-  stripJsonComments = require('strip-json-comments'),
-  fs = require('fs-extra'),
-  path = require('path'),
-  child_process = require('child_process'),
-  program = require('commander'),
-  yesno = require('yesno'),
-  toCopyDir = path.join(__dirname, '../tocopy')
-
-program
-  .version(require('../package.json').version)
-  .option('-i, --init', 'Create required files in the current repository')
-  .option('-r, --run', 'Compile, compress, and launch your TIC-80 game')
-  .option('--sample', 'Do you need a sample file to start with? We have it.')
-  .parse(process.argv)
-
-if (!process.argv.slice(2).length) {
-  program.outputHelp()
-  process.exit(0)
-}
-
-if (program.init) {
-  init()
-}
-
-if (program.run) {
-  run()
-}
-
-if (program.sample) {
-  copySample()
+let arg = process.argv[2]
+if (arg) {
+  arg = arg.toLowerCase()
+  if (arg === 'init') {
+    init()
+  }
+  else if (arg === 'run') {
+    run()
+  }
+  else {
+    showHelp()
+  }
+} else {
+  showHelp()
 }
 
 /**
  * Initialization code
  * Copy required files to working dir
  */
-function init(): void {
+function init() {
+
+  let toCopyDir = path.join(__dirname, '../tocopy')
+
   console.log('The following files will be added to the current directory:')
 
-  // Fetch all files to copy
+// Fetch all files to copy
   fs.readdirSync(toCopyDir).forEach(file => {
     console.log(file)
   })
@@ -78,9 +68,9 @@ function init(): void {
 /**
  * Compile, compress, run
  */
-function run(): void {
+function run() {
 
-  const
+  let
     config: object = JSON.parse(stripJsonComments(fs.readFileSync('tsc80-config.json', 'utf8'))),
     tsconfig: object = JSON.parse(stripJsonComments(fs.readFileSync('tsconfig.json', 'utf8'))),
     cGame: object = config['game'],
@@ -151,19 +141,12 @@ function run(): void {
   compile()
 }
 
-function copySample(): void {
-  const
-    file = 'tsc80-sample.ts',
-    from = path.join(__dirname, '../sample', file),
-    to = path.join(process.cwd(), file)
-  fs.copySync(from, to, {
-    filter: () => {
-      if (fs.existsSync(to)) {
-        console.log(`/!\\ ${file} already exists in directory, skipping`)
-        return false
-      }
-      console.log(`/!\\ ${file} created`)
-      return true
-    }
-  })
+function showHelp() {
+  console.log()
+  console.log('  Usage: tsc80 [command]')
+  console.log()
+  console.log('  Commands:')
+  console.log('')
+  console.log('    help  Copy the required files inside current directory. If a file already exists, it will be skipped.')
+  console.log('    run   Compile, compress, and launch your TIC-80 game')
 }
