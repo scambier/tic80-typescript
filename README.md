@@ -75,14 +75,17 @@ The minification/compression options provided by Uglify work well to save you a 
 
 ## Changelog
 
-### 2017-08-04
+### 0.3 - 2017-08-05
+- Refactored code
+
+### 0.2 - 2017-08-04
 - Making a real npm package
 
 ### 2017-07-31
 - Added a `backup` option to copy your cart to your project's folder
 
 ### 2017-07-29
-- Updated print() and spr() declarations
+- Updated `print()` and `spr()` declarations
 
 ### 2017-07-27
 

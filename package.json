@@ -1,6 +1,6 @@
 {
   "name": "tic80-typescript",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "A workflow to create TIC-80 games with Typescript",
   "bin": {
     "tsc80": "bin/tsc80.js"
