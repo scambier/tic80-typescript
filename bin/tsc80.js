@@ -91,6 +91,8 @@ function run() {
             console.log('Missing "ticExecutable" and/or "cartsDirectory" in tsc80-config.json');
             process.exit(0);
         }
+        var cmd = "\"" + cTic['ticExecutable'] + "\" \"" + cTic['cartsDirectory'] + "/" + cGame['cart'] + "\" -code " + cCompress['compressedFile'];
+        console.log("Launch TIC: " + cmd);
         var child = child_process.spawn(cTic['ticExecutable'], [
             cTic['cartsDirectory'] + "/" + cGame['cart'],
             '-code',

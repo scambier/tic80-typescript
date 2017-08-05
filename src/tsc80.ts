@@ -113,6 +113,9 @@ function run() {
       process.exit(0)
     }
 
+    const cmd = `"${cTic['ticExecutable']}" "${cTic['cartsDirectory']}/${cGame['cart']}" -code ${cCompress['compressedFile']}`
+    console.log(`Launch TIC: ${cmd}`)
+
     let child = child_process.spawn(cTic['ticExecutable'],
       [
         `${cTic['cartsDirectory']}/${cGame['cart']}`,
@@ -126,14 +129,14 @@ function run() {
     child.on('exit', (code, signal) => {
       process.on('exit', () => {
         backupCart()
-        child = null;
+        child = null
         if (signal) {
-          process.kill(process.pid, signal);
+          process.kill(process.pid, signal)
         } else {
-          process.exit(code);
+          process.exit(code)
         }
-      });
-    });
+      })
+    })
   }
 
   function backupCart(): void {
