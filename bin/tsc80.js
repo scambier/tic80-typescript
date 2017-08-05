@@ -119,8 +119,8 @@ function run() {
             if (fs.existsSync(cGame['cart'])) {
                 fs.unlinkSync(cGame['cart']);
             }
-            fs.createReadStream(cartPath).pipe(fs.createWriteStream(cGame['cart']));
-            console.log('Copied cart');
+            fs.copySync(cartPath, cGame['cart']);
+            console.log("Backuped " + cGame['cart'] + " into current dir");
         }
         else {
             console.error("Unable to copy " + cartPath);
