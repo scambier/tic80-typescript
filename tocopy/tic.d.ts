@@ -54,6 +54,8 @@ declare function spr(id: number, x: number, y: number, colorkey?: number, scale?
 
 declare function sync();
 
+declare function textri(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number, u1: number, v1: number, u2: number, v2: number, u3: number, v3: number, use_map?: boolean, colorkey?: number);
+
 declare function time(): number;
 
 declare function trace(msg: any, color?: number): void;
