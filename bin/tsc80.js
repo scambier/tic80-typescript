@@ -83,7 +83,7 @@ function run() {
                 beautify: !cCompress['mangle'] && !cCompress['compress'],
                 indent_level: cCompress['indentLevel'],
                 comments: false,
-                preamble: "// title: " + cGame['title'] + "\n// author: " + cGame['author'] + "\n// desc: " + cGame['desc'] + "\n// script: js\n// input: " + cGame['input'] + "\n"
+                preamble: "// title: " + cGame['title'] + "\n// author: " + cGame['author'] + "\n// desc: " + cGame['desc'] + "\n// script: js\n" + (cGame['input'] && "// input: " + cGame['input'] + "\n")
             }
         });
         fs.writeFileSync(cCompress['compressedFile'], result.code);
