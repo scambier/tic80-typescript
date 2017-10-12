@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var child_process = require("child_process");
 var path = require("path");
 var uglifyJS = require("uglify-js");
