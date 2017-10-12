@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var child_process = require("child_process");
 var path = require("path");
 var uglifyJS = require("uglify-js");
@@ -83,7 +83,7 @@ function run() {
                 beautify: !cCompress['mangle'] && !cCompress['compress'],
                 indent_level: cCompress['indentLevel'],
                 comments: false,
-                preamble: "// title: " + cGame['title'] + "\n// author: " + cGame['author'] + "\n// desc: " + cGame['desc'] + "\n// script: js\n"
+                preamble: "// title: " + cGame['title'] + "\n// author: " + cGame['author'] + "\n// desc: " + cGame['desc'] + "\n// script: js\n// input: " + cGame['input'] + "\n"
             }
         });
         fs.writeFileSync(cCompress['compressedFile'], result.code);
