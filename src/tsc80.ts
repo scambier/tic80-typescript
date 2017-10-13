@@ -162,6 +162,6 @@ function showHelp() {
   console.log()
   console.log('  Commands:')
   console.log('')
-  console.log('    help  Copy the required files inside current directory. If a file already exists, it will be skipped.')
+  console.log('    init  Copy the required files inside current directory. If a file already exists, it will be skipped.')
   console.log('    run   Compile, compress, and launch your TIC-80 game')
 }
