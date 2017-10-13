@@ -21,6 +21,7 @@ Write your [TIC-80](https://tic.computer/) games in TypeScript
 
 ### Run TSC-80
 
+- Create a `.ts` file to start your game (a sample is provided in this repo)
 - `$ tsc80 run` will compile, compress, and launch your game through the TIC-80.
 
 ### Configuration options
@@ -32,6 +33,7 @@ You need to complete the `tsc80-config.json` for each project. **All fields are 
     "author": "game developer",
     "title": "Your cart's title",
     "desc": "short description",
+    "input": "gamepad", // Or "mouse"
     "cart": "mygame.tic", // The name of your TIC cart. Must end with ".tic"
     "backup": true // Copy your cart from the TIC folder to your project folder. Backup it with git!
   },
@@ -74,6 +76,13 @@ The minification/compression options provided by Uglify work well to save you a 
 
 
 ## Changelog
+
+### 0.4.1 - 2017-10-13
+- Fixed missing input support (thanks @matanegui)
+- Fixed `tsc80` cmd help message
+
+### 0.4 - 2017-10-08
+- Added `textri()` declaration
 
 ### 0.3 - 2017-08-05
 - Refactored code

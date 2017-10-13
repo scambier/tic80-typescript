@@ -4,6 +4,7 @@
     "title": "Your cart's title",
     "desc": "A short description",
     "cart": "javascript.tic",
+    "input": "gamepad",
     "backup": true
   },
   "tic": {
