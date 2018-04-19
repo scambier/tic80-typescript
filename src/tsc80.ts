@@ -7,6 +7,8 @@ import * as stripJsonComments from 'strip-json-comments'
 import * as fs from 'fs-extra'
 import * as yesno from 'yesno'
 
+const version: string = require('../package.json').version
+
 let arg = process.argv[2]
 if (arg) {
   arg = arg.toLowerCase()
@@ -113,21 +115,21 @@ function run() {
       process.exit(0)
     }
 
-    const cmd = `"${cTic['ticExecutable']}" "${cTic['cartsDirectory']}/${cGame['cart']}" -code ${cCompress['compressedFile']}`
+    const cmd = `"${cTic['ticExecutable']}" "${cTic['cartsDirectory']}/${cGame['cart']}" -code ${cCompress["compressedFile"]}`
     console.log(`Launch TIC: ${cmd}`)
 
-    let child = child_process.spawn(cTic['ticExecutable'],
+    let child = child_process.spawn(cTic.ticExecutable,
       [
-        `${cTic['cartsDirectory']}/${cGame['cart']}`,
-        '-code',
-        cCompress['compressedFile']
+        `${cTic.cartsDirectory}/${cGame.cart}`,
+        "-code",
+        cCompress.compressedFile
       ],
       {
-      stdio: 'inherit'
+      stdio: "inherit"
     })
 
-    child.on('exit', (code, signal) => {
-      process.on('exit', () => {
+    child.on("exit", (code, signal) => {
+      process.on("exit", () => {
         backupCart()
         child = null
         if (signal) {
@@ -140,13 +142,13 @@ function run() {
   }
 
   function backupCart(): void {
-    const cartPath = `${cTic['cartsDirectory']}/${cGame['cart']}`
+    const cartPath = `${cTic.cartsDirectory}/${cGame.cart}`
     if (fs.existsSync(cartPath)) {
-      if (fs.existsSync(cGame['cart'])) {
-        fs.unlinkSync(cGame['cart'])
+      if (fs.existsSync(cGame.cart)) {
+        fs.unlinkSync(cGame.cart)
       }
-      fs.copySync(cartPath, cGame['cart'])
-      console.log(`Backuped ${cGame['cart']} into current dir`)
+      fs.copySync(cartPath, cGame.cart)
+      console.log(`Copied ${cGame.cart} into current dir`)
     } else {
       console.error(`Unable to copy ${cartPath}`)
       console.error(`Did you save your game at least once in TIC-80?`)
@@ -157,11 +159,12 @@ function run() {
 }
 
 function showHelp() {
-  console.log()
-  console.log('  Usage: tsc80 [command]')
-  console.log()
-  console.log('  Commands:')
-  console.log('')
-  console.log('    init  Copy the required files inside current directory. If a file already exists, it will be skipped.')
-  console.log('    run   Compile, compress, and launch your TIC-80 game')
+  console.log("  v" + version);
+  console.log();
+  console.log("  Usage: tsc80 [command]");
+  console.log();
+  console.log("  Commands:");
+  console.log("");
+  console.log("    init  - Copy the required files inside current directory. If a file already exists, it will be skipped.");
+  console.log("    run   - Compile, compress, and launch your TIC-80 game");
 }

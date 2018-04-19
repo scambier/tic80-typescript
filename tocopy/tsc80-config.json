@@ -3,7 +3,7 @@
     "author": "game developer",
     "title": "Your cart's title",
     "desc": "A short description",
-    "cart": "javascript.tic",
+    "cart": "yourjsgame.tic",
     "input": "gamepad",
     "backup": true
   },
@@ -14,7 +14,7 @@
   "compression": {
     "compressedFile": "build/compressed.js",
     "indentLevel": 1,
-    "compress": false,
-    "mangle": false
+    "compress": true,
+    "mangle": true
   }
 }

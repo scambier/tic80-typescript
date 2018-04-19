@@ -1,6 +1,6 @@
 {
   "name": "tic80-typescript",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "A workflow to create TIC-80 games with Typescript",
   "bin": {
     "tsc80": "bin/tsc80.js"
@@ -12,12 +12,12 @@
   "author": "Simon Cambier <cambier.simon@gmail.com> (https://scambier.github.io/)",
   "license": "MIT",
   "dependencies": {
-    "fs-extra": "^4.0.1",
+    "fs-extra": "^4.0.3",
     "strip-json-comments": "^2.0.1",
-    "uglify-js": "^3.0.24",
+    "uglify-js": "^3.3.21",
     "yesno": "0.0.1"
   },
   "devDependencies": {
-    "@types/node": "^8.0.19"
+    "@types/node": "^8.10.9"
   }
 }

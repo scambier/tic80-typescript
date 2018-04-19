@@ -7,6 +7,7 @@ var uglifyJS = require("uglify-js");
 var stripJsonComments = require("strip-json-comments");
 var fs = require("fs-extra");
 var yesno = require("yesno");
+var version = require('../package.json').version;
 var arg = process.argv[2];
 if (arg) {
     arg = arg.toLowerCase();
@@ -91,17 +92,17 @@ function run() {
             console.log('Missing "ticExecutable" and/or "cartsDirectory" in tsc80-config.json');
             process.exit(0);
         }
-        var cmd = "\"" + cTic['ticExecutable'] + "\" \"" + cTic['cartsDirectory'] + "/" + cGame['cart'] + "\" -code " + cCompress['compressedFile'];
+        var cmd = "\"" + cTic['ticExecutable'] + "\" \"" + cTic['cartsDirectory'] + "/" + cGame['cart'] + "\" -code " + cCompress["compressedFile"];
         console.log("Launch TIC: " + cmd);
-        var child = child_process.spawn(cTic['ticExecutable'], [
-            cTic['cartsDirectory'] + "/" + cGame['cart'],
-            '-code',
-            cCompress['compressedFile']
+        var child = child_process.spawn(cTic.ticExecutable, [
+            cTic.cartsDirectory + "/" + cGame.cart,
+            "-code",
+            cCompress.compressedFile
         ], {
-            stdio: 'inherit'
+            stdio: "inherit"
         });
-        child.on('exit', function (code, signal) {
-            process.on('exit', function () {
+        child.on("exit", function (code, signal) {
+            process.on("exit", function () {
                 backupCart();
                 child = null;
                 if (signal) {
@@ -114,13 +115,13 @@ function run() {
         });
     }
     function backupCart() {
-        var cartPath = cTic['cartsDirectory'] + "/" + cGame['cart'];
+        var cartPath = cTic.cartsDirectory + "/" + cGame.cart;
         if (fs.existsSync(cartPath)) {
-            if (fs.existsSync(cGame['cart'])) {
-                fs.unlinkSync(cGame['cart']);
+            if (fs.existsSync(cGame.cart)) {
+                fs.unlinkSync(cGame.cart);
             }
-            fs.copySync(cartPath, cGame['cart']);
-            console.log("Backuped " + cGame['cart'] + " into current dir");
+            fs.copySync(cartPath, cGame.cart);
+            console.log("Copied " + cGame.cart + " into current dir");
         }
         else {
             console.error("Unable to copy " + cartPath);
@@ -130,11 +131,12 @@ function run() {
     compile();
 }
 function showHelp() {
+    console.log("  v" + version);
     console.log();
-    console.log('  Usage: tsc80 [command]');
+    console.log("  Usage: tsc80 [command]");
     console.log();
-    console.log('  Commands:');
-    console.log('');
-    console.log('    init  Copy the required files inside current directory. If a file already exists, it will be skipped.');
-    console.log('    run   Compile, compress, and launch your TIC-80 game');
+    console.log("  Commands:");
+    console.log("");
+    console.log("    init  - Copy the required files inside current directory. If a file already exists, it will be skipped.");
+    console.log("    run   - Compile, compress, and launch your TIC-80 game");
 }

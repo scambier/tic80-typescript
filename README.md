@@ -2,29 +2,27 @@
 
 ![](logo.png)
 
-Write your [TIC-80](https://tic.computer/) games in TypeScript
+Write your [TIC-80](https://tic.computer/) games in TypeScript. Works with the free version of TIC-80.
 
+Tested with TIC-80 version 0.60.3 on Windows, and should work on all TIC-80 compatible platforms.
 
 ## Installation and usage
+
+TSC-80 requires a bit of setup, but once it is done, it's as easy as `tsc80 run` to inject your TypeScript code into TIC-80 :)
 
 ### Pre-requisites
 
 - Install NodeJS 6+
 - Install TypeScript (`npm install -g typescript`)
-- Create and save an empty game in TIC-80
+- Create and save an empty JavaScript game in TIC-80 (`new js` then `save yourjsgame`)
 
-### Install TSC-80
+### Install TSC-80 and create a boilerplate project
 
 - `$ npm install -g tic80-typescript`
-- `$ tsc80 init` to copy the necessary files into the current directory
+- `$ tsc80 init` will copy the necessary files (config, index.ts and declarations) into the current directory
 - Setup correct values inside the `tsc80-config.json` (see below)
 
-### Run TSC-80
-
-- Create a `.ts` file to start your game (a sample is provided in this repo)
-- `$ tsc80 run` will compile, compress, and launch your game through the TIC-80.
-
-### Configuration options
+### Configuration
 
 You need to complete the `tsc80-config.json` for each project. **All fields are required.**
 ```js
@@ -38,17 +36,24 @@ You need to complete the `tsc80-config.json` for each project. **All fields are 
     "backup": true // Copy your cart from the TIC folder to your project folder. Backup it with git!
   },
   "tic": {
-    "ticExecutable": "path/to/tic/executable", // The path to your TIC executable
+    "ticExecutable": "path/to/tic/executable/file", // The path to your TIC executable.
     "cartsDirectory": "path/to/tic/carts/folder" // The directory where TIC stores its carts. Accessible from TIC with the "folder" command
   },
   "compression": { // These settings will alter how the final js file will look like
     "compressedFile": "build/compressed.js", // Path to compressed file. You should not have to change this.
     "indentLevel": 1,
-    "compress": false,
-    "mangle": false
+    "compress": true,
+    "mangle": true
   }
 }
 ```
+
+### Run TSC-80
+
+- `$ tsc80 run` will compile, compress, and launch your game through the TIC-80.
+- Once that TIC-80 is running, you can save your game with `save`.
+
+If the backup option is set, the compiled `.tic` file will be automatically copied in your project directory when you close TIC-80.
 
 Do note that if you happen to manually edit the `tsconfig.json` file, it is required to keep the `compilerOptions.outFile` option.
 
@@ -76,6 +81,11 @@ The minification/compression options provided by Uglify work well to save you a 
 
 
 ## Changelog
+
+### 0.4.2 - 2018-04-19
+- Added `key()`, `keyp()` and `reset()` declarations
+- Updated the boilerplate code for latest TIC-80 version
+- Updated README for better, step-by-step instructions
 
 ### 0.4.1 - 2017-10-13
 - Fixed missing input support (thanks @matanegui)
