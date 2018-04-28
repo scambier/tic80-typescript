@@ -10,17 +10,19 @@ Tested with TIC-80 version 0.60.3 on Windows, and should work on all TIC-80 comp
 
 TSC-80 requires a bit of setup, but once it is done, it's as easy as `tsc80 run` to inject your TypeScript code into TIC-80 :)
 
+If you wish a real example, my LDJAM 39 entry, written with TSC-80, is [here](https://github.com/scambier/LDJAM39).
+
 ### Pre-requisites
 
 - Install NodeJS 6+
 - Install TypeScript (`npm install -g typescript`)
-- Create and save an empty JavaScript game in TIC-80 (`new js` then `save yourjsgame`)
+- Create and save an empty JavaScript game in TIC-80 (`new js` then `save myjsgame`)
 
 ### Install TSC-80 and create a boilerplate project
 
 - `$ npm install -g tic80-typescript`
-- `$ tsc80 init` will copy the necessary files (config, index.ts and declarations) into the current directory
-- Setup correct values inside the `tsc80-config.json` (see below)
+- `$ tsc80 init` will create the necessary files (config, index.ts and declarations) into the current directory
+- Set the correct values inside the `tsc80-config.json` (see below)
 
 ### Configuration
 
@@ -32,7 +34,7 @@ You need to complete the `tsc80-config.json` for each project. **All fields are 
     "title": "Your cart's title",
     "desc": "short description",
     "input": "gamepad", // Or "mouse"
-    "cart": "mygame.tic", // The name of your TIC cart. Must end with ".tic"
+    "cart": "myjsgame.tic", // The name of your TIC cart. Must end with ".tic"
     "backup": true // Copy your cart from the TIC folder to your project folder. Backup it with git!
   },
   "tic": {
@@ -51,9 +53,9 @@ You need to complete the `tsc80-config.json` for each project. **All fields are 
 ### Run TSC-80
 
 - `$ tsc80 run` will compile, compress, and launch your game through the TIC-80.
-- Once that TIC-80 is running, you can save your game with `save`.
+- Once that TIC-80 is running, you can save your game cart with `save`.
 
-If the backup option is set, the compiled `.tic` file will be automatically copied in your project directory when you close TIC-80.
+If the backup option is set, the resulting `.tic` file will be automatically copied in your project directory when you close TIC-80.
 
 Do note that if you happen to manually edit the `tsconfig.json` file, it is required to keep the `compilerOptions.outFile` option.
 
@@ -65,8 +67,7 @@ Do note that if you happen to manually edit the `tsconfig.json` file, it is requ
 With the default `tsconfig.json`, TSC-80 will build all `.ts` files in your project folder, in no particular order. 
 This may cause some problems, as some initialization code may be called before all the required classes/functions are read, leading to `undefined` errors.
 
-What you can do is call an `init()` function once, in your `TIC()` function.  
-A sample file is provided [here](https://github.com/scambier/tic80-typescript/blob/master/sample/tsc80-sample.ts).
+To prevent this, the default [index.ts](https://github.com/scambier/tic80-typescript/blob/master/tocopy/index.ts) has an `init()` function that is called once during the first game loop.
 
 ### Compression options
 
