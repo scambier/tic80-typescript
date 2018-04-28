@@ -10,8 +10,6 @@ Tested with TIC-80 version 0.60.3 on Windows, and should work on all TIC-80 comp
 
 TSC-80 requires a bit of setup, but once it is done, it's as easy as `tsc80 run` to inject your TypeScript code into TIC-80 :)
 
-If you wish a real example, my LDJAM 39 entry, written with TSC-80, is [here](https://github.com/scambier/LDJAM39).
-
 ### Pre-requisites
 
 - Install NodeJS 6+
