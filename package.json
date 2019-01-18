@@ -12,12 +12,12 @@
   "author": "Simon Cambier <cambier.simon@gmail.com> (https://scambier.github.io/)",
   "license": "MIT",
   "dependencies": {
-    "fs-extra": "^4.0.3",
+    "fs-extra": "^7.0.1",
     "strip-json-comments": "^2.0.1",
-    "uglify-js": "^3.3.21",
-    "yesno": "0.0.1"
+    "uglify-js": "^3.4.9",
+    "yesno": "0.2.0"
   },
   "devDependencies": {
-    "@types/node": "^8.10.9"
+    "@types/node": "^8.10.39"
   }
 }
