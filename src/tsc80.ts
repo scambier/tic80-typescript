@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
 import * as child_process from 'child_process'
-import * as path from 'path'
-import * as uglifyJS from 'uglify-js'
-import * as stripJsonComments from 'strip-json-comments'
 import * as fs from 'fs-extra'
+import * as path from 'path'
+import * as stripJsonComments from 'strip-json-comments'
+import * as uglifyJS from 'uglify-js'
 import * as yesno from 'yesno'
 
 const version: string = require('../package.json').version
@@ -29,9 +29,9 @@ if (arg) {
  * Initialization code
  * Copy required files to working dir
  */
-function init() {
+function init(): void {
 
-  let toCopyDir = path.join(__dirname, '../tocopy')
+  const toCopyDir = path.join(__dirname, '../tocopy')
 
   console.log('The following files will be added to the current directory:')
 
@@ -40,17 +40,16 @@ function init() {
     console.log(file)
   })
 
-  yesno.ask("Proceed to copy? (y/n)", false, (ok: boolean) => {
+  yesno.ask('Proceed to copy? (y/n)', false, (ok: boolean) => {
     if (!ok) {
-      console.log("Stopping installation")
+      console.log('Stopping installation')
       process.exit(0)
     }
 
     console.log()
     fs.readdirSync(toCopyDir).forEach((file: string) => {
-      const
-        from = path.join(toCopyDir, file),
-        to = path.join(process.cwd(), file)
+      const from = path.join(toCopyDir, file)
+      const to = path.join(process.cwd(), file)
       fs.copySync(from, to, {
         filter: () => {
           if (fs.existsSync(to)) {
@@ -62,7 +61,7 @@ function init() {
       })
     })
 
-    console.log('\nAll files copied. Setup the tsc80-config.json, then type "tsc80 run"')
+    console.log('\nAll files copied. Edit the tsc80-config.json, then type "tsc80 run"')
     process.exit(0)
   })
 }
@@ -70,20 +69,19 @@ function init() {
 /**
  * Compile, compress, run
  */
-function run() {
+function run(): void {
 
-  let
-    config: object = JSON.parse(stripJsonComments(fs.readFileSync('tsc80-config.json', 'utf8'))),
-    tsconfig: object = JSON.parse(stripJsonComments(fs.readFileSync('tsconfig.json', 'utf8'))),
-    cGame: object = config['game'],
-    cTic: object = config['tic'],
-    cCompress: object = config['compression'],
-    outFile: string = tsconfig['compilerOptions']['outFile']
+  const config: any = JSON.parse(stripJsonComments(fs.readFileSync('tsc80-config.json', 'utf8')))
+  const tsconfig: any = JSON.parse(stripJsonComments(fs.readFileSync('tsconfig.json', 'utf8')))
+  const cGame: any = config['game']
+  const cTic: any = config['tic']
+  const cCompress: any = config['compression']
+  const outFile: string = tsconfig['compilerOptions']['outFile']
 
   function compile(): void {
     console.log('Compiling TypeScript...')
-    child_process.exec('tsc', function (error, stdout, stderr) {
-      if (stdout) console.log(stdout)
+    child_process.exec('tsc', (error, stdout, stderr) => {
+      if (stdout) { console.log(stdout) }
       if (stderr) {
         console.log(stderr)
       }
@@ -94,19 +92,18 @@ function run() {
   }
 
   function compressAndLaunch(): void {
-    const
-      buildStr = fs.readFileSync(outFile, 'utf8'),
-      result = uglifyJS.minify(buildStr, {
-        compress: cCompress['compress'],
-        mangle: cCompress['mangle'],
-        output: {
-          semicolons: false,
-          beautify: !cCompress['mangle'] && !cCompress['compress'],
-          indent_level: cCompress['indentLevel'],
-          comments: false,
-          preamble: `// title: ${cGame['title']}\n// author: ${cGame['author']}\n// desc: ${cGame['desc']}\n// script: js\n// input: ${cGame['input']}\n`
-        }
-      })
+    const buildStr = fs.readFileSync(outFile, 'utf8')
+    const result = uglifyJS.minify(buildStr, {
+      compress: cCompress['compress'],
+      mangle: cCompress['mangle'],
+      output: {
+        semicolons: false,
+        beautify: !cCompress['mangle'] && !cCompress['compress'],
+        indent_level: cCompress['indentLevel'],
+        comments: false,
+        preamble: `// title: ${cGame['title']}\n// author: ${cGame['author']}\n// desc: ${cGame['desc']}\n// script: js\n// input: ${cGame['input']}\n`
+      }
+    })
 
     fs.writeFileSync(cCompress['compressedFile'], result.code)
 
@@ -115,21 +112,21 @@ function run() {
       process.exit(0)
     }
 
-    const cmd = `"${cTic['ticExecutable']}" "${cTic['cartsDirectory']}/${cGame['cart']}" -code ${cCompress["compressedFile"]}`
+    const cmd = `"${cTic['ticExecutable']}" "${cTic['cartsDirectory']}/${cGame['cart']}" -code ${cCompress['compressedFile']}`
     console.log(`Launch TIC: ${cmd}`)
 
     let child = child_process.spawn(cTic.ticExecutable,
       [
         `${cTic.cartsDirectory}/${cGame.cart}`,
-        "-code",
+        '-code',
         cCompress.compressedFile
       ],
       {
-      stdio: "inherit"
-    })
+        stdio: 'inherit'
+      })
 
-    child.on("exit", (code, signal) => {
-      process.on("exit", () => {
+    child.on('exit', (code, signal) => {
+      process.on('exit', () => {
         backupCart()
         child = null
         if (signal) {
@@ -158,13 +155,13 @@ function run() {
   compile()
 }
 
-function showHelp() {
-  console.log("  v" + version);
-  console.log();
-  console.log("  Usage: tsc80 [command]");
-  console.log();
-  console.log("  Commands:");
-  console.log("");
-  console.log("    init  - Copy the required files inside current directory. If a file already exists, it will be skipped.");
-  console.log("    run   - Compile, compress, and launch your TIC-80 game");
+function showHelp(): void {
+  console.log('  v' + version)
+  console.log()
+  console.log('  Usage: tsc80 [command]')
+  console.log()
+  console.log('  Commands:')
+  console.log('')
+  console.log('    init  - Copy the required files inside current directory. If a file already exists, it will be skipped.')
+  console.log('    run   - Compile, compress, and launch your TIC-80 game')
 }

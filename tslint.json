@@ -1,0 +1,57 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "linterOptions": {
+        "exclude": [
+            "**/*.spec.ts",
+            "**/*.test.ts"
+        ]
+    },
+    "jsRules": {},
+    "rules": {
+        "semicolon": [
+            true,
+            "never"
+        ],
+        "quotemark": [
+            true,
+            "single"
+        ],
+        "no-var-requires": false,
+        "ordered-imports": true,
+        "arrow-parens": false,
+        "trailing-comma": [
+            true,
+            "never"
+        ],
+        "object-literal-sort-keys": false,
+        "one-line": false,
+        "variable-name": [
+            true,
+            "ban-keywords",
+            "check-format",
+            "allow-leading-underscore",
+            "allow-pascal-case"
+        ],
+        "align": false,
+        "typedef": [
+            true,
+            "call-signature"
+        ],
+        "no-unused-expression": false,
+        "interface-name": false,
+        "no-console": [
+            false
+        ],
+        "no-bitwise": false,
+        "interface-over-type-literal": false,
+        "max-line-length": [
+            false
+        ],
+        "max-classes-per-file": false,
+        "no-empty": false
+    },
+    "rulesDirectory": []
+}
