@@ -1,3 +1,5 @@
+/** @noSelfInFile */
+
 declare function btn(id: number): boolean;
 
 declare function btnp(id: number, hold?: number, period?: number): boolean;
