@@ -62,7 +62,7 @@ Do note that if you happen to manually edit the `tsconfig.json` file, it is requ
 
 ### Code organization
 
-With the default `tsconfig.json`, TSC-80 will build all `.ts` files in your project folder, in no particular order. 
+With the default `tsconfig.json`, TSC-80 will build all `.ts` files in your project folder, in no particular order.
 This may cause some problems, as some initialization code may be called before all the required classes/functions are read, leading to `undefined` errors.
 
 To prevent this, the default [index.ts](https://github.com/scambier/tic80-typescript/blob/master/tocopy/index.ts) has an `init()` function that is called once during the first game loop.
@@ -79,6 +79,11 @@ The minification/compression options provided by Uglify work well to save you a 
 (Your mileage may vary.)
 
 ## Changelog
+
+### 0.4.5 - 2020-06-15
+
+- Added new function declarations (up-to-date with TIC version 0.80)
+- Added jsdocs for all functions. Thanks a lot @miltoncandelero
 
 ### 0.4.3 - 2019-01-17
 

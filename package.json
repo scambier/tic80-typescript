@@ -1,6 +1,6 @@
 {
   "name": "tic80-typescript",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "A workflow to create TIC-80 games with Typescript",
   "bin": {
     "tsc80": "bin/tsc80.js"
@@ -14,7 +14,7 @@
   "dependencies": {
     "fs-extra": "^7.0.1",
     "strip-json-comments": "^2.0.1",
-    "uglify-js": "^3.4.9",
+    "uglify-js": "^3.9.4",
     "yesno": "0.2.0"
   },
   "devDependencies": {
