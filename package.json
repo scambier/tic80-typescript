@@ -18,6 +18,6 @@
     "yesno": "0.2.0"
   },
   "devDependencies": {
-    "@types/node": "^8.10.39"
+    "@types/node": "^8.10.64"
   }
 }
