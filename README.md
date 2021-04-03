@@ -44,9 +44,9 @@ You need to complete the `tsc80-config.json` for each project. **All fields are 
   },
   "compression": { // These settings will alter how the final js file will look like
     "compressedFile": "build/compressed.js", // Path to compressed file. You should not have to change this.
-    "indentLevel": 1,
-    "compress": true,
-    "mangle": true
+    "indentLevel": 1, // Ignored if `compress` or `mangle` are `true`
+    "compress": false,
+    "mangle": false // Compress a bit further
   }
 }
 ```
@@ -68,23 +68,31 @@ If you run into any problem, like a black screen or an error message, please dou
 
 ### Code organization
 
-With the default `tsconfig.json`, TSC-80 will build all `.ts` files in your project folder, in no particular order.
-This may cause some problems, as some initialization code may be called before all the required classes/functions are read, leading to `undefined` errors.
+TSC-80 only transpiles your TypeScript files to JavaScript, and compiles them together. That means that if you split your game in several `.ts` files, the following limitations apply:
 
-To prevent this, the default [index.ts](https://github.com/scambier/tic80-typescript/blob/master/tocopy/index.ts) has an `init()` function that is called once during the first game loop.
+- `import`, `export`, `require()` etc. are not supported, because TIC-80 does not support them itself.
+- All declared variables and classes at file level (in all files) are public and share the same root namespace.
+- Files are compiled in an undefined order. This may cause some problems, as some initialization code may be called before all the required classes/functions are read, leading to `undefined` errors.
+  - To prevent this, the default [index.ts](https://github.com/scambier/tic80-typescript/blob/master/tocopy/index.ts) has an `init()` function that is called once during the first game loop.
 
 ### Compression options
 
 The minification/compression options provided by Uglify work well to save you a lot of precious TIC-80's space.
 
 - Default compiled file, straight from TypeScript: 100% of code size
-- `"indentLevel": 1`: 71% (that is the default)
-- `"compress": true`: 55%
-- `"mangle": true`: 44%
+- `"indentLevel": 1` - 71% of original code size (that is the default)
+- `"compress": true` - 55%
+- `"mangle": true` - 44%
 
 (Your mileage may vary.)
 
 ## Changelog
+
+### 0.4.6 - 2021-04-03
+
+- Cleaned a bit of code
+- Added information in README
+- `compress` and `mangle` now default to true
 
 ### 0.4.5 - 2020-06-15
 
