@@ -2,10 +2,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var child_process = require("child_process");
-var path = require("path");
-var uglifyJS = require("uglify-js");
-var stripJsonComments = require("strip-json-comments");
 var fs = require("fs-extra");
+var path = require("path");
+var stripJsonComments = require("strip-json-comments");
+var uglifyJS = require("uglify-js");
 var yesno = require("yesno");
 var version = require('../package.json').version;
 var arg = process.argv[2];
@@ -35,14 +35,15 @@ function init() {
     fs.readdirSync(toCopyDir).forEach(function (file) {
         console.log(file);
     });
-    yesno.ask("Proceed to copy? (y/n)", false, function (ok) {
+    yesno.ask('Proceed to copy? (y/n)', false, function (ok) {
         if (!ok) {
-            console.log("Stopping installation");
+            console.log('Stopping installation');
             process.exit(0);
         }
         console.log();
         fs.readdirSync(toCopyDir).forEach(function (file) {
-            var from = path.join(toCopyDir, file), to = path.join(process.cwd(), file);
+            var from = path.join(toCopyDir, file);
+            var to = path.join(process.cwd(), file);
             fs.copySync(from, to, {
                 filter: function () {
                     if (fs.existsSync(to)) {
@@ -53,7 +54,7 @@ function init() {
                 }
             });
         });
-        console.log('\nAll files copied. Setup the tsc80-config.json, then type "tsc80 run"');
+        console.log('\nAll files copied. Edit the tsc80-config.json, then type "tsc80 run"');
         process.exit(0);
     });
 }
@@ -61,12 +62,18 @@ function init() {
  * Compile, compress, run
  */
 function run() {
-    var config = JSON.parse(stripJsonComments(fs.readFileSync('tsc80-config.json', 'utf8'))), tsconfig = JSON.parse(stripJsonComments(fs.readFileSync('tsconfig.json', 'utf8'))), cGame = config['game'], cTic = config['tic'], cCompress = config['compression'], outFile = tsconfig['compilerOptions']['outFile'];
+    var config = JSON.parse(stripJsonComments(fs.readFileSync('tsc80-config.json', 'utf8')));
+    var tsconfig = JSON.parse(stripJsonComments(fs.readFileSync('tsconfig.json', 'utf8')));
+    var cGame = config['game'];
+    var cTic = config['tic'];
+    var cCompress = config['compression'];
+    var outFile = tsconfig['compilerOptions']['outFile'];
     function compile() {
         console.log('Compiling TypeScript...');
         child_process.exec('tsc', function (error, stdout, stderr) {
-            if (stdout)
+            if (stdout) {
                 console.log(stdout);
+            }
             if (stderr) {
                 console.log(stderr);
             }
@@ -76,7 +83,8 @@ function run() {
         });
     }
     function compressAndLaunch() {
-        var buildStr = fs.readFileSync(outFile, 'utf8'), result = uglifyJS.minify(buildStr, {
+        var buildStr = fs.readFileSync(outFile, 'utf8');
+        var result = uglifyJS.minify(buildStr, {
             compress: cCompress['compress'],
             mangle: cCompress['mangle'],
             output: {
@@ -92,17 +100,17 @@ function run() {
             console.log('Missing "ticExecutable" and/or "cartsDirectory" in tsc80-config.json');
             process.exit(0);
         }
-        var cmd = "\"" + cTic['ticExecutable'] + "\" \"" + cTic['cartsDirectory'] + "/" + cGame['cart'] + "\" -code " + cCompress["compressedFile"];
+        var cmd = "\"" + cTic['ticExecutable'] + "\" \"" + cTic['cartsDirectory'] + "/" + cGame['cart'] + "\" -code " + cCompress['compressedFile'];
         console.log("Launch TIC: " + cmd);
         var child = child_process.spawn(cTic.ticExecutable, [
             cTic.cartsDirectory + "/" + cGame.cart,
-            "-code",
+            '-code',
             cCompress.compressedFile
         ], {
-            stdio: "inherit"
+            stdio: 'inherit'
         });
-        child.on("exit", function (code, signal) {
-            process.on("exit", function () {
+        child.on('exit', function (code, signal) {
+            process.on('exit', function () {
                 backupCart();
                 child = null;
                 if (signal) {
@@ -131,12 +139,12 @@ function run() {
     compile();
 }
 function showHelp() {
-    console.log("  v" + version);
+    console.log('  v' + version);
     console.log();
-    console.log("  Usage: tsc80 [command]");
+    console.log('  Usage: tsc80 [command]');
     console.log();
-    console.log("  Commands:");
-    console.log("");
-    console.log("    init  - Copy the required files inside current directory. If a file already exists, it will be skipped.");
-    console.log("    run   - Compile, compress, and launch your TIC-80 game");
+    console.log('  Commands:');
+    console.log('');
+    console.log('    init  - Copy the required files inside current directory. If a file already exists, it will be skipped.');
+    console.log('    run   - Compile, compress, and launch your TIC-80 game');
 }

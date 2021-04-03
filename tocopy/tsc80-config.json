@@ -8,13 +8,13 @@
     "backup": true
   },
   "tic": {
-    "ticExecutable": "path/to/tic/executable",
+    "ticExecutable": "path/to/tic/executable/file",
     "cartsDirectory": "path/to/tic/carts/directory"
   },
   "compression": {
     "compressedFile": "build/compressed.js",
     "indentLevel": 1,
-    "compress": true,
-    "mangle": true
+    "compress": false,
+    "mangle": false
   }
 }

@@ -73,9 +73,25 @@ function run(): void {
 
   const config: any = JSON.parse(stripJsonComments(fs.readFileSync('tsc80-config.json', 'utf8')))
   const tsconfig: any = JSON.parse(stripJsonComments(fs.readFileSync('tsconfig.json', 'utf8')))
-  const cGame: any = config['game']
-  const cTic: any = config['tic']
-  const cCompress: any = config['compression']
+
+  const cGame: {
+    author: string,
+    title: string,
+    desc: string,
+    cart: string,
+    input: 'gamepad' | 'mouse',
+    backup: boolean
+  } = config['game']
+  const cTic: {
+    ticExecutable: string,
+    cartsDirectory: string
+  } = config['tic']
+  const cCompress: {
+    compressedFile: string,
+    indentLevel: number,
+    compress: boolean,
+    mangle: boolean
+  } = config['compression']
   const outFile: string = tsconfig['compilerOptions']['outFile']
 
   function compile(): void {
