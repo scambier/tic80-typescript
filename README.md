@@ -1,6 +1,6 @@
 # TSC-80 - TypeScript for the TIC-80
 
-**Disclaimer:** TSC-80 is 100% feature-complete, and I am no longer actively working on it. However, I will happily review any bug report or pull request!
+<sup>**Disclaimer:** TSC-80 is 100% feature-complete, and I am no longer actively working on it. However, it's still maintained and I will happily review any bug report or pull request!</sup>
 
 ![](logo.png)
 
@@ -26,7 +26,7 @@ This tool has been tested with TIC-80 version 0.80.1344 (free edition) on Window
 
 ### Configuration
 
-You need to complete the `tsc80-config.json` for each project. **All fields are required.**
+You need to complete the `tsc80-config.json` for each project.
 
 ```js
 {
@@ -34,9 +34,9 @@ You need to complete the `tsc80-config.json` for each project. **All fields are 
     "author": "game developer",
     "title": "Your cart's title",
     "desc": "short description",
-    "input": "gamepad", // Or "mouse"
+    "input": "gamepad", // Or "mouse", or "keyboard". All inputs are enabled this field is omitted.
     "cart": "yourjsgame.tic", // The name of your TIC cart. Must end with ".tic"
-    "backup": true // Copy your cart from the TIC folder to your project folder. Backup it with git!
+    "backup": true // Copy your cart from the TIC folder to your project folder. Useful for version control backups.
   },
   "tic": {
     "ticExecutable": "path/to/tic/executable/file", // The file path to your TIC executable.
@@ -60,24 +60,9 @@ You need to complete the `tsc80-config.json` for each project. **All fields are 
 
 If the backup option is set, the resulting `.tic` file will be automatically copied in your project directory when you close TIC-80.
 
-Do note that if you happen to manually edit the `tsconfig.json` file, it is required to keep the `compilerOptions.outFile` option.
+## Compression options
 
-## More
-
-If you run into any problem, like a black screen or an error message, please double check your `tsc80-config.json`
-
-### Code organization
-
-TSC-80 only transpiles your TypeScript files to JavaScript, and compiles them together. That means that if you split your game in several `.ts` files, the following limitations apply:
-
-- `import`, `export`, `require()` etc. are not supported, because TIC-80 does not support them itself.
-- All declared variables and classes at file level (in all files) are public and share the same root namespace.
-- Files are compiled in an undefined order. This may cause some problems, as some initialization code may be called before all the required classes/functions are read, leading to `undefined` errors.
-  - To prevent this, the default [index.ts](https://github.com/scambier/tic80-typescript/blob/master/tocopy/index.ts) has an `init()` function that is called once during the first game loop.
-
-### Compression options
-
-The minification/compression options provided by Uglify work well to save you a lot of precious TIC-80's space.
+The compression options in `tsc80-config.json` can help you to save a lot of space if you're running against TIC-80 limitations.
 
 - Default compiled file, straight from TypeScript: 100% of code size
 - `"indentLevel": 1` - 71% of original code size (that is the default)
@@ -86,7 +71,33 @@ The minification/compression options provided by Uglify work well to save you a 
 
 (Your mileage may vary.)
 
+## Code organization & limitations
+
+TSC-80 only transpiles your TypeScript files to JavaScript, and compiles them together as a single output file. Internally, TIC-80 uses [Duktape](https://duktape.org/) as its JavaScript engine.
+
+The following limitations apply:
+
+- ES5 only (with some syntax exceptions). TSC-80 does not provide polyfills.
+- Required to have a single file output (`compilerOptions.outFile` in `tsconfig.json`)
+- No modules, and no npm dependencies.
+- All declared variables and classes at file level (in all files) are public and share the same root namespace.
+- By default, files are compiled in an undefined order. This may cause problems, as some initialization code may be called before all the required classes/functions are read, leading to `undefined` errors.
+
+Some tips to ease development:
+
+- The default [index.ts](https://github.com/scambier/tic80-typescript/blob/master/tocopy/index.ts) has an `init()` function that is called once during the first game loop.
+- You can always use [TypeScript's triple-slash directives](https://www.typescriptlang.org/docs/handbook/triple-slash-directives.html) and [namespaces](https://www.typescriptlang.org/docs/handbook/namespaces.html) to manage dependencies order.
+- Don't compress the output file unless necessary.
+- If you run into any problem, like a black screen or an error message, please double check your `tsc80-config.json` and the generated js code.
+
 ## Changelog
+
+### 0.4.7 - 2021-04-08
+
+- Removing `"use strict"` from output file, since it breaks the global scope in TIC-80 engine.
+- Updated dependencies
+- Stricter TypeScript
+- Better documentation
 
 ### 0.4.6 - 2021-04-03
 

@@ -1,7 +1,9 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
+  	"lib": ["es5"],
     "target": "es5",
-    "outFile": "build/compiled.js"
+    "outFile": "build/compiled.js",
+    "strict": true
   }
 }

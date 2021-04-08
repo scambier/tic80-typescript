@@ -40,7 +40,7 @@ function init(): void {
     console.log(file)
   })
 
-  yesno.ask('Proceed to copy? (y/n)', false, (ok: boolean) => {
+  yesno({ question: 'Proceed to copy? (y/n)' }).then(ok => {
     if (!ok) {
       console.log('Stopping installation')
       process.exit(0)
@@ -82,16 +82,19 @@ function run(): void {
     input: 'gamepad' | 'mouse',
     backup: boolean
   } = config['game']
+
   const cTic: {
     ticExecutable: string,
     cartsDirectory: string
   } = config['tic']
+
   const cCompress: {
     compressedFile: string,
     indentLevel: number,
     compress: boolean,
     mangle: boolean
   } = config['compression']
+
   const outFile: string = tsconfig['compilerOptions']['outFile']
 
   function compile(): void {
@@ -110,25 +113,28 @@ function run(): void {
   function compressAndLaunch(): void {
     const buildStr = fs.readFileSync(outFile, 'utf8')
     const result = uglifyJS.minify(buildStr, {
-      compress: cCompress['compress'],
-      mangle: cCompress['mangle'],
+      compress: cCompress.compress ? {} : false,
+      mangle: cCompress.mangle ? { toplevel: false } : false,
       output: {
-        semicolons: false,
-        beautify: !cCompress['mangle'] && !cCompress['compress'],
-        indent_level: cCompress['indentLevel'],
+        semicolons: false, // Only works if `mangle` or `compress` are set to false
+        beautify: !(cCompress.mangle || cCompress.compress),
+        indent_level: cCompress.indentLevel,
         comments: false,
-        preamble: `// title: ${cGame['title']}\n// author: ${cGame['author']}\n// desc: ${cGame['desc']}\n// script: js\n// input: ${cGame['input']}\n`
+        preamble: `// title: ${cGame.title}\n// author: ${cGame.author}\n// desc: ${cGame.desc}\n// script: js\n${cGame.input ? `input: ${cGame.input}\n` : ''}`
       }
     })
 
-    fs.writeFileSync(cCompress['compressedFile'], result.code)
+    // Global strict mode breaks the global scope
+    result.code = result.code.replace('"use strict"', '')
 
-    if (!cTic['ticExecutable'] || !cTic['cartsDirectory']) {
+    fs.writeFileSync(cCompress.compressedFile, result.code)
+
+    if (!cTic.ticExecutable || !cTic.cartsDirectory) {
       console.log('Missing "ticExecutable" and/or "cartsDirectory" in tsc80-config.json')
       process.exit(0)
     }
 
-    const cmd = `"${cTic['ticExecutable']}" "${cTic['cartsDirectory']}/${cGame['cart']}" -code ${cCompress['compressedFile']}`
+    const cmd = `"${cTic.ticExecutable}" "${cTic.cartsDirectory}/${cGame.cart}" -code ${cCompress.compressedFile}`
     console.log(`Launch TIC: ${cmd}`)
 
     let child = child_process.spawn(cTic.ticExecutable,
@@ -144,11 +150,11 @@ function run(): void {
     child.on('exit', (code, signal) => {
       process.on('exit', () => {
         backupCart()
-        child = null
+        // child = null
         if (signal) {
           process.kill(process.pid, signal)
         } else {
-          process.exit(code)
+          process.exit(code ?? 0)
         }
       })
     })

@@ -1,7 +1,10 @@
 {
   "name": "tic80-typescript",
-  "version": "0.4.6",
+  "version": "0.4.7",
   "description": "A workflow to create TIC-80 games with Typescript",
+  "scripts": {
+    "build": "tsc"
+  },
   "bin": {
     "tsc80": "bin/tsc80.js"
   },
@@ -13,11 +16,13 @@
   "license": "MIT",
   "dependencies": {
     "fs-extra": "^7.0.1",
-    "strip-json-comments": "^2.0.1",
-    "uglify-js": "^3.9.4",
-    "yesno": "0.2.0"
+    "strip-json-comments": "^3.1.1",
+    "uglify-js": "^3.13.3",
+    "yesno": "^0.3.1"
   },
   "devDependencies": {
-    "@types/node": "^8.10.64"
+    "@types/fs-extra": "^9.0.10",
+    "@types/node": "^14.14.37",
+    "@types/uglify-js": "^3.13.0"
   }
 }

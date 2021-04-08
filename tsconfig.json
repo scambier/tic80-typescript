@@ -5,6 +5,7 @@
   ],
   "compilerOptions": {
     "target": "es5",
-    "outDir": "bin"
-  }
+    "outDir": "bin",
+    "strict": true
+  },
 }
