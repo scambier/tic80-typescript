@@ -123,7 +123,7 @@ declare function keyp(code: number, hold: number, period: number): boolean
 declare function line(x0: number, y0: number, x1: number, y1: number, color: number): void;
 
 /**
- * 
+ *
  * @param x The leftmost map cell to be drawn.
  * @param y The uppermost map cell to be drawn.
  * @param w The number of cells to draw horizontally.
@@ -153,7 +153,7 @@ declare function memcpy(toaddr: number, fromaddr: number, len: number): void;
 declare function memset(addr: number, val: number, len: number): void;
 
 /**
- * returns the sprite id at the given x and y map coordinate
+ * Returns the sprite id at the given x and y map coordinate
  * @param x x coordinate on the map
  * @param y y coordinate on the map
  * @returns the sprite id at the given x and y map coordinate
@@ -164,11 +164,10 @@ declare function mget(x: number, y: number): number;
  * This function returns the mouse coordinates and a boolean value for the state of each mouse button, with true indicating that a button is pressed.
  * @returns [x, y, left, middle, right, scrollx, scrolly]
  */
-declare function mouse(): [number, number, boolean, boolean, boolean, number];
+declare function mouse(): [number, number, boolean, boolean, boolean, number, number];
 
 /**
- * 
-This function will change the sprite at the specified map coordinates. By default, changes made are only kept while the current game is running. To make permanent changes to the map, see sync.
+ * This function will change the sprite at the specified map coordinates. By default, changes made are only kept while the current game is running. To make permanent changes to the map, see sync.
  * @param x x coordinate on the map
  * @param y y coordinate on the map
  * @param id The background sprite (0-255) to place in map at specified coordinates.
@@ -308,28 +307,28 @@ declare function sfx(id: number, note?: number | string, duration?: number, chan
  * - 1 = Flip horizontally
  * - 2 = Flip vertically
  * - 3 = Flip both vertically and horizontally
- * 
+ *
  * When you rotate the sprite, it's rotated clockwise in 90° steps:
  * - 0 = No rotation
  * - 1 = 90° rotation
  * - 2 = 180° rotation
  * - 3 = 270° rotation
- * 
+ *
  * You can draw a composite sprite (consisting of a rectangular region of sprites from the sprite sheet) by specifying the w and h parameters (which default to 1).
  * @param id index of the sprite
  * @param x x coordinate where the sprite will be drawn, starting from top left corner.
  * @param y y coordinate where the sprite will be drawn, starting from top left corner.
  * @param colorkey index (or array of indexes) of the color in the sprite that will be used as transparent color. Use -1 if you want an opaque sprite.
  * @param scale scale factor applied to sprite.
- * @param flip flip the sprite vertically or horizontally or both.
- * @param rotate rotate the sprite by 0, 90, 180 or 270 degrees.
+ * @param flip flip the sprite horizontally (1), vertically (2) or both (3).
+ * @param rotate rotate the sprite by 0, 90 (1), 180 (2) or 270 (3) degrees.
  * @param w width of composite sprite
  * @param h height of composite sprite
  */
-declare function spr(id: number, x: number, y: number, colorkey?: number, scale?: number, flip?: number | boolean, rotate?: number, w?: number, h?: number): void;
+declare function spr(id: number, x: number, y: number, colorkey?: number, scale?: number, flip?: 0 | 1 | 2 | 3, rotate?: 0 | 1 | 2 | 3, w?: number, h?: number): void;
 
 /**
- * The pro version of TIC-80 contains 8 memory banks. To switch between these banks, sync can be used to either load contents from a memory bank to runtime, or save contents from the active runtime to a bank. The function can only be called once per frame. 
+ * The pro version of TIC-80 contains 8 memory banks. To switch between these banks, sync can be used to either load contents from a memory bank to runtime, or save contents from the active runtime to a bank. The function can only be called once per frame.
  * If you have manipulated the runtime memory (e.g. by using mset), you can reset the active state by calling sync(0,0,false). This resets the whole runtime memory to the contents of bank 0.
  * Note that sync is not used to load code from banks; this is done automatically.
  * @param mask mask of sections you want to switch:
@@ -377,10 +376,10 @@ declare function tri(x1: number, y1: number, x2: number, y2: number, x3: number,
 
 /**
  * It renders a triangle filled with texture from image ram or map ram
- * 
+ *
  * UV Coordinates
  * These can be thought of as the window inside image ram (sprite sheet), or map ram. Note that the sprite sheet or map in this case is treated as a single large image, with U and V addressing its pixels directly, rather than by sprite ID. So for example the top left corner of sprite #2 would be located at u=16, v=0.
- * 
+ *
  * Use in 3D graphics
  * This function does not perform perspective correction, so it is not generally suitable for 3D graphics (except in some constrained scenarios). In particular, if the vertices in the triangle have different 3D depth, you may see some distortion.
  *

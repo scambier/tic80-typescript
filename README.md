@@ -92,6 +92,10 @@ Some tips to ease development:
 
 ## Changelog
 
+### 0.4.8 - 2021-04-19
+
+- Fixed `mouse()` signature
+
 ### 0.4.7 - 2021-04-08
 
 - Removing `"use strict"` from output file, since it breaks the global scope in TIC-80 engine.
