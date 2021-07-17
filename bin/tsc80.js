@@ -7,23 +7,38 @@ var path = require("path");
 var stripJsonComments = require("strip-json-comments");
 var uglifyJS = require("uglify-js");
 var yesno = require("yesno");
+var commander_1 = require("commander");
+var chokidar = require("chokidar");
 var version = require('../package.json').version;
-var arg = process.argv[2];
-if (arg) {
-    arg = arg.toLowerCase();
-    if (arg === 'init') {
-        init();
-    }
-    else if (arg === 'run') {
-        run();
-    }
-    else {
-        showHelp();
-    }
-}
-else {
-    showHelp();
-}
+var program = new commander_1.Command();
+program.version(version);
+program
+    .command('init')
+    .description('Copy the required files inside current directory. If a file already exists, it will be skipped.')
+    .action(init);
+program
+    .command('run')
+    .description(' Compile, compress, and launch your TIC-80 game')
+    .option('-w, --watch', 'Will automatically recompile and refresh the TIC game')
+    .action(function (option, command) {
+    run(option.watch);
+});
+program.parse();
+// let arg = process.argv[2]
+// if (arg) {
+//   arg = arg.toLowerCase()
+//   if (arg === 'init') {
+//     init()
+//   }
+//   else if (arg === 'run') {
+//     run()
+//   }
+//   else {
+//     showHelp()
+//   }
+// } else {
+//   showHelp()
+// }
 /**
  * Initialization code
  * Copy required files to working dir
@@ -61,7 +76,8 @@ function init() {
 /**
  * Compile, compress, run
  */
-function run() {
+function run(watch) {
+    if (watch === void 0) { watch = false; }
     var config = JSON.parse(stripJsonComments(fs.readFileSync('tsc80-config.json', 'utf8')));
     var tsconfig = JSON.parse(stripJsonComments(fs.readFileSync('tsconfig.json', 'utf8')));
     var cGame = config['game'];
@@ -70,19 +86,21 @@ function run() {
     var outFile = tsconfig['compilerOptions']['outFile'];
     function compile() {
         console.log('Compiling TypeScript...');
-        child_process.exec('tsc', function (error, stdout, stderr) {
-            if (stdout) {
+        // First run to at least have the file
+        child_process.exec("tsc " + (watch ? '--watch' : ''), function (error, stdout, stderr) {
+            if (stdout)
                 console.log(stdout);
-            }
-            if (stderr) {
+            if (stderr)
                 console.log(stderr);
-            }
-            else {
-                compressAndLaunch();
-            }
+        });
+        chokidar.watch(outFile).on('change', function (path, stats) {
+            makeGameFile();
+            launchTIC();
         });
     }
-    function compressAndLaunch() {
+    var ticRunning = false;
+    function makeGameFile() {
+        console.log('Building game file');
         var buildStr = fs.readFileSync(outFile, 'utf8');
         var result = uglifyJS.minify(buildStr, {
             compress: cCompress.compress ? {} : false,
@@ -102,17 +120,23 @@ function run() {
             console.log('Missing "ticExecutable" and/or "cartsDirectory" in tsc80-config.json');
             process.exit(0);
         }
+    }
+    function launchTIC() {
+        if (ticRunning)
+            return;
         var cmd = "\"" + cTic.ticExecutable + "\" \"" + cTic.cartsDirectory + "/" + cGame.cart + "\" -code " + cCompress.compressedFile;
         console.log("Launch TIC: " + cmd);
+        ticRunning = true;
         var child = child_process.spawn(cTic.ticExecutable, [
             cTic.cartsDirectory + "/" + cGame.cart,
-            '-code',
+            watch ? '-code-watch' : '-code',
             cCompress.compressedFile
         ], {
             stdio: 'inherit'
         });
         child.on('exit', function (code, signal) {
             process.on('exit', function () {
+                ticRunning = false;
                 backupCart();
                 // child = null
                 if (signal) {

@@ -92,6 +92,10 @@ Some tips to ease development:
 
 ## Changelog
 
+### 0.4.9 - 2021-07-17
+
+- Added `elli()`, `ellib()`, and `trib()`
+
 ### 0.4.8 - 2021-04-19
 
 - Fixed `mouse()` signature

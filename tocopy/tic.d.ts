@@ -1,14 +1,14 @@
 /** @noSelfInFile */
 
 /**
- * This function allows you to read the status of one of the buttons attached to TIC. The function returns true if the key with the supplied id is currently in the pressed state. It remains true for as long as the key is held down. If you want to test if a key was just pressed, use btnp instead,
+ * Allows you to read the status of one of the buttons attached to TIC. The function returns true if the key with the supplied id is currently in the pressed state. It remains true for as long as the key is held down. If you want to test if a key was just pressed, use btnp instead,
  * @param id the id of the key we want to interrogate, see the key map for reference
  * @returns pressed
  */
 declare function btn(id: number): boolean;
 
 /**
- * This function allows you to read the status of one of TIC's buttons. It returns true only if the key has been pressed since the last frame.
+ * Allows you to read the status of one of TIC's buttons. It returns true only if the key has been pressed since the last frame.
  * You can also use the optional hold and period parameters which allow you to check if a button is being held down. After the time specified by hold has elapsed, btnp will return true each time period is passed if the key is still down. For example, to re-examine the state of button '0' after 2 seconds and continue to check its state every 1/10th of a second, you would use btnp(0, 120, 6). Since time is expressed in ticks and TIC runs at 60 frames per second, we use the value of 120 to wait 2 seconds and 6 ticks (ie 60/10) as the interval for re-checking.
  * @param id The id of the key we wish to interrogate - see the key map for reference
  * @param [hold] The time (in ticks) the key must be pressed before re-checking
@@ -18,13 +18,13 @@ declare function btn(id: number): boolean;
 declare function btnp(id: number, hold?: number, period?: number): boolean;
 
 /**
- * This function limits drawing to a clipping region or 'viewport' defined by x,y,w,h. Things drawn outside of this area will not be visible.
+ * Limits drawing to a clipping region or 'viewport' defined by x,y,w,h. Things drawn outside of this area will not be visible.
  * Calling clip() with no parameters will reset the drawing area to the entire screen.
  */
 declare function clip(): void;
 
 /**
- * This function limits drawing to a clipping region or 'viewport' defined by x,y,w,h. Things drawn outside of this area will not be visible.
+ * Limits drawing to a clipping region or 'viewport' defined by x,y,w,h. Things drawn outside of this area will not be visible.
  * Calling clip() with no parameters will reset the drawing area to the entire screen.
  * @param x x coordinate of the top left of the clipping region
  * @param y y coordinate of the top left of the clipping region
@@ -34,7 +34,7 @@ declare function clip(): void;
 declare function clip(x: number, y: number, w: number, h: number): void;
 
 /**
- * This function clears the entire screen using the color argument. If no parameter is passed, index 0 of the palette is used.
+ * Clears the entire screen using the color argument. If no parameter is passed, index 0 of the palette is used.
  * The function is usually called inside TIC(), but isn't mandatory. If you're drawing to the entire screen, for example with sprites, the map or primitive shapes, there's no need to clear the screen with cls() beforehand.
  * Tip: You can create some interesting effects by not calling cls() or calling it repeatedly it to "flash" the screen when some special event occurs. You can also supply a color index above 15 to see some interesting fill patterns!
  * @param color the index (0 to 15) of the color in the current palette.
@@ -42,7 +42,7 @@ declare function clip(x: number, y: number, w: number, h: number): void;
 declare function cls(color: number): void;
 
 /**
- * This function draws a filled circle of the desired radius and color with its center at x, y. It uses the Bresenham algorithm.
+ * Draws a filled circle of the desired radius and color with its center at x, y. It uses the Bresenham algorithm.
  * @param x the x coordinate of the circle center
  * @param y the y coordinate of the circle center
  * @param r the radius of the circle in pixels
@@ -60,6 +60,27 @@ declare function circ(x: number, y: number, r: number, color: number): void;
 declare function circb(x: number, y: number, r: number, color: number): void;
 
 /**
+ * Draws a filled ellipse of the desired radiuses a b and color with its center at x, y. It uses the Bresenham algorithm.
+ * @param x the x coordinate of the ellipse center
+ * @param y the y coordinate of the ellipse center
+ * @param a the horizontal radius of the ellipse in pixels
+ * @param b the vertical radius of the ellipse in pixels
+ * @param color the index of the desired color in the current palette
+ */
+declare function elli(x: number, y: number, a: number, b: number, color: number): void;
+
+/**
+ * Draws an ellipse border with the desired radiuses a b and color with its center at x, y. It uses the Bresenham algorithm.
+ * @param x the x coordinate of the ellipse center
+ * @param y the y coordinate of the ellipse center
+ * @param a the horizontal radius of the ellipse in pixels
+ * @param b the vertical radius of the ellipse in pixels
+ * @param color the index of the desired color in the current palette
+ */
+declare function ellib(x: number, y: number, a: number, b: number, color: number): void;
+
+
+/**
  * Interrupts program execution and returns to the console when the TIC function ends.
  */
 declare function exit(): void;
@@ -73,7 +94,7 @@ declare function exit(): void;
 declare function fget(index: number, flag: number): boolean;
 
 /**
- * This function will draw text to the screen using sprites from the foreground sprite-sheet for the font. More specifically, sprite ID#256 is used for ASCII code 0, #257 for code 1 and so on. The character 'A' has the ASCII code 65 so will be drawn using the sprite with ID#321 (256+65). See the example below or check out the In-Browser Demo
+ * Will draw text to the screen using sprites from the foreground sprite-sheet for the font. More specifically, sprite ID#256 is used for ASCII code 0, #257 for code 1 and so on. The character 'A' has the ASCII code 65 so will be drawn using the sprite with ID#321 (256+65). See the example below or check out the In-Browser Demo
  * - To simply print text to the screen using the default font, see print.
  * - To print to the console, refer to trace
  * @param text any string to be printed to the screen
@@ -104,7 +125,7 @@ declare function fset(index: number, flag: number, bool: boolean): void;
 declare function key(code: number): boolean
 
 /**
- * This function returns true if the given key is pressed but wasn't pressed in the previous frame. Refer to btnp for an explanation of the optional hold and period parameters
+ * Returns true if the given key is pressed but wasn't pressed in the previous frame. Refer to btnp for an explanation of the optional hold and period parameters
  * @param code the key code we want to check (see codes in the wiki)
  * @param hold time in ticks before autorepeat
  * @param period time in ticks for autorepeat interval
@@ -137,7 +158,7 @@ declare function line(x0: number, y0: number, x1: number, y1: number, color: num
 declare function map(x?: number, y?: number, w?: number, h?: number, sx?: number, sy?: number, colorkey?: number, scale?: number, remap?: (tile: number, x: number, y: number) => [number, number, number]): void;
 
 /**
- * This function allows you to copy a continuous block of TIC's 64k RAM from one address to another. Addresses are specified are in hexadecimal format, values are decimal.
+ * Allows you to copy a continuous block of TIC's 64k RAM from one address to another. Addresses are specified are in hexadecimal format, values are decimal.
  * @param toaddr the address you want to write to
  * @param fromaddr the address you want to copy from
  * @param len the length of the memory block you want to copy
@@ -145,7 +166,7 @@ declare function map(x?: number, y?: number, w?: number, h?: number, sx?: number
 declare function memcpy(toaddr: number, fromaddr: number, len: number): void;
 
 /**
- * This function allows you to set a continuous block of any part of TIC's RAM to the same value. The address is specified in hexadecimal format, the value in decimal.
+ * Allows you to set a continuous block of any part of TIC's RAM to the same value. The address is specified in hexadecimal format, the value in decimal.
  * @param addr the address of the first byte of 64k RAM you want to write to
  * @param val the value you want to write
  * @param len the length of the memory block you want to set
@@ -161,13 +182,13 @@ declare function memset(addr: number, val: number, len: number): void;
 declare function mget(x: number, y: number): number;
 
 /**
- * This function returns the mouse coordinates and a boolean value for the state of each mouse button, with true indicating that a button is pressed.
+ * Returns the mouse coordinates and a boolean value for the state of each mouse button, with true indicating that a button is pressed.
  * @returns [x, y, left, middle, right, scrollx, scrolly]
  */
 declare function mouse(): [number, number, boolean, boolean, boolean, number, number];
 
 /**
- * This function will change the sprite at the specified map coordinates. By default, changes made are only kept while the current game is running. To make permanent changes to the map, see sync.
+ * Will change the sprite at the specified map coordinates. By default, changes made are only kept while the current game is running. To make permanent changes to the map, see sync.
  * @param x x coordinate on the map
  * @param y y coordinate on the map
  * @param id The background sprite (0-255) to place in map at specified coordinates.
@@ -175,7 +196,7 @@ declare function mouse(): [number, number, boolean, boolean, boolean, number, nu
 declare function mset(x: number, y: number, id: number): void;
 
 /**
- * This function starts playing a track created in the Music Editor. Call without arguments to stop the music.
+ * Starts playing a track created in the Music Editor. Call without arguments to stop the music.
  * @param track the id of the track to play from (0..7)
  * @param frame the index of the frame to play from (0..15)
  * @param row the index of the row to play from (0..63)
@@ -185,7 +206,7 @@ declare function mset(x: number, y: number, id: number): void;
 declare function music(track?: number, frame?: number, row?: number, loop?: boolean, sustain?: boolean): void;
 
 /**
- * This function allow to read the memory from TIC.
+ * Allow to read the memory from TIC.
  * It's useful to access resources created with the integrated tools like sprite, maps, sounds, cartridges data? Never dream to sound a sprite?
  * Address are in hexadecimal format but values are decimal.
  * To write to a memory address, use poke.
@@ -195,14 +216,14 @@ declare function music(track?: number, frame?: number, row?: number, loop?: bool
 declare function peek(addr: number): number;
 
 /**
- * This function enables you to read values from TIC's RAM. The address should be specified in hexadecimal format.
+ * Enables you to read values from TIC's RAM. The address should be specified in hexadecimal format.
  * @param addr any address of the 80K RAM byte you want to read, divided in groups of 4 bits (nibbles). Therefore, to address the high nibble of position 0x2000 you should pass 0x4000 as addr4, and to access the low nibble (rightmost 4 bits) you would pass 0x4001.
  * @returns the 4-bit value (0-15) read from the specified address.
  */
 declare function peek4(addr: number): number;
 
 /**
- * This function can read or write pixel color values. When called with a color parameter, the pixel at the specified coordinates is set to that color. Calling the function without a color parameter returns the color of the pixel at the specified position.
+ * Can read or write pixel color values. When called with a color parameter, the pixel at the specified coordinates is set to that color. Calling the function without a color parameter returns the color of the pixel at the specified position.
  * @param x x coordinate of the pixel to write
  * @param y y coordinate of the pixel to write
  * @param color the index of the color in the palette to apply at the desired coordinates
@@ -211,7 +232,7 @@ declare function peek4(addr: number): number;
 declare function pix(x: number, y: number, color?: number): number;
 
 /**
- * This function allows you to save and retrieve data in one of the 256 individual 32-bit slots available in the cartridge's persistent memory. This is useful for saving high-scores, level advancement or achievements. The data is stored as unsigned 32-bit integers (from 0 to 4294967295).
+ * Allows you to save and retrieve data in one of the 256 individual 32-bit slots available in the cartridge's persistent memory. This is useful for saving high-scores, level advancement or achievements. The data is stored as unsigned 32-bit integers (from 0 to 4294967295).
  * - pmem depends on the cartridge hash (md5), so don't change your lua script if you want to keep the data.
  * - Use saveid: with a personalized string in the header metadata to override the default MD5 calculation. This allows the user to update a cart without losing their saved data.
  * @param index the index of the value you want to save/read in the persistent memory
@@ -220,7 +241,7 @@ declare function pix(x: number, y: number, color?: number): number;
 declare function pmem(index: number, val: number): void;
 
 /**
- * This function allows you to save and retrieve data in one of the 256 individual 32-bit slots available in the cartridge's persistent memory. This is useful for saving high-scores, level advancement or achievements. The data is stored as unsigned 32-bit integers (from 0 to 4294967295).
+ * Allows you to save and retrieve data in one of the 256 individual 32-bit slots available in the cartridge's persistent memory. This is useful for saving high-scores, level advancement or achievements. The data is stored as unsigned 32-bit integers (from 0 to 4294967295).
  * - pmem depends on the cartridge hash (md5), so don't change your lua script if you want to keep the data.
  * - Use saveid: with a personalized string in the header metadata to override the default MD5 calculation. This allows the user to update a cart without losing their saved data.
  * @param index the index of the value you want to save/read in the persistent memory
@@ -229,14 +250,14 @@ declare function pmem(index: number, val: number): void;
 declare function pmem(index: number): number;
 
 /**
- * This function allows you to write a single byte to any address in TIC's RAM. The address should be specified in hexadecimal format, the value in decimal.
+ * Allows you to write a single byte to any address in TIC's RAM. The address should be specified in hexadecimal format, the value in decimal.
  * @param addr the address in RAM
  * @param val the value to write
  */
 declare function poke(addr: number, val: number): void;
 
 /**
- * This function allows you to write to the virtual RAM of TIC. It differs from poke in that it divides memory in groups of 4 bits. Therefore, to address the high nibble of position 0x4000 you should pass 0x8000 as addr4, and to access the low nibble (rightmost 4 bits) you would pass 0x8001. The address should be specified in hexadecimal format, and values should be given in decimal.
+ * Allows you to write to the virtual RAM of TIC. It differs from poke in that it divides memory in groups of 4 bits. Therefore, to address the high nibble of position 0x4000 you should pass 0x8000 as addr4, and to access the low nibble (rightmost 4 bits) you would pass 0x8001. The address should be specified in hexadecimal format, and values should be given in decimal.
  * @param addr the nibble (4 bits) address in RAM to which to write,
  * @param val the 4-bit value (0-15) to write to the specified address
  */
@@ -255,10 +276,10 @@ declare function poke4(addr: number, val: number): void;
  * @param smallfont use small font if true
  * @returns returns the width of the text in pixels.
  */
-declare function print(str: string, x?: number, y?: number, color?: number, fixed?: boolean, scale?: number, smallfont?: boolean): number;
+declare function print(str: any, x?: number, y?: number, color?: number, fixed?: boolean, scale?: number, smallfont?: boolean): number;
 
 /**
- * This function draws a filled rectangle of the desired size and color at the specified position. If you only need to draw the the border or outline of a rectangle (ie not filled) see rectb
+ * Draws a filled rectangle of the desired size and color at the specified position. If you only need to draw the the border or outline of a rectangle (ie not filled) see rectb
  * @param x x coordinate of the top left corner of the rectangle
  * @param y y coordinate of the top left corner of the rectangle
  * @param w the width the rectangle in pixels
@@ -268,7 +289,7 @@ declare function print(str: string, x?: number, y?: number, color?: number, fixe
 declare function rect(x: number, y: number, w: number, h: number, color: number): void;
 
 /**
- * This function draws a one pixel thick rectangle border at the position requested. If you need to fill the rectangle with a color see rect instead.
+ * Draws a one pixel thick rectangle border at the position requested. If you need to fill the rectangle with a color see rect instead.
  * @param x x coordinate of the top left corner of the rectangle
  * @param y y coordinate of the top left corner of the rectangle
  * @param w the width the rectangle in pixels
@@ -283,7 +304,7 @@ declare function rectb(x: number, y: number, w: number, h: number, color: number
 declare function reset(): void
 
 /**
- * This function will play the sound with id created in the sfx editor. Calling the function with id set to -1 will stop playing the channel.
+ * Will play the sound with id created in the sfx editor. Calling the function with id set to -1 will stop playing the channel.
  * The note can be supplied as an integer between 0 and 95 (representing 8 octaves of 12 notes each) or as a string giving the note name and octave. For example, a note value of '14' will play the note 'D' in the second octave. The same note could be specified by the string 'D-2'. Note names consist of two characters, the note itself (in upper case) followed by '-' to represent the natural note or '#' to represent a sharp. There is no option to indicate flat values. The available note names are therefore: C-, C#, D-, D#, E-, F-, F#, G-, G#, A-, A#, B-. The octave is specified using a single digit in the range 0 to 8.
  * The duration specifies how many ticks to play the sound for; since TIC-80 runs at 60 frames per second, a value of 30 represents half a second. A value of -1 will play the sound continuously.
  * The channel parameter indicates which of the four channels to use. Allowed values are 0 to 3.
@@ -344,13 +365,13 @@ declare function spr(id: number, x: number, y: number, colorkey?: number, scale?
 declare function sync(mask?: number, bank?: number, tocart?: boolean): void;
 
 /**
- * This function returns the number of milliseconds elapsed since the cartridge began execution. Useful for keeping track of time, animating items and triggering events.
+ * Returns the number of milliseconds elapsed since the cartridge began execution. Useful for keeping track of time, animating items and triggering events.
  * @returns the number of milliseconds elapsed since the application began.
  */
 declare function time(): number;
 
 /**
- * This function returns the number of seconds elapsed since January 1st, 1970. Useful for creating persistent games which evolve over time between plays.
+ * Returns the number of seconds elapsed since January 1st, 1970. Useful for creating persistent games which evolve over time between plays.
  * @returns the number of seconds that have passed since January 1st, 1970.
  */
 declare function tstamp(): number;
@@ -363,7 +384,7 @@ declare function tstamp(): number;
 declare function trace(msg: any, color?: number): void;
 
 /**
- * This function draws a triangle filled with color, using the supplied vertices.
+ * Draws a triangle filled with color, using the supplied vertices.
  * @param x1 the x coordinate of the first triangle corner
  * @param y1 the y coordinate of the first triangle corner
  * @param x2 the x coordinate of the second triangle corner
@@ -373,6 +394,18 @@ declare function trace(msg: any, color?: number): void;
  * @param color the index of the desired color in the current palette
  */
 declare function tri(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number, color: number): void;
+
+/**
+ * Draws a triangle filled with color, using the supplied vertices.
+ * @param x1 the x coordinate of the first triangle corner
+ * @param y1 the y coordinate of the first triangle corner
+ * @param x2 the x coordinate of the second triangle corner
+ * @param y2 the y coordinate of the second triangle corner
+ * @param x3 the x coordinate of the third triangle corner
+ * @param y3 the y coordinate of the third triangle corner
+ * @param color the index of the desired color in the current palette
+ */
+ declare function trib(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number, color: number): void;
 
 /**
  * It renders a triangle filled with texture from image ram or map ram
