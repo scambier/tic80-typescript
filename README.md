@@ -2,6 +2,8 @@
 
 <sup>**Disclaimer:** TSC-80 is 100% feature-complete, and I am no longer actively working on it. However, it's still maintained and I will happily review any bug report or pull request!</sup>
 
+**!! DUE TO A PENDING TIC-80 ISSUE, THIS BUNDLER IS NOT YET COMPATIBLE WITH TIC-80 0.90 !!**
+
 ![](logo.png)
 
 Write your [TIC-80](https://tic.computer/) games in TypeScript. Works with the free version of TIC-80.
