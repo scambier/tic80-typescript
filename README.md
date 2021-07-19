@@ -2,7 +2,7 @@
 
 <sup>**Disclaimer:** TSC-80 is 100% feature-complete, and I am no longer actively working on it. However, it's still maintained and I will happily review any bug report or pull request!</sup>
 
-**!! DUE TO A PENDING TIC-80 ISSUE, THIS BUNDLER IS NOT YET COMPATIBLE WITH TIC-80 0.90 !!**
+[**!! THIS BUNDLER IS NOT YET COMPATIBLE WITH TIC-80 0.90 !!**](https://github.com/scambier/tic80-typescript/issues/8)
 
 ![](logo.png)
 
