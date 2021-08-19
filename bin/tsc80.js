@@ -17,11 +17,18 @@ program
     .description('Copy the required files inside current directory. If a file already exists, it will be skipped.')
     .action(init);
 program
-    .command('run')
-    .description(' Compile, compress, and launch your TIC-80 game')
-    .option('-w, --watch', 'Will automatically recompile and refresh the TIC game')
+    .command('build')
+    .description(' Compile and compress your game')
+    // .option('-w, --watch', 'Will automatically recompile and refresh the TIC game')
     .action(function (option, command) {
-    run(option.watch);
+    build({ run: false });
+});
+program
+    .command('run')
+    .description(' Build, watch, and launch your TIC-80 game')
+    // .option('-w, --watch', 'Will automatically recompile and refresh the TIC game')
+    .action(function (option, command) {
+    build({ run: true });
 });
 program.parse();
 // let arg = process.argv[2]
@@ -76,29 +83,34 @@ function init() {
 /**
  * Compile, compress, run
  */
-function run(watch) {
-    if (watch === void 0) { watch = false; }
+function build(_a) {
+    var _b = _a.run, run = _b === void 0 ? false : _b;
     var config = JSON.parse(stripJsonComments(fs.readFileSync('tsc80-config.json', 'utf8')));
     var tsconfig = JSON.parse(stripJsonComments(fs.readFileSync('tsconfig.json', 'utf8')));
-    var cGame = config['game'];
     var cTic = config['tic'];
     var cCompress = config['compression'];
     var outFile = tsconfig['compilerOptions']['outFile'];
     function compile() {
         console.log('Compiling TypeScript...');
-        // First run to at least have the file
-        child_process.exec("tsc " + (watch ? '--watch' : ''), function (error, stdout, stderr) {
-            if (stdout)
-                console.log(stdout);
-            if (stderr)
-                console.log(stderr);
-        });
-        chokidar.watch(outFile).on('change', function (path, stats) {
-            makeGameFile();
+        // Initial build
+        child_process.execSync("tsc");
+        makeGameFile();
+        // Watching and rebuilding
+        if (run) {
+            child_process.exec("tsc --watch", function (error, stdout, stderr) {
+                if (stdout) {
+                    console.log(stdout);
+                }
+                if (stderr)
+                    console.log(stderr);
+            });
+            // Watch changes
+            chokidar.watch(outFile).on('change', function (path, stats) {
+                makeGameFile();
+            });
             launchTIC();
-        });
+        }
     }
-    var ticRunning = false;
     function makeGameFile() {
         console.log('Building game file');
         var buildStr = fs.readFileSync(outFile, 'utf8');
@@ -109,68 +121,30 @@ function run(watch) {
                 semicolons: false,
                 beautify: !(cCompress.mangle || cCompress.compress),
                 indent_level: cCompress.indentLevel,
-                comments: false,
-                preamble: "// title: " + cGame.title + "\n// author: " + cGame.author + "\n// desc: " + cGame.desc + "\n// script: js\n" + (cGame.input ? "input: " + cGame.input + "\n" : '')
+                comments: true,
             }
         });
         // Global strict mode breaks the global scope
         result.code = result.code.replace('"use strict"', '');
         fs.writeFileSync(cCompress.compressedFile, result.code);
-        if (!cTic.ticExecutable || !cTic.cartsDirectory) {
-            console.log('Missing "ticExecutable" and/or "cartsDirectory" in tsc80-config.json');
+        if (!cTic.ticExecutable) {
+            console.log('Missing "ticExecutable" in tsc80-config.json');
             process.exit(0);
         }
     }
     function launchTIC() {
-        if (ticRunning)
-            return;
-        var cmd = "\"" + cTic.ticExecutable + "\" \"" + cTic.cartsDirectory + "/" + cGame.cart + "\" -code " + cCompress.compressedFile;
-        console.log("Launch TIC: " + cmd);
-        ticRunning = true;
         var child = child_process.spawn(cTic.ticExecutable, [
-            cTic.cartsDirectory + "/" + cGame.cart,
-            watch ? '-code-watch' : '-code',
-            cCompress.compressedFile
+            '--skip',
+            '--keepcmd',
+            "--fs=" + process.cwd(),
+            '--cmd',
+            "load game.js & load " + cCompress.compressedFile + " code & run",
         ], {
             stdio: 'inherit'
         });
         child.on('exit', function (code, signal) {
-            process.on('exit', function () {
-                ticRunning = false;
-                backupCart();
-                // child = null
-                if (signal) {
-                    process.kill(process.pid, signal);
-                }
-                else {
-                    process.exit(code !== null && code !== void 0 ? code : 0);
-                }
-            });
+            process.exit(code !== null && code !== void 0 ? code : 0);
         });
     }
-    function backupCart() {
-        var cartPath = cTic.cartsDirectory + "/" + cGame.cart;
-        if (fs.existsSync(cartPath)) {
-            if (fs.existsSync(cGame.cart)) {
-                fs.unlinkSync(cGame.cart);
-            }
-            fs.copySync(cartPath, cGame.cart);
-            console.log("Copied " + cGame.cart + " into current dir");
-        }
-        else {
-            console.error("Unable to copy " + cartPath);
-            console.error("Did you save your game at least once in TIC-80?");
-        }
-    }
     compile();
-}
-function showHelp() {
-    console.log('  v' + version);
-    console.log();
-    console.log('  Usage: tsc80 [command]');
-    console.log();
-    console.log('  Commands:');
-    console.log('');
-    console.log('    init  - Copy the required files inside current directory. If a file already exists, it will be skipped.');
-    console.log('    run   - Compile, compress, and launch your TIC-80 game');
 }

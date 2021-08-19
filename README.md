@@ -1,6 +1,6 @@
 # TSC-80 - TypeScript for the TIC-80
 
-<sup>**Disclaimer:** TSC-80 is 100% feature-complete, and I am no longer actively working on it. However, it's still maintained and I will happily review any bug report or pull request!</sup>
+**!! This is a prerelease version, only compatible with TIC-80 1.0.x-dev**
 
 ![](logo.png)
 
@@ -12,17 +12,16 @@ TSC-80 contains all the functions declarations (`.d.ts`) for the TIC-80 API, and
 
 ### Pre-requisites
 
-This tool has been tested with TIC-80 version 0.80.1344 (free edition) on Windows 10, and should work on all platforms compatible with TIC-80 and TypeScript.
+This tool has been tested with TIC-80 version 0.1.x-dev (pro edition) on Windows 10, and should work on all platforms compatible with TIC-80 and TypeScript.
 
 1. Install NodeJS LTS
 2. Install TypeScript (`npm install -g typescript`)
-3. Create and save an empty JavaScript game in TIC-80 (`new js` then `save yourjsgame`)
+3. `npm install -g tic80-typescript@next`
 
-### Install TSC-80 and create a boilerplate project
+### Create a project
 
-1. `$ npm install -g tic80-typescript`
-2. `$ tsc80 init` will create the necessary files (config, index.ts and declarations) into the current directory
-3. Set the correct values inside the `tsc80-config.json` (see below)
+2. `tsc80 init` will create the necessary files (config, declarations, and game files) into the current directory
+3. Set the correct values inside the `tsc80-config.json`
 
 ### Configuration
 
@@ -30,17 +29,8 @@ You need to complete the `tsc80-config.json` for each project.
 
 ```js
 {
-  "game": { // Some information about your game
-    "author": "game developer",
-    "title": "Your cart's title",
-    "desc": "short description",
-    "input": "gamepad", // Or "mouse", or "keyboard". All inputs are enabled this field is omitted.
-    "cart": "yourjsgame.tic", // The name of your TIC cart. Must end with ".tic"
-    "backup": true // Copy your cart from the TIC folder to your project folder. Useful for version control backups.
-  },
   "tic": {
     "ticExecutable": "path/to/tic/executable/file", // The file path to your TIC executable.
-    "cartsDirectory": "path/to/tic/carts/folder" // The directory where TIC stores its carts. Accessible from TIC with the "folder" command
   },
   "compression": { // These settings will alter how the final js file will look like
     "compressedFile": "build/compressed.js", // Path to compressed file. You should not have to change this.
@@ -53,12 +43,12 @@ You need to complete the `tsc80-config.json` for each project.
 
 ### Run TSC-80
 
-- `$ tsc80 run` will compile, compress, and inject your code into the `.tic` file, then start your game.
-- Once that TIC-80 is running, you can save your game cart with `save`.
+- `$ tsc80 build` will build your game into the "build" directory
+- `$ tsc80 run` will build, watch the changes, and launch your game through TIC-80
+
+Once that TIC-80 is running, all code changes in .ts files will be reflected after a reload (`ctrl+r`). You can update and save your assets directly in TIC-80.
 
 **Do not forget to save your cart after modifiyng non-code assets (sprites, map, sounds, music)!**
-
-If the backup option is set, the resulting `.tic` file will be automatically copied in your project directory when you close TIC-80.
 
 ## Compression options
 
@@ -73,7 +63,7 @@ The compression options in `tsc80-config.json` can help you to save a lot of spa
 
 ## Code organization & limitations
 
-TSC-80 only transpiles your TypeScript files to JavaScript, and compiles them together as a single output file. Internally, TIC-80 uses [Duktape](https://duktape.org/) as its JavaScript engine.
+`tsc80` only transpiles your TypeScript files to JavaScript, and compiles them together as a single output file. Internally, TIC-80 uses [Duktape](https://duktape.org/) as its JavaScript engine.
 
 The following limitations apply:
 
@@ -85,12 +75,16 @@ The following limitations apply:
 
 Some tips to ease development:
 
-- The default [index.ts](https://github.com/scambier/tic80-typescript/blob/master/tocopy/index.ts) has an `init()` function that is called once during the first game loop.
+- .ts files will be compiled in an indeterminate order. Take that into account if you need to run initialization code.
 - You can always use [TypeScript's triple-slash directives](https://www.typescriptlang.org/docs/handbook/triple-slash-directives.html) and [namespaces](https://www.typescriptlang.org/docs/handbook/namespaces.html) to manage dependencies order.
-- Don't compress the output file unless necessary.
-- If you run into any problem, like a black screen or an error message, please double check your `tsc80-config.json` and the generated js code.
+- Don't compress the output file unless necessary; it will be harder to locate and fix runtime errors.
 
 ## Changelog
+
+### 1.0.0-dev - 2021-08-19
+
+- Refactoring to make this tool compatible with TIC-80 1.0.x-dev
+- Simplified workflow
 
 ### 0.4.9 - 2021-07-17
 
