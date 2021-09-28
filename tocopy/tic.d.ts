@@ -39,7 +39,7 @@ declare function clip(x: number, y: number, w: number, h: number): void;
  * Tip: You can create some interesting effects by not calling cls() or calling it repeatedly it to "flash" the screen when some special event occurs. You can also supply a color index above 15 to see some interesting fill patterns!
  * @param color the index (0 to 15) of the color in the current palette.
  */
-declare function cls(color: number): void;
+declare function cls(color?: number): void;
 
 /**
  * Draws a filled circle of the desired radius and color with its center at x, y. It uses the Bresenham algorithm.
@@ -122,7 +122,7 @@ declare function fset(index: number, flag: number, bool: boolean): void;
  * @param code the key code we want to check (check the wiki for the keycodes)
  * @returns pressed
  */
-declare function key(code: number): boolean
+declare function key(code?: number): boolean
 
 /**
  * Returns true if the given key is pressed but wasn't pressed in the previous frame. Refer to btnp for an explanation of the optional hold and period parameters
@@ -131,7 +131,7 @@ declare function key(code: number): boolean
  * @param period time in ticks for autorepeat interval
  * @returns pressed (but wasn't pressed in previous frame)
  */
-declare function keyp(code: number, hold: number, period: number): boolean
+declare function keyp(code?: number, hold?: number, period?: number): boolean
 
 /**
  * Draws a straight line from point (x0,y0) to point (x1,y1) in the specified color.
