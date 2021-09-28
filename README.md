@@ -63,11 +63,11 @@ The compression options in `tsc80-config.json` can help you to save a lot of spa
 
 ## Code organization & limitations
 
-`tsc80` only transpiles your TypeScript files to JavaScript, and compiles them together as a single output file. Internally, TIC-80 uses [Duktape](https://duktape.org/) as its JavaScript engine.
+`tsc80 build|run` only transpiles your TypeScript files to JavaScript, and compiles them together as a single output file. Internally, TIC-80 uses [Duktape](https://duktape.org/) as its JavaScript engine.
 
 The following limitations apply:
 
-- ES5 only (with some syntax exceptions). TSC-80 does not provide polyfills.
+- ES5 only (with some syntax exceptions). This tool does not provide polyfills.
 - Required to have a single file output (`compilerOptions.outFile` in `tsconfig.json`)
 - No modules, and no npm dependencies.
 - All declared variables and classes at file level (in all files) are public and share the same root namespace.
@@ -75,7 +75,6 @@ The following limitations apply:
 
 Some tips to ease development:
 
-- .ts files will be compiled in an indeterminate order. Take that into account if you need to run initialization code.
 - You can always use [TypeScript's triple-slash directives](https://www.typescriptlang.org/docs/handbook/triple-slash-directives.html) and [namespaces](https://www.typescriptlang.org/docs/handbook/namespaces.html) to manage dependencies order.
 - Don't compress the output file unless necessary; it will be harder to locate and fix runtime errors.
 
