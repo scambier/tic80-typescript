@@ -93,11 +93,11 @@ function build(_a) {
     function compile() {
         console.log('Compiling TypeScript...');
         // Initial build
-        child_process.execSync("tsc");
+        child_process.execSync("tsc", { encoding: 'utf-8' });
         makeGameFile();
         // Watching and rebuilding
         if (run) {
-            child_process.exec("tsc --watch", function (error, stdout, stderr) {
+            child_process.exec("tsc --watch", { encoding: 'utf-8' }, function (error, stdout, stderr) {
                 if (stdout) {
                     console.log(stdout);
                 }
@@ -106,7 +106,12 @@ function build(_a) {
             });
             // Watch changes
             chokidar.watch(outFile).on('change', function (path, stats) {
-                makeGameFile();
+                try {
+                    makeGameFile();
+                }
+                catch (e) {
+                    console.error(e);
+                }
             });
             launchTIC();
         }
@@ -114,18 +119,27 @@ function build(_a) {
     function makeGameFile() {
         console.log('Building game file');
         var buildStr = fs.readFileSync(outFile, 'utf8');
+        // Explicit strict mode breaks the global TIC scope
+        buildStr = buildStr.replace('"use strict";', '');
         var result = uglifyJS.minify(buildStr, {
-            compress: cCompress.compress ? {} : false,
-            mangle: cCompress.mangle ? { toplevel: false } : false,
+            compress: cCompress.compress
+                ? {
+                    join_vars: false
+                }
+                : false,
+            mangle: cCompress.mangle
+                ? {
+                    toplevel: false, keep_fnames: true
+                }
+                : false,
             output: {
                 semicolons: false,
                 beautify: !(cCompress.mangle || cCompress.compress),
                 indent_level: cCompress.indentLevel,
-                comments: true,
+                // Always keep the significant comments: https://github.com/nesbox/TIC-80/wiki/The-Code
+                comments: RegExp(/title|author|desc|script|input|saveid/),
             }
         });
-        // Global strict mode breaks the global scope
-        result.code = result.code.replace('"use strict"', '');
         fs.writeFileSync(cCompress.compressedFile, result.code);
         if (!cTic.ticExecutable) {
             console.log('Missing "ticExecutable" in tsc80-config.json');
