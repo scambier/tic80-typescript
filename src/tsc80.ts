@@ -164,7 +164,7 @@ function build({ run = false }): void {
         beautify: !(cCompress.mangle || cCompress.compress),
         indent_level: cCompress.indentLevel,
         // Always keep the significant comments: https://github.com/nesbox/TIC-80/wiki/The-Code
-        comments: RegExp(/title|author|desc|script|input|saveid/),
+        comments: cCompress.compress || cCompress.mangle ? RegExp(/title|author|desc|script|input|saveid/) : true,
       }
     })
 
