@@ -1,35 +1,37 @@
 #!/usr/bin/env node
 
-import * as child_process from 'child_process'
-import * as fs from 'fs-extra'
-import * as path from 'path'
-import * as stripJsonComments from 'strip-json-comments'
-import * as uglifyJS from 'uglify-js'
-import * as yesno from 'yesno'
-import { Command } from 'commander'
-import * as chokidar from 'chokidar'
+import * as child_process from "child_process"
+import * as fs from "fs-extra"
+import * as path from "path"
+import * as stripJsonComments from "strip-json-comments"
+import * as uglifyJS from "uglify-js"
+import * as yesno from "yesno"
+import { Command } from "commander"
+import * as chokidar from "chokidar"
 
-const version: string = require('../package.json').version
+const version: string = require("../package.json").version
 
 const program = new Command()
 program.version(version)
 
 program
-  .command('init')
-  .description('Copy the required files inside current directory. If a file already exists, it will be skipped.')
+  .command("init")
+  .description(
+    "Copy the required files inside current directory. If a file already exists, it will be skipped."
+  )
   .action(init)
 
 program
-  .command('build')
-  .description(' Compile and compress your game')
+  .command("build")
+  .description(" Compile and compress your game")
   // .option('-w, --watch', 'Will automatically recompile and refresh the TIC game')
   .action((option, command) => {
     build({ run: false })
   })
 
 program
-  .command('run')
-  .description(' Build, watch, and launch your TIC-80 game')
+  .command("run")
+  .description(" Build, watch, and launch your TIC-80 game")
   // .option('-w, --watch', 'Will automatically recompile and refresh the TIC game')
   .action((option, command) => {
     build({ run: true })
@@ -58,19 +60,18 @@ program.parse()
  * Copy required files to working dir
  */
 function init(): void {
+  const toCopyDir = path.join(__dirname, "../tocopy")
 
-  const toCopyDir = path.join(__dirname, '../tocopy')
-
-  console.log('The following files will be added to the current directory:')
+  console.log("The following files will be added to the current directory:")
 
   // Fetch all files to copy
-  fs.readdirSync(toCopyDir).forEach(file => {
+  fs.readdirSync(toCopyDir).forEach((file) => {
     console.log(file)
   })
 
-  yesno({ question: 'Proceed to copy? (y/n)' }).then(ok => {
+  yesno({ question: "Proceed to copy? (y/n)" }).then((ok) => {
     if (!ok) {
-      console.log('Stopping installation')
+      console.log("Stopping installation")
       process.exit(0)
     }
 
@@ -85,11 +86,13 @@ function init(): void {
             return false
           }
           return true
-        }
+        },
       })
     })
 
-    console.log('\nAll files copied. Edit the tsc80-config.json, then type "tsc80 run"')
+    console.log(
+      '\nAll files copied. Edit the tsc80-config.json, then type "tsc80 run"'
+    )
     process.exit(0)
   })
 }
@@ -98,99 +101,122 @@ function init(): void {
  * Compile, compress, run
  */
 function build({ run = false }): void {
-
-  const config: any = JSON.parse(stripJsonComments(fs.readFileSync('tsc80-config.json', 'utf8')))
-  const tsconfig: any = JSON.parse(stripJsonComments(fs.readFileSync('tsconfig.json', 'utf8')))
+  const config: any = JSON.parse(
+    stripJsonComments(fs.readFileSync("tsc80-config.json", "utf8"))
+  )
+  const tsconfig: any = JSON.parse(
+    stripJsonComments(fs.readFileSync("tsconfig.json", "utf8"))
+  )
 
   const cTic: {
-    ticExecutable: string,
-  } = config['tic']
+    ticExecutable: string
+  } = config["tic"]
 
   const cCompress: {
-    compressedFile: string,
-    indentLevel: number,
-    compress: boolean,
+    compressedFile: string
+    indentLevel: number
+    compress: boolean
     mangle: boolean
-  } = config['compression']
+  } = config["compression"]
 
-  const outFile: string = tsconfig['compilerOptions']['outFile']
+  const outFile: string = tsconfig["compilerOptions"]["outFile"]
+
+  // Watch changes
+  chokidar.watch(outFile).on("change", (path, stats) => {
+    try {
+      makeGameFile()
+    } catch (e) {
+      console.error(e)
+    }
+  })
 
   function compile(): void {
-    console.log('Compiling TypeScript...')
+    console.log("Compiling TypeScript...")
 
     // Initial build
-    child_process.execSync(`tsc`, { encoding: 'utf-8' })
+    child_process.execSync(`tsc`, { encoding: "utf-8" })
     makeGameFile()
 
     // Watching and rebuilding
     if (run) {
-      child_process.exec(`tsc --watch`, { encoding: 'utf-8' }, (error, stdout, stderr) => {
-        if (stdout) { console.log(stdout) }
-        if (stderr) console.log(stderr)
-      })
-
-      // Watch changes
-      chokidar.watch(outFile).on('change', (path, stats) => {
-        try {
-          makeGameFile()
-        } catch (e) {
-          console.error(e)
+      child_process.exec(
+        "tsc --watch",
+        { encoding: "utf-8" },
+        (error, stdout, stderr) => {
+          if (stdout) {
+            console.log(stdout)
+          }
+          if (stderr) {
+            console.error(stderr)
+          }
         }
-      })
+      )
       launchTIC()
     }
   }
 
   function makeGameFile(): void {
-    console.log('Building game file')
-    let buildStr = fs.readFileSync(outFile, 'utf8')
+    // console.log('Building game file...')
+    let buildStr = fs.readFileSync(outFile, "utf8")
+    if (buildStr.length < 10) return
 
     // Explicit strict mode breaks the global TIC scope
-    buildStr = buildStr.replace('"use strict";', '')
+    buildStr = buildStr.replace('"use strict";', "")
 
     const result = uglifyJS.minify(buildStr, {
       compress: cCompress.compress
         ? {
-          join_vars: false
-        }
+            join_vars: false,
+          }
         : false,
       mangle: cCompress.mangle
         ? {
-          toplevel: false, keep_fnames: true
-        }
+            toplevel: false,
+            keep_fnames: true,
+          }
         : false,
       output: {
         semicolons: false, // Only works if `mangle` or `compress` are set to false
         beautify: !(cCompress.mangle || cCompress.compress),
         indent_level: cCompress.indentLevel,
         // Always keep the significant comments: https://github.com/nesbox/TIC-80/wiki/The-Code
-        comments: cCompress.compress || cCompress.mangle ? RegExp(/title|author|desc|script|input|saveid/) : true,
-      }
+        comments:
+          cCompress.compress || cCompress.mangle
+            ? RegExp(/title|author|desc|script|input|saveid/)
+            : true,
+      },
     })
 
+    if (result.code.length < 10) {
+      console.log("empty code")
+      console.log(buildStr)
+    }
     fs.writeFileSync(cCompress.compressedFile, result.code)
 
     if (!cTic.ticExecutable) {
       console.log('Missing "ticExecutable" in tsc80-config.json')
       process.exit(0)
     }
+
+    console.log("Build complete")
   }
 
   function launchTIC() {
-
-    let child = child_process.spawn(cTic.ticExecutable,
+    let child = child_process.spawn(
+      cTic.ticExecutable,
       [
-        '--skip',
-        '--keepcmd',
+        "--skip",
+        "--keepcmd",
         `--fs=${process.cwd()}`,
-        '--cmd',
+        "--cmd",
         `load game.js & load ${cCompress.compressedFile} code & run`,
       ],
       {
-        stdio: 'inherit'
-      })
+        stdio: "inherit",
+      }
+    )
 
-    child.on('exit', (code, signal) => {
+    child.on("exit", (code, signal) => {
       process.exit(code ?? 0)
     })
   }
