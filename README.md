@@ -12,7 +12,7 @@ TSC-80 contains all the functions declarations (`.d.ts`) for the TIC-80 API, and
 
 ### Pre-requisites
 
-This tool has been tested with TIC-80 version 0.1.x-dev (pro edition) on Windows 10, and should work on all platforms compatible with TIC-80 and TypeScript.
+This tool has been tested with TIC-80 version 1.0.x-dev (pro edition) on Windows 10, and should work on all platforms compatible with TIC-80 and TypeScript.
 
 1. Install NodeJS LTS
 2. Install TypeScript (`npm install -g typescript`)
