@@ -156,9 +156,17 @@ function build({ run = false }): void {
   }
 
   function makeGameFile(): void {
-    // console.log('Building game file...')
-    let buildStr = fs.readFileSync(outFile, "utf8")
-    if (buildStr.length < 10) return
+
+    console.log("Building game file...")
+    let buildStr: string
+    let tries = 0
+    do {
+      buildStr = fs.readFileSync(outFile, "utf8")
+      // Retry if the file is empty
+      if (++tries > 100) {
+        throw new Error("Unable to build game file.")
+      }
+    } while (buildStr.length < 10)
 
     // Explicit strict mode breaks the global TIC scope
     buildStr = buildStr.replace('"use strict";', "")
@@ -166,14 +174,14 @@ function build({ run = false }): void {
     const result = uglifyJS.minify(buildStr, {
       compress: cCompress.compress
         ? {
-            join_vars: false,
-          }
+          join_vars: false,
+        }
         : false,
       mangle: cCompress.mangle
         ? {
-            toplevel: false,
-            keep_fnames: true,
-          }
+          toplevel: false,
+          keep_fnames: true,
+        }
         : false,
       output: {
         semicolons: false, // Only works if `mangle` or `compress` are set to false

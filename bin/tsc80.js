@@ -118,10 +118,16 @@ function build(_a) {
         }
     }
     function makeGameFile() {
-        // console.log('Building game file...')
-        var buildStr = fs.readFileSync(outFile, "utf8");
-        if (buildStr.length < 10)
-            return;
+        console.log("Building game file...");
+        var buildStr;
+        var tries = 0;
+        do {
+            buildStr = fs.readFileSync(outFile, "utf8");
+            // Retry if the file is empty
+            if (++tries > 100) {
+                throw new Error("Unable to build game file.");
+            }
+        } while (buildStr.length < 10);
         // Explicit strict mode breaks the global TIC scope
         buildStr = buildStr.replace('"use strict";', "");
         var result = uglifyJS.minify(buildStr, {
