@@ -1,10 +1,10 @@
 # TSC-80 - TypeScript for the TIC-80
 
-**!! This is a prerelease version, only compatible with TIC-80 1.0.x-dev**
+**!! This is a pre-release version, only compatible with TIC-80 1.0.x-dev**
 
 ![](logo.png)
 
-Write your [TIC-80](https://tic.computer/) games in TypeScript. Works with the free version of TIC-80.
+Write your [TIC-80](https://tic.computer/) **PRO** games in TypeScript.
 
 TSC-80 contains all the functions declarations (`.d.ts`) for the TIC-80 API, and will compile your TypeScript code in JavaScript to inject it into your TIC-80 cart.
 
