@@ -204,9 +204,9 @@ declare function map(
   colorkey?: number,
   scale?: number,
   remap?: (
-    tile?: number,
-    x?: number,
-    y?: number
+    tile: number,
+    x: number,
+    y: number
   ) => [number, number?, number?] | number | void
 ): void
 
