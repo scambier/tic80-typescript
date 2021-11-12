@@ -1,12 +1,16 @@
 # TSC-80 - TypeScript for the TIC-80
 
-<sup>**Disclaimer:** TSC-80 is 100% feature-complete, and I am no longer actively working on it. However, it's still maintained and I will happily review any bug report or pull request!</sup>
+[![Actively Maintained](https://img.shields.io/badge/Maintenance%20Level-Actively%20Maintained-green.svg)](https://gist.github.com/cheerfulstoic/d107229326a01ff0f333a1d3476e068d)
 
-[**!! THIS BUNDLER IS NOT YET COMPATIBLE WITH TIC-80 0.90 !!**](https://github.com/scambier/tic80-typescript/issues/8)
+TIC-80 versions compatibility:
+
+- 0.80.x: `npm install -g tic80-typescript`
+- 0.90.x: not compatible due to api changes
+- 1.0.x-dev: [here](https://github.com/scambier/tic80-typescript/tree/develop), `npm install -g tic80-typescript@next`
 
 ![](logo.png)
 
-Write your [TIC-80](https://tic.computer/) games in TypeScript. Works with the free version of TIC-80.
+Write your [TIC-80](https://tic80.com/) games in TypeScript. Works with the free version of TIC-80.
 
 TSC-80 contains all the functions declarations (`.d.ts`) for the TIC-80 API, and will compile your TypeScript code in JavaScript to inject it into your TIC-80 cart.
 
