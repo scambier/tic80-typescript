@@ -6,7 +6,7 @@ TIC-80 versions compatibility:
 
 - 0.80.x: `npm install -g tic80-typescript`
 - 0.90.x: not compatible due to api changes
-- 1.0.x-dev: [here](https://github.com/scambier/tic80-typescript/tree/develop), `npm install -g tic80-typescript@next`
+- 1.0.x-dev: [documentation here](https://github.com/scambier/tic80-typescript/tree/develop), `npm install -g tic80-typescript@next`
 
 ![](logo.png)
 
