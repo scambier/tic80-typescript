@@ -2,11 +2,18 @@
 
 [![Actively Maintained](https://img.shields.io/badge/Maintenance%20Level-Actively%20Maintained-green.svg)](https://gist.github.com/cheerfulstoic/d107229326a01ff0f333a1d3476e068d)
 
-TIC-80 versions compatibility:
+----
 
-- 0.80.x: `npm install -g tic80-typescript`
-- 0.90.x: not compatible due to api changes
-- 1.0.x-dev: [documentation here](https://github.com/scambier/tic80-typescript/tree/develop), `npm install -g tic80-typescript@next`
+**❗ READ THIS FIRST ❗** - TIC-80 versions compatibility:
+
+There are 2 available versions of TSC-80, depending of your version of TIC-80.
+
+- TIC-80 `0.80.x`: follow the documentation on this page.
+- TIC-80 `1.0.x-dev`: [documentation here](https://github.com/scambier/tic80-typescript/tree/develop)
+
+Note that TSC-80 does **not** work with TIC-80 `0.90.x`, due to API incompatibilities.
+
+----
 
 ![](logo.png)
 
