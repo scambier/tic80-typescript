@@ -603,3 +603,10 @@ declare function textri(
   useMap?: boolean,
   trans?: number | number[]
 ): void
+
+/**
+ * Switch the VRAM bank. More information: https://github.com/nesbox/TIC-80/wiki/vbank
+ *
+ * @param bank the vram bank id to switch to
+ */
+declare function vbank(bank: 0 | 1): void
