@@ -1,6 +1,6 @@
 # TSC-80 - TypeScript for the TIC-80
 
-**!! This is a pre-release version, only compatible with TIC-80 1.0.x-dev**
+**❗ This is a pre-release version, only compatible with TIC-80 `1.0.x-dev` ❗**
 
 ![](logo.png)
 
@@ -15,8 +15,8 @@ TSC-80 contains all the functions declarations (`.d.ts`) for the TIC-80 API, and
 This tool has been tested with TIC-80 version 1.0.x-dev (pro edition) on Windows 10, and should work on all platforms compatible with TIC-80 and TypeScript.
 
 1. Install NodeJS LTS
-2. Install TypeScript (`npm install -g typescript`)
-3. `npm install -g tic80-typescript@next`
+2. Install TypeScript: `npm install -g typescript`
+3. Install TSC-80: `npm install -g tic80-typescript@next` ❗ Don't forget the `@next` part
 
 ### Create a project
 
@@ -48,7 +48,20 @@ You need to complete the `tsc80-config.json` for each project.
 
 Once that TIC-80 is running, all code changes in .ts files will be reflected after a reload (`ctrl+r`). You can update and save your assets directly in TIC-80.
 
-**Do not forget to save your cart after modifiyng non-code assets (sprites, map, sounds, music)!**
+### Workflow
+
+`$ tsc80 run` continuously watches changes in your .ts files and compiles them on the fly. You then alt-tab to TIC-80, and hit `ctrl+r` to reload the game.
+This instructs TIC-80 to load `game.js` and inject the compiled code inside the cart.
+
+❗ You must **not** edit the compiled JavaScript code inside the TIC-80 editor. Your changes would be overwritten.  
+
+You must only edit **assets** (sprites, map, sounds, music) inside the TIC-80 editor. Don't forget to save your changes _before_ reloading the code.
+
+When you hit `ctrl+s` inside TIC-80, the `game.js` is updated as a standalone TIC-80 cart.
+
+#### Version control
+
+The `build` folder can be ignored, but you should definitely commit `game.js`, since it contains all non-code assets. `game.js` also contains the compiled code, which is useless for version control, but cannot be separated from the assets.
 
 ## Compression options
 
