@@ -1,14 +1,6 @@
 {
-  "game": {
-    "author": "game developer",
-    "title": "Your cart's title",
-    "desc": "A short description",
-    "cart": "yourjsgame.tic",
-    "backup": true
-  },
   "tic": {
-    "ticExecutable": "path/to/tic/executable/file",
-    "cartsDirectory": "path/to/tic/carts/directory"
+    "ticExecutable": "path/to/tic/executable/file"
   },
   "compression": {
     "compressedFile": "build/compressed.js",
