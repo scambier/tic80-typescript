@@ -1,7 +1,5 @@
 # TSC-80 - TypeScript for the TIC-80
 
-**❗ This is a pre-release version, only compatible with TIC-80 `1.0.x-dev` ❗**
-
 ![](logo.png)
 
 Write your [TIC-80](https://tic.computer/) **PRO** games in TypeScript.
@@ -97,6 +95,7 @@ Some tips to ease development:
 
 - Refactoring to make this tool compatible with TIC-80 1.0.x-dev
 - Simplified workflow
+- Added `peek1()`, `peek2()`, `poke1()`, `poke2()`, `ttri()`, `vbank()`
 
 ### 0.4.9 - 2021-07-17
 
