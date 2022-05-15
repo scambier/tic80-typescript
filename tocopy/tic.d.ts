@@ -505,6 +505,35 @@ declare function spr(
 declare function sync(mask?: number, bank?: number, tocart?: boolean): void
 
 /**
+ * This function draws a triangle filled with texture from either SPRITES or MAP RAM or VBANK.
+ * @param x1 the screen coordinates of the first corner
+ * @param y1 the screen coordinates of the first corner
+ * @param x2 the screen coordinates of the second corner
+ * @param y2 the screen coordinates of the second corner
+ * @param x3 the screen coordinates of the third corner
+ * @param y3 the screen coordinates of the third corner
+ * @param u1 the UV coordinates of the first corner
+ * @param v1 the UV coordinates of the first corner
+ * @param u2 the UV coordinates of the second corner
+ * @param v2 the UV coordinates of the second corner
+ * @param u3 the UV coordinates of the third corner
+ * @param v3 the UV coordinates of the third corner
+ * @param use_map if false (default), the triangle's texture is read from SPRITES RAM. If true, the texture comes from the MAP RAM.
+ * @param trans index (or array of indexes 0.80) of the color(s) that will be used as transparent
+ * @param z1 depth parameters for texture correction
+ * @param z2 depth parameters for texture correction
+ * @param z3 depth parameters for texture correction
+ */
+declare function ttri(x1: number, y1: number,
+  x2: number, y2: number,
+  x3: number, y3: number,
+  u1: number, v1: number,
+  u2: number, v2: number,
+  u3: number, v3: number,
+  use_map?: boolean, trans?: number,
+  z1?: number, z2?: number, z3?: number): void
+
+/**
  * Returns the number of milliseconds elapsed since the cartridge began execution. Useful for keeping track of time, animating items and triggering events.
  * @returns the number of milliseconds elapsed since the application began.
  */
