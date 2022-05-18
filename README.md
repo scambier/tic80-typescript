@@ -74,6 +74,8 @@ The compression options in `tsc80-config.json` can help you to save a lot of spa
 
 ## Code organization & limitations
 
+_**See [this issue](https://github.com/scambier/tic80-typescript/issues/9) for a clear example on how to organize your code.**_
+
 `tsc80 build|run` only transpiles your TypeScript files to JavaScript, and compiles them together as a single output file. Internally, TIC-80 uses [Duktape](https://duktape.org/) as its JavaScript engine.
 
 The following limitations apply:
@@ -91,11 +93,16 @@ Some tips to ease development:
 
 ## Changelog
 
+### 1.0.0 - 2022-05-15
+
+- Official release for TIC-80 1.0
+- Added `ttri()`
+
 ### 1.0.0-dev - 2021-08-19
 
 - Refactoring to make this tool compatible with TIC-80 1.0.x-dev
 - Simplified workflow
-- Added `peek1()`, `peek2()`, `poke1()`, `poke2()`, `ttri()`, `vbank()`
+- Added `peek1()`, `peek2()`, `poke1()`, `poke2()`,  `vbank()`
 
 ### 0.4.9 - 2021-07-17
 
