@@ -162,6 +162,9 @@ function build(_a) {
             process.exit(0);
         }
         console.log("Build complete");
+        if (!run) {
+            process.exit(0);
+        }
     }
     function launchTIC() {
         var child = child_process.spawn(cTic.ticExecutable, [
