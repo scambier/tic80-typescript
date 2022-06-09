@@ -148,7 +148,7 @@ function build(_a) {
                 indent_level: cCompress.indentLevel,
                 // Always keep the significant comments: https://github.com/nesbox/TIC-80/wiki/The-Code
                 comments: cCompress.compress || cCompress.mangle
-                    ? RegExp(/title|author|desc|script|input|saveid/)
+                    ? RegExp(/title|author|desc|script|input|saveid|menu/)
                     : true,
             },
         });
