@@ -14,7 +14,7 @@ This tool has been tested with TIC-80 version 1.0.x-dev (pro edition) on Windows
 
 1. Install NodeJS LTS
 2. Install TypeScript: `npm install -g typescript`
-3. Install TSC-80: `npm install -g tic80-typescript@next` ❗ Don't forget the `@next` part
+3. Install TSC-80: `npm install -g tic80-typescript`
 
 ### Create a project
 

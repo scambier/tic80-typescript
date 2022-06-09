@@ -207,6 +207,10 @@ function build({ run = false }): void {
     }
 
     console.log("Build complete")
+
+    if(!run) {
+      process.exit(0);
+    }
   }
 
   function launchTIC() {
