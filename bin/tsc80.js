@@ -90,44 +90,35 @@ function build(_a) {
     var cTic = config["tic"];
     var cCompress = config["compression"];
     var outFile = tsconfig["compilerOptions"]["outFile"];
-    // Watch changes
-    chokidar.watch(outFile).on("change", function (path, stats) {
-        try {
-            makeGameFile();
-        }
-        catch (e) {
-            console.error(e);
-        }
-    });
+    var toWatch = path.join(process.cwd(), "**/*.ts");
+    if (run) {
+        // Watch changes
+        chokidar.watch(toWatch).on("change", function () {
+            try {
+                compileAndRun();
+            }
+            catch (e) {
+                console.error(e);
+            }
+        }).on("ready", function () { return compileAndRun(); });
+    }
+    else {
+        // Build once
+        compileAndRun(false);
+    }
+    function compileAndRun(launch) {
+        if (launch === void 0) { launch = true; }
+        compile();
+        makeGameFile();
+        launch && launchTIC();
+    }
     function compile() {
         console.log("Compiling TypeScript...");
-        // Initial build
         child_process.execSync("tsc", { encoding: "utf-8" });
-        makeGameFile();
-        // Watching and rebuilding
-        if (run) {
-            child_process.exec("tsc --watch", { encoding: "utf-8" }, function (error, stdout, stderr) {
-                if (stdout) {
-                    console.log(stdout);
-                }
-                if (stderr) {
-                    console.error(stderr);
-                }
-            });
-            launchTIC();
-        }
     }
     function makeGameFile() {
         console.log("Building game file...");
-        var buildStr;
-        var tries = 0;
-        do {
-            buildStr = fs.readFileSync(outFile, "utf8");
-            // Retry if the file is empty
-            if (++tries > 100) {
-                throw new Error("Unable to build game file.");
-            }
-        } while (buildStr.length < 10);
+        var buildStr = fs.readFileSync(outFile, "utf8");
         // Explicit strict mode breaks the global TIC scope
         buildStr = buildStr.replace('"use strict";', "");
         var result = uglifyJS.minify(buildStr, {
@@ -162,9 +153,6 @@ function build(_a) {
             process.exit(0);
         }
         console.log("Build complete");
-        if (!run) {
-            process.exit(0);
-        }
     }
     function launchTIC() {
         var child = child_process.spawn(cTic.ticExecutable, [
@@ -180,5 +168,4 @@ function build(_a) {
             process.exit(code !== null && code !== void 0 ? code : 0);
         });
     }
-    compile();
 }
