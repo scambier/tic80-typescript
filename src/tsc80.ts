@@ -126,14 +126,14 @@ function build({ run = false }): void {
     // Watch changes
     chokidar.watch(toWatch).on("change", () => {
       try {
-        compileAndRun(false)
+        compileAndRun()
       } catch (e) {
         console.error(e)
       }
     }).on("ready", () => compileAndRun())
   } else {
     // Build once
-    compileAndRun()
+    compileAndRun(false)
   }
 
   function compileAndRun(launch = true) {
