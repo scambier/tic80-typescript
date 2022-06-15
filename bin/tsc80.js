@@ -95,7 +95,7 @@ function build(_a) {
         // Watch changes
         chokidar.watch(toWatch).on("change", function () {
             try {
-                compileAndRun();
+                compileAndRun(false);
             }
             catch (e) {
                 console.error(e);

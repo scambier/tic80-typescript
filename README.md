@@ -95,7 +95,8 @@ Some tips to ease development:
 
 ### 1.0.1 - 2022-06-22
 
-- Cleaner code and a fixed race condition by @tmountain
+- Cleaner code 
+- Fixed race condition by @tmountain
 
 ### 1.0.0 - 2022-05-15
 
