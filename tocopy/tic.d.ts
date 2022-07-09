@@ -518,7 +518,7 @@ declare function sync(mask?: number, bank?: number, tocart?: boolean): void
  * @param v2 the UV coordinates of the second corner
  * @param u3 the UV coordinates of the third corner
  * @param v3 the UV coordinates of the third corner
- * @param use_map if false (default), the triangle's texture is read from SPRITES RAM. If true, the texture comes from the MAP RAM.
+ * @param useMap if false (default), the triangle's texture is read from SPRITES RAM. If true, the texture comes from the MAP RAM.
  * @param trans index (or array of indexes 0.80) of the color(s) that will be used as transparent
  * @param z1 depth parameters for texture correction
  * @param z2 depth parameters for texture correction
@@ -530,7 +530,7 @@ declare function ttri(x1: number, y1: number,
   u1: number, v1: number,
   u2: number, v2: number,
   u3: number, v3: number,
-  use_map?: boolean, trans?: number,
+  useMap?: boolean, trans?: number,
   z1?: number, z2?: number, z3?: number): void
 
 /**
@@ -593,28 +593,7 @@ declare function trib(
 ): void
 
 /**
- * It renders a triangle filled with texture from image ram or map ram
- *
- * UV Coordinates
- * These can be thought of as the window inside image ram (sprite sheet), or map ram. Note that the sprite sheet or map in this case is treated as a single large image, with U and V addressing its pixels directly, rather than by sprite ID. So for example the top left corner of sprite #2 would be located at u=16, v=0.
- *
- * Use in 3D graphics
- * This function does not perform perspective correction, so it is not generally suitable for 3D graphics (except in some constrained scenarios). In particular, if the vertices in the triangle have different 3D depth, you may see some distortion.
- *
- * @param x1 the x coordinate of the first triangle corner
- * @param y1 the y coordinate of the first triangle corner
- * @param x2 the x coordinate of the second triangle corner
- * @param y2 the y coordinate of the second triangle corner
- * @param x3 the x coordinate of the third triangle corner
- * @param y3 the y coordinate of the third triangle corner
- * @param u1 the U coordinate of the first triangle corner
- * @param v1 the V coordinate of the first triangle corner
- * @param u2 the U coordinate of the second triangle corner
- * @param v2 the V coordinate of the second triangle corner
- * @param u3 the U coordinate of the third triangle corner
- * @param v3 the V coordinate of the third triangle corner
- * @param useMap if false (default), the triangle's texture is read from the image vram (sprite sheet). If true, the texture comes from the map ram.
- * @param trans index (or array of indexes) of the color that will be used as transparent color.
+ * @deprecated Use ttri() instead.
  */
 declare function textri(
   x1: number,
