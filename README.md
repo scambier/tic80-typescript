@@ -1,5 +1,7 @@
 # TSC-80 - TypeScript for the TIC-80
 
+![Maintenance](https://img.shields.io/maintenance/yes/2022)
+
 ![](logo.png)
 
 Write your [TIC-80](https://tic.computer/) **PRO** games in TypeScript.
