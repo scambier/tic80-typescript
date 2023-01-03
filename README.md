@@ -1,6 +1,6 @@
 # TSC-80 - TypeScript for the TIC-80
 
-![Maintenance](https://img.shields.io/maintenance/yes/2022)
+![Maintenance](https://img.shields.io/maintenance/yes/2023)
 
 ![](logo.png)
 
@@ -20,8 +20,8 @@ This tool has been tested with TIC-80 version 1.0.x-dev (pro edition) on Windows
 
 ### Create a project
 
-2. `tsc80 init` will create the necessary files (config, declarations, and game files) into the current directory
-3. Set the correct values inside the `tsc80-config.json`
+1. `tsc80 init` will create the necessary files (config, declarations, and game files) into the current directory
+2. Set the correct values inside the `tsc80-config.json`
 
 ### Configuration
 
