@@ -93,6 +93,18 @@ Some tips to ease development:
 - You can always use [TypeScript's triple-slash directives](https://www.typescriptlang.org/docs/handbook/triple-slash-directives.html) and [namespaces](https://www.typescriptlang.org/docs/handbook/namespaces.html) to manage dependencies order.
 - Don't compress the output file unless necessary; it will be harder to locate and fix runtime errors.
 
+## Issues
+
+**TIC-80 doesn't reload my code**
+
+If you're building TIC-80 yourself, make sure to use the correct settings
+
+```sh
+$ cd <path-to-tic>/build
+$ cmake -G "Visual Studio 16 2019" -DBUILD_PRO=On -DCMAKE_BUILD_TYPE=MinSizeRel ..
+$ cmake --build . --config MinSizeRel --parallel
+```
+
 ## Changelog
 
 ### 1.0.1 - 2022-06-22
