@@ -4,7 +4,7 @@
 
 ![](logo.png)
 
-Write your [TIC-80](https://tic.computer/) **PRO** games in TypeScript.
+Write your [TIC-80](https://tic80.com/) **PRO** games in TypeScript.
 
 TSC-80 contains all the functions declarations (`.d.ts`) for the TIC-80 API, and will compile your TypeScript code in JavaScript to inject it into your TIC-80 cart.
 
