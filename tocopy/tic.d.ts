@@ -67,7 +67,12 @@ declare function circ(x: number, y: number, radius: number, color: number): void
  * @param radius the radius of the circle in pixels
  * @param color the index of the desired color in the current palette
  */
-declare function circb(x: number, y: number, radius: number, color: number): void
+declare function circb(
+  x: number,
+  y: number,
+  radius: number,
+  color: number
+): void
 
 /**
  * Draws a filled ellipse of the desired radiuses a b and color with its center at x, y. It uses the Bresenham algorithm.
@@ -147,7 +152,6 @@ declare function font(
   scale?: number
 ): number
 
-
 /**
  * The function returns true if the key denoted by keycode is pressed.
  * If the keycode is omitted, will return true if any key is pressed.
@@ -201,7 +205,7 @@ declare function map(
   h?: number,
   sx?: number,
   sy?: number,
-  colorkey?: number,
+  colorkey?: number | number[],
   scale?: number,
   remap?: (
     tile: number,
@@ -273,7 +277,7 @@ declare function music(
   loop?: boolean,
   sustain?: boolean,
   tempo?: number,
-  speed?: number,
+  speed?: number
 ): void
 
 /**
@@ -362,10 +366,10 @@ declare function poke4(addr: number, val: number): void
 declare function poke2(addr: number, val: number): void
 
 /**
-* The equivalent of poke(addr, val, 1)
-* @param addr the bit address address in RAM to which to write,
-* @param val the bit value (0..1) to write to the specified address
-*/
+ * The equivalent of poke(addr, val, 1)
+ * @param addr the bit address address in RAM to which to write,
+ * @param val the bit value (0..1) to write to the specified address
+ */
 declare function poke1(addr: number, val: number): void
 
 /**
@@ -478,7 +482,7 @@ declare function spr(
   id: number,
   x: number,
   y: number,
-  colorkey?: number,
+  colorkey?: number | number[],
   scale?: number,
   flip?: 0 | 1 | 2 | 3,
   rotate?: 0 | 1 | 2 | 3,
@@ -524,14 +528,25 @@ declare function sync(mask?: number, bank?: number, tocart?: boolean): void
  * @param z2 depth parameters for texture correction
  * @param z3 depth parameters for texture correction
  */
-declare function ttri(x1: number, y1: number,
-  x2: number, y2: number,
-  x3: number, y3: number,
-  u1: number, v1: number,
-  u2: number, v2: number,
-  u3: number, v3: number,
-  useMap?: boolean, trans?: number,
-  z1?: number, z2?: number, z3?: number): void
+declare function ttri(
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number,
+  x3: number,
+  y3: number,
+  u1: number,
+  v1: number,
+  u2: number,
+  v2: number,
+  u3: number,
+  v3: number,
+  useMap?: boolean,
+  trans?: number,
+  z1?: number,
+  z2?: number,
+  z3?: number
+): void
 
 /**
  * Returns the number of milliseconds elapsed since the cartridge began execution. Useful for keeping track of time, animating items and triggering events.
