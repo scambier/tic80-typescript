@@ -41,6 +41,24 @@ You need to complete the `tsc80-config.json` for each project.
 }
 ```
 
+#### ES2020
+
+TIC-80 1.1-dev is now compatible with ES2020 code, and you can use the following `tsconfig.json`
+
+```diff
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+-    "lib": ["es5", "es2015.core"],
+-    "target": "es5",
++  	"lib": ["es2020"],
++    "target": "es2020",
+    "outFile": "build/compiled.js",
+    "strict": true
+  }
+}
+```
+
 ### Run TSC-80
 
 - `$ tsc80 build` will build your game into the "build" directory
@@ -106,6 +124,10 @@ $ cmake --build . --config MinSizeRel --parallel
 ```
 
 ## Changelog
+
+### 1.0.3 - 2023-08-23
+
+- Dependencies update
 
 ### 1.0.1 - 2022-06-22
 

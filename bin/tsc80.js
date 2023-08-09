@@ -93,14 +93,17 @@ function build(_a) {
     var toWatch = path.join(process.cwd(), "**/*.ts");
     if (run) {
         // Watch changes
-        chokidar.watch(toWatch).on("change", function () {
+        chokidar
+            .watch(toWatch)
+            .on("change", function () {
             try {
                 compileAndRun(false);
             }
             catch (e) {
                 console.error(e);
             }
-        }).on("ready", function () { return compileAndRun(); });
+        })
+            .on("ready", function () { return compileAndRun(); });
     }
     else {
         // Build once
@@ -143,6 +146,10 @@ function build(_a) {
                     : true,
             },
         });
+        if (result.error) {
+            console.log(result.error);
+            return;
+        }
         if (result.code.length < 10) {
             console.log("empty code");
             console.log(buildStr);
