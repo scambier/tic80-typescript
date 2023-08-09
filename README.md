@@ -51,7 +51,7 @@ TIC-80 1.1-dev is now compatible with ES2020 code, and you can use the following
   "compilerOptions": {
 -    "lib": ["es5", "es2015.core"],
 -    "target": "es5",
-+  	"lib": ["es2020"],
++    "lib": ["es2020"],
 +    "target": "es2020",
     "outFile": "build/compiled.js",
     "strict": true
@@ -71,7 +71,7 @@ Once that TIC-80 is running, all code changes in .ts files will be reflected aft
 `$ tsc80 run` continuously watches changes in your .ts files and compiles them on the fly. You then alt-tab to TIC-80, and hit `ctrl+r` to reload the game.
 This instructs TIC-80 to load `game.js` and inject the compiled code inside the cart.
 
-❗ You must **not** edit the compiled JavaScript code inside the TIC-80 editor. Your changes would be overwritten.  
+❗ You must **not** edit the compiled JavaScript code inside the TIC-80 editor. Your changes would be overwritten.
 
 You must only edit **assets** (sprites, map, sounds, music) inside the TIC-80 editor. Don't forget to save your changes _before_ reloading the code.
 
@@ -131,7 +131,7 @@ $ cmake --build . --config MinSizeRel --parallel
 
 ### 1.0.1 - 2022-06-22
 
-- Cleaner code 
+- Cleaner code
 - Fixed race condition by @tmountain
 
 ### 1.0.0 - 2022-05-15
@@ -143,7 +143,7 @@ $ cmake --build . --config MinSizeRel --parallel
 
 - Refactoring to make this tool compatible with TIC-80 1.0.x-dev
 - Simplified workflow
-- Added `peek1()`, `peek2()`, `poke1()`, `poke2()`,  `vbank()`
+- Added `peek1()`, `peek2()`, `poke1()`, `poke2()`, `vbank()`
 
 ### 0.4.9 - 2021-07-17
 
@@ -218,7 +218,7 @@ $ cmake --build . --config MinSizeRel --parallel
 
 ### 2017-07-11
 
-- Compile from TS to JS (*finally...*)
+- Compile from TS to JS (_finally..._)
 - Renamed "main.ts" to "sample.ts"
 - Described a small trick to ensure that the init code waits for its dependencies
 - Removed the `require` of the compiled file
