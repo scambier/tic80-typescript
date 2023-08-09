@@ -69,7 +69,7 @@ function init() {
             fs.copySync(from, to, {
                 filter: function () {
                     if (fs.existsSync(to)) {
-                        console.log("/!\\ " + file + " already exists in directory, skipping");
+                        console.log("/!\\ ".concat(file, " already exists in directory, skipping"));
                         return false;
                     }
                     return true;
@@ -90,44 +90,35 @@ function build(_a) {
     var cTic = config["tic"];
     var cCompress = config["compression"];
     var outFile = tsconfig["compilerOptions"]["outFile"];
-    // Watch changes
-    chokidar.watch(outFile).on("change", function (path, stats) {
-        try {
-            makeGameFile();
-        }
-        catch (e) {
-            console.error(e);
-        }
-    });
+    var toWatch = path.join(process.cwd(), "**/*.ts");
+    if (run) {
+        // Watch changes
+        chokidar.watch(toWatch).on("change", function () {
+            try {
+                compileAndRun(false);
+            }
+            catch (e) {
+                console.error(e);
+            }
+        }).on("ready", function () { return compileAndRun(); });
+    }
+    else {
+        // Build once
+        compileAndRun(false);
+    }
+    function compileAndRun(launch) {
+        if (launch === void 0) { launch = true; }
+        compile();
+        makeGameFile();
+        launch && launchTIC();
+    }
     function compile() {
         console.log("Compiling TypeScript...");
-        // Initial build
         child_process.execSync("tsc", { encoding: "utf-8" });
-        makeGameFile();
-        // Watching and rebuilding
-        if (run) {
-            child_process.exec("tsc --watch", { encoding: "utf-8" }, function (error, stdout, stderr) {
-                if (stdout) {
-                    console.log(stdout);
-                }
-                if (stderr) {
-                    console.error(stderr);
-                }
-            });
-            launchTIC();
-        }
     }
     function makeGameFile() {
         console.log("Building game file...");
-        var buildStr;
-        var tries = 0;
-        do {
-            buildStr = fs.readFileSync(outFile, "utf8");
-            // Retry if the file is empty
-            if (++tries > 100) {
-                throw new Error("Unable to build game file.");
-            }
-        } while (buildStr.length < 10);
+        var buildStr = fs.readFileSync(outFile, "utf8");
         // Explicit strict mode breaks the global TIC scope
         buildStr = buildStr.replace('"use strict";', "");
         var result = uglifyJS.minify(buildStr, {
@@ -148,7 +139,7 @@ function build(_a) {
                 indent_level: cCompress.indentLevel,
                 // Always keep the significant comments: https://github.com/nesbox/TIC-80/wiki/The-Code
                 comments: cCompress.compress || cCompress.mangle
-                    ? RegExp(/title|author|desc|script|input|saveid/)
+                    ? RegExp(/title|author|desc|script|input|saveid|menu/)
                     : true,
             },
         });
@@ -167,9 +158,9 @@ function build(_a) {
         var child = child_process.spawn(cTic.ticExecutable, [
             "--skip",
             "--keepcmd",
-            "--fs=" + process.cwd(),
+            "--fs=".concat(process.cwd()),
             "--cmd",
-            "load game.js & load " + cCompress.compressedFile + " code & run",
+            "load game.js & load ".concat(cCompress.compressedFile, " code & run"),
         ], {
             stdio: "inherit",
         });
@@ -177,5 +168,4 @@ function build(_a) {
             process.exit(code !== null && code !== void 0 ? code : 0);
         });
     }
-    compile();
 }

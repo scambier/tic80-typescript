@@ -67,7 +67,12 @@ declare function circ(x: number, y: number, radius: number, color: number): void
  * @param radius the radius of the circle in pixels
  * @param color the index of the desired color in the current palette
  */
-declare function circb(x: number, y: number, radius: number, color: number): void
+declare function circb(
+  x: number,
+  y: number,
+  radius: number,
+  color: number
+): void
 
 /**
  * Draws a filled ellipse of the desired radiuses a b and color with its center at x, y. It uses the Bresenham algorithm.
@@ -147,7 +152,6 @@ declare function font(
   scale?: number
 ): number
 
-
 /**
  * The function returns true if the key denoted by keycode is pressed.
  * If the keycode is omitted, will return true if any key is pressed.
@@ -201,7 +205,7 @@ declare function map(
   h?: number,
   sx?: number,
   sy?: number,
-  colorkey?: number,
+  colorkey?: number | number[],
   scale?: number,
   remap?: (
     tile: number,
@@ -273,7 +277,7 @@ declare function music(
   loop?: boolean,
   sustain?: boolean,
   tempo?: number,
-  speed?: number,
+  speed?: number
 ): void
 
 /**
@@ -362,10 +366,10 @@ declare function poke4(addr: number, val: number): void
 declare function poke2(addr: number, val: number): void
 
 /**
-* The equivalent of poke(addr, val, 1)
-* @param addr the bit address address in RAM to which to write,
-* @param val the bit value (0..1) to write to the specified address
-*/
+ * The equivalent of poke(addr, val, 1)
+ * @param addr the bit address address in RAM to which to write,
+ * @param val the bit value (0..1) to write to the specified address
+ */
 declare function poke1(addr: number, val: number): void
 
 /**
@@ -478,7 +482,7 @@ declare function spr(
   id: number,
   x: number,
   y: number,
-  colorkey?: number,
+  colorkey?: number | number[],
   scale?: number,
   flip?: 0 | 1 | 2 | 3,
   rotate?: 0 | 1 | 2 | 3,
@@ -503,6 +507,46 @@ declare function spr(
  * @param tocart true - save sprites/map/sound from runtime to bank, false - load data from bank to runtime.
  */
 declare function sync(mask?: number, bank?: number, tocart?: boolean): void
+
+/**
+ * This function draws a triangle filled with texture from either SPRITES or MAP RAM or VBANK.
+ * @param x1 the screen coordinates of the first corner
+ * @param y1 the screen coordinates of the first corner
+ * @param x2 the screen coordinates of the second corner
+ * @param y2 the screen coordinates of the second corner
+ * @param x3 the screen coordinates of the third corner
+ * @param y3 the screen coordinates of the third corner
+ * @param u1 the UV coordinates of the first corner
+ * @param v1 the UV coordinates of the first corner
+ * @param u2 the UV coordinates of the second corner
+ * @param v2 the UV coordinates of the second corner
+ * @param u3 the UV coordinates of the third corner
+ * @param v3 the UV coordinates of the third corner
+ * @param useMap if false (default), the triangle's texture is read from SPRITES RAM. If true, the texture comes from the MAP RAM.
+ * @param trans index (or array of indexes 0.80) of the color(s) that will be used as transparent
+ * @param z1 depth parameters for texture correction
+ * @param z2 depth parameters for texture correction
+ * @param z3 depth parameters for texture correction
+ */
+declare function ttri(
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number,
+  x3: number,
+  y3: number,
+  u1: number,
+  v1: number,
+  u2: number,
+  v2: number,
+  u3: number,
+  v3: number,
+  useMap?: boolean,
+  trans?: number,
+  z1?: number,
+  z2?: number,
+  z3?: number
+): void
 
 /**
  * Returns the number of milliseconds elapsed since the cartridge began execution. Useful for keeping track of time, animating items and triggering events.
@@ -564,28 +608,7 @@ declare function trib(
 ): void
 
 /**
- * It renders a triangle filled with texture from image ram or map ram
- *
- * UV Coordinates
- * These can be thought of as the window inside image ram (sprite sheet), or map ram. Note that the sprite sheet or map in this case is treated as a single large image, with U and V addressing its pixels directly, rather than by sprite ID. So for example the top left corner of sprite #2 would be located at u=16, v=0.
- *
- * Use in 3D graphics
- * This function does not perform perspective correction, so it is not generally suitable for 3D graphics (except in some constrained scenarios). In particular, if the vertices in the triangle have different 3D depth, you may see some distortion.
- *
- * @param x1 the x coordinate of the first triangle corner
- * @param y1 the y coordinate of the first triangle corner
- * @param x2 the x coordinate of the second triangle corner
- * @param y2 the y coordinate of the second triangle corner
- * @param x3 the x coordinate of the third triangle corner
- * @param y3 the y coordinate of the third triangle corner
- * @param u1 the U coordinate of the first triangle corner
- * @param v1 the V coordinate of the first triangle corner
- * @param u2 the U coordinate of the second triangle corner
- * @param v2 the V coordinate of the second triangle corner
- * @param u3 the U coordinate of the third triangle corner
- * @param v3 the V coordinate of the third triangle corner
- * @param useMap if false (default), the triangle's texture is read from the image vram (sprite sheet). If true, the texture comes from the map ram.
- * @param trans index (or array of indexes) of the color that will be used as transparent color.
+ * @deprecated Use ttri() instead.
  */
 declare function textri(
   x1: number,

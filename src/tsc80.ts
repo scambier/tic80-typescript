@@ -120,53 +120,36 @@ function build({ run = false }): void {
   } = config["compression"]
 
   const outFile: string = tsconfig["compilerOptions"]["outFile"]
+  const toWatch = path.join(process.cwd(), "**/*.ts")
 
-  // Watch changes
-  chokidar.watch(outFile).on("change", (path, stats) => {
-    try {
-      makeGameFile()
-    } catch (e) {
-      console.error(e)
-    }
-  })
+  if (run) {
+    // Watch changes
+    chokidar.watch(toWatch).on("change", () => {
+      try {
+        compileAndRun(false)
+      } catch (e) {
+        console.error(e)
+      }
+    }).on("ready", () => compileAndRun())
+  } else {
+    // Build once
+    compileAndRun(false)
+  }
+
+  function compileAndRun(launch = true) {
+    compile()
+    makeGameFile()
+    launch && launchTIC()
+  }
 
   function compile(): void {
     console.log("Compiling TypeScript...")
-
-    // Initial build
     child_process.execSync(`tsc`, { encoding: "utf-8" })
-    makeGameFile()
-
-    // Watching and rebuilding
-    if (run) {
-      child_process.exec(
-        "tsc --watch",
-        { encoding: "utf-8" },
-        (error, stdout, stderr) => {
-          if (stdout) {
-            console.log(stdout)
-          }
-          if (stderr) {
-            console.error(stderr)
-          }
-        }
-      )
-      launchTIC()
-    }
   }
 
   function makeGameFile(): void {
-
     console.log("Building game file...")
-    let buildStr: string
-    let tries = 0
-    do {
-      buildStr = fs.readFileSync(outFile, "utf8")
-      // Retry if the file is empty
-      if (++tries > 100) {
-        throw new Error("Unable to build game file.")
-      }
-    } while (buildStr.length < 10)
+    let buildStr = fs.readFileSync(outFile, "utf8")
 
     // Explicit strict mode breaks the global TIC scope
     buildStr = buildStr.replace('"use strict";', "")
@@ -190,7 +173,7 @@ function build({ run = false }): void {
         // Always keep the significant comments: https://github.com/nesbox/TIC-80/wiki/The-Code
         comments:
           cCompress.compress || cCompress.mangle
-            ? RegExp(/title|author|desc|script|input|saveid/)
+            ? RegExp(/title|author|desc|script|input|saveid|menu/)
             : true,
       },
     })
@@ -228,6 +211,4 @@ function build({ run = false }): void {
       process.exit(code ?? 0)
     })
   }
-
-  compile()
 }

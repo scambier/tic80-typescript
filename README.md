@@ -1,10 +1,10 @@
 # TSC-80 - TypeScript for the TIC-80
 
-**❗ This is a pre-release version, only compatible with TIC-80 `1.0.x-dev` ❗**
+![Maintenance](https://img.shields.io/maintenance/yes/2023)
 
 ![](logo.png)
 
-Write your [TIC-80](https://tic.computer/) **PRO** games in TypeScript.
+Write your [TIC-80](https://tic80.com/) **PRO** games in TypeScript.
 
 TSC-80 contains all the functions declarations (`.d.ts`) for the TIC-80 API, and will compile your TypeScript code in JavaScript to inject it into your TIC-80 cart.
 
@@ -16,12 +16,12 @@ This tool has been tested with TIC-80 version 1.0.x-dev (pro edition) on Windows
 
 1. Install NodeJS LTS
 2. Install TypeScript: `npm install -g typescript`
-3. Install TSC-80: `npm install -g tic80-typescript@next` ❗ Don't forget the `@next` part
+3. Install TSC-80: `npm install -g tic80-typescript`
 
 ### Create a project
 
-2. `tsc80 init` will create the necessary files (config, declarations, and game files) into the current directory
-3. Set the correct values inside the `tsc80-config.json`
+1. `tsc80 init` will create the necessary files (config, declarations, and game files) into the current directory
+2. Set the correct values inside the `tsc80-config.json`
 
 ### Configuration
 
@@ -76,6 +76,8 @@ The compression options in `tsc80-config.json` can help you to save a lot of spa
 
 ## Code organization & limitations
 
+_**See [this issue](https://github.com/scambier/tic80-typescript/issues/9) for a clear example on how to organize your code.**_
+
 `tsc80 build|run` only transpiles your TypeScript files to JavaScript, and compiles them together as a single output file. Internally, TIC-80 uses [Duktape](https://duktape.org/) as its JavaScript engine.
 
 The following limitations apply:
@@ -91,12 +93,35 @@ Some tips to ease development:
 - You can always use [TypeScript's triple-slash directives](https://www.typescriptlang.org/docs/handbook/triple-slash-directives.html) and [namespaces](https://www.typescriptlang.org/docs/handbook/namespaces.html) to manage dependencies order.
 - Don't compress the output file unless necessary; it will be harder to locate and fix runtime errors.
 
+## Issues
+
+**TIC-80 doesn't reload my code**
+
+If you're building TIC-80 yourself, make sure to use the correct settings
+
+```sh
+$ cd <path-to-tic>/build
+$ cmake -G "Visual Studio 16 2019" -DBUILD_PRO=On -DCMAKE_BUILD_TYPE=MinSizeRel ..
+$ cmake --build . --config MinSizeRel --parallel
+```
+
 ## Changelog
+
+### 1.0.1 - 2022-06-22
+
+- Cleaner code 
+- Fixed race condition by @tmountain
+
+### 1.0.0 - 2022-05-15
+
+- Official release for TIC-80 1.0
+- Added `ttri()`
 
 ### 1.0.0-dev - 2021-08-19
 
 - Refactoring to make this tool compatible with TIC-80 1.0.x-dev
 - Simplified workflow
+- Added `peek1()`, `peek2()`, `poke1()`, `poke2()`,  `vbank()`
 
 ### 0.4.9 - 2021-07-17
 
