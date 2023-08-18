@@ -107,7 +107,11 @@ $ cmake --build . --config MinSizeRel --parallel
 
 ## Changelog
 
-### 1.0.3 - 2023-08-23
+### 1.1.0 - 2023-08-18
+
+- Formal tsconfig update to output ES2020 code for TIC-80 1.1.x
+
+### 1.0.3 - 2023-08-09
 
 - Dependencies update
 
