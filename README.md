@@ -12,7 +12,7 @@ TSC-80 contains all the functions declarations (`.d.ts`) for the TIC-80 API, and
 
 ### Pre-requisites
 
-This tool has been tested with TIC-80 version 1.0.x-dev (pro edition) on Windows 10, and should work on all platforms compatible with TIC-80 and TypeScript.
+This tool has been tested with TIC-80 version 1.1.x (pro edition) on Windows 10, and should work on all platforms compatible with TIC-80 and TypeScript.
 
 1. Install NodeJS LTS
 2. Install TypeScript: `npm install -g typescript`
@@ -37,24 +37,6 @@ You need to complete the `tsc80-config.json` for each project.
     "indentLevel": 1, // Ignored if `compress` or `mangle` are `true`
     "compress": false,
     "mangle": false // Compress a bit further
-  }
-}
-```
-
-#### ES2020
-
-TIC-80 1.1-dev is now compatible with ES2020 code, and you can use the following `tsconfig.json`
-
-```diff
-{
-  "compileOnSave": true,
-  "compilerOptions": {
--    "lib": ["es5", "es2015.core"],
--    "target": "es5",
-+    "lib": ["es2020"],
-+    "target": "es2020",
-    "outFile": "build/compiled.js",
-    "strict": true
   }
 }
 ```
@@ -96,11 +78,11 @@ The compression options in `tsc80-config.json` can help you to save a lot of spa
 
 _**See [this issue](https://github.com/scambier/tic80-typescript/issues/9) for a clear example on how to organize your code.**_
 
-`tsc80 build|run` only transpiles your TypeScript files to JavaScript, and compiles them together as a single output file. Internally, TIC-80 uses [Duktape](https://duktape.org/) as its JavaScript engine.
+`tsc80 build|run` only transpiles your TypeScript files to JavaScript, and compiles them together as a single output file. Internally, TIC-80 uses [QuickJS](https://github.com/nesbox/quickjs) as its JavaScript engine.
 
 The following limitations apply:
 
-- ES5 only (with some syntax exceptions). This tool does not provide polyfills.
+- JS code up to ES2020. This tool does not provide polyfills.
 - Required to have a single file output (`compilerOptions.outFile` in `tsconfig.json`)
 - No modules, and no npm dependencies.
 - All declared variables and classes at file level (in all files) are public and share the same root namespace.
