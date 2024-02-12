@@ -1,6 +1,6 @@
 # TSC-80 - TypeScript for the TIC-80
 
-![Maintenance](https://img.shields.io/maintenance/yes/2023)
+![Maintenance](https://img.shields.io/maintenance/yes/2024)
 
 ![](logo.png)
 
