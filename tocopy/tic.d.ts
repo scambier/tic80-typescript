@@ -211,7 +211,7 @@ declare function map(
     tile: number,
     x: number,
     y: number
-  ) => [number, number?, number?] | number | void
+  ) => [number, number?, number?] | number
 ): void
 
 /**
