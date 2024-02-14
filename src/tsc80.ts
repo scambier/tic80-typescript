@@ -124,13 +124,16 @@ function build({ run = false }): void {
 
   if (run) {
     // Watch changes
-    chokidar.watch(toWatch).on("change", () => {
-      try {
-        compileAndRun(false)
-      } catch (e) {
-        console.error(e)
-      }
-    }).on("ready", () => compileAndRun())
+    chokidar
+      .watch(toWatch)
+      .on("change", () => {
+        try {
+          compileAndRun(false)
+        } catch (e) {
+          console.error(e)
+        }
+      })
+      .on("ready", () => compileAndRun())
   } else {
     // Build once
     compileAndRun(false)
@@ -157,14 +160,14 @@ function build({ run = false }): void {
     const result = uglifyJS.minify(buildStr, {
       compress: cCompress.compress
         ? {
-          join_vars: false,
-        }
+            join_vars: false,
+          }
         : false,
       mangle: cCompress.mangle
         ? {
-          toplevel: false,
-          keep_fnames: true,
-        }
+            toplevel: false,
+            keep_fnames: true,
+          }
         : false,
       output: {
         semicolons: false, // Only works if `mangle` or `compress` are set to false
@@ -178,6 +181,10 @@ function build({ run = false }): void {
       },
     })
 
+    if (result.error) {
+      console.log(result.error)
+      return
+    }
     if (result.code.length < 10) {
       console.log("empty code")
       console.log(buildStr)

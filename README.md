@@ -1,6 +1,6 @@
 # TSC-80 - TypeScript for the TIC-80
 
-![Maintenance](https://img.shields.io/maintenance/yes/2023)
+![Maintenance](https://img.shields.io/maintenance/yes/2024)
 
 ![](logo.png)
 
@@ -12,7 +12,7 @@ TSC-80 contains all the functions declarations (`.d.ts`) for the TIC-80 API, and
 
 ### Pre-requisites
 
-This tool has been tested with TIC-80 version 1.0.x-dev (pro edition) on Windows 10, and should work on all platforms compatible with TIC-80 and TypeScript.
+This tool has been tested with TIC-80 version 1.1.x (pro edition) on Windows 10, and should work on all platforms compatible with TIC-80 and TypeScript.
 
 1. Install NodeJS LTS
 2. Install TypeScript: `npm install -g typescript`
@@ -53,7 +53,7 @@ Once that TIC-80 is running, all code changes in .ts files will be reflected aft
 `$ tsc80 run` continuously watches changes in your .ts files and compiles them on the fly. You then alt-tab to TIC-80, and hit `ctrl+r` to reload the game.
 This instructs TIC-80 to load `game.js` and inject the compiled code inside the cart.
 
-❗ You must **not** edit the compiled JavaScript code inside the TIC-80 editor. Your changes would be overwritten.  
+❗ You must **not** edit the compiled JavaScript code inside the TIC-80 editor. Your changes would be overwritten.
 
 You must only edit **assets** (sprites, map, sounds, music) inside the TIC-80 editor. Don't forget to save your changes _before_ reloading the code.
 
@@ -78,11 +78,11 @@ The compression options in `tsc80-config.json` can help you to save a lot of spa
 
 _**See [this issue](https://github.com/scambier/tic80-typescript/issues/9) for a clear example on how to organize your code.**_
 
-`tsc80 build|run` only transpiles your TypeScript files to JavaScript, and compiles them together as a single output file. Internally, TIC-80 uses [Duktape](https://duktape.org/) as its JavaScript engine.
+`tsc80 build|run` only transpiles your TypeScript files to JavaScript, and compiles them together as a single output file. Internally, TIC-80 uses [QuickJS](https://github.com/nesbox/quickjs) as its JavaScript engine.
 
 The following limitations apply:
 
-- ES5 only (with some syntax exceptions). This tool does not provide polyfills.
+- JS code up to ES2020. This tool does not provide polyfills.
 - Required to have a single file output (`compilerOptions.outFile` in `tsconfig.json`)
 - No modules, and no npm dependencies.
 - All declared variables and classes at file level (in all files) are public and share the same root namespace.
@@ -107,9 +107,17 @@ $ cmake --build . --config MinSizeRel --parallel
 
 ## Changelog
 
+### 1.1.0 - 2023-08-18
+
+- Formal tsconfig update to output ES2020 code for TIC-80 1.1.x
+
+### 1.0.3 - 2023-08-09
+
+- Dependencies update
+
 ### 1.0.1 - 2022-06-22
 
-- Cleaner code 
+- Cleaner code
 - Fixed race condition by @tmountain
 
 ### 1.0.0 - 2022-05-15
@@ -121,7 +129,7 @@ $ cmake --build . --config MinSizeRel --parallel
 
 - Refactoring to make this tool compatible with TIC-80 1.0.x-dev
 - Simplified workflow
-- Added `peek1()`, `peek2()`, `poke1()`, `poke2()`,  `vbank()`
+- Added `peek1()`, `peek2()`, `poke1()`, `poke2()`, `vbank()`
 
 ### 0.4.9 - 2021-07-17
 
@@ -196,7 +204,7 @@ $ cmake --build . --config MinSizeRel --parallel
 
 ### 2017-07-11
 
-- Compile from TS to JS (*finally...*)
+- Compile from TS to JS (_finally..._)
 - Renamed "main.ts" to "sample.ts"
 - Described a small trick to ensure that the init code waits for its dependencies
 - Removed the `require` of the compiled file
