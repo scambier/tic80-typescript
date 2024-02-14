@@ -5,10 +5,10 @@ var child_process = require("child_process");
 var fs = require("fs-extra");
 var path = require("path");
 var stripJsonComments = require("strip-json-comments");
-var uglifyJS = require("uglify-js");
 var yesno = require("yesno");
 var commander_1 = require("commander");
 var chokidar = require("chokidar");
+var esbuild = require("esbuild");
 var version = require("../package.json").version;
 var program = new commander_1.Command();
 program.version(version);
@@ -86,10 +86,6 @@ function init() {
 function build(_a) {
     var _b = _a.run, run = _b === void 0 ? false : _b;
     var config = JSON.parse(stripJsonComments(fs.readFileSync("tsc80-config.json", "utf8")));
-    var tsconfig = JSON.parse(stripJsonComments(fs.readFileSync("tsconfig.json", "utf8")));
-    var cTic = config["tic"];
-    var cCompress = config["compression"];
-    var outFile = tsconfig["compilerOptions"]["outFile"];
     var toWatch = path.join(process.cwd(), "**/*.ts");
     if (run) {
         // Watch changes
@@ -116,58 +112,42 @@ function build(_a) {
         launch && launchTIC();
     }
     function compile() {
-        console.log("Compiling TypeScript...");
-        child_process.execSync("tsc", { encoding: "utf-8" });
+        console.log("Bundling code...");
+        esbuild.buildSync({
+            entryPoints: [config.entry],
+            bundle: true,
+            format: "esm",
+            outfile: config.outfile,
+            loader: { ".ts": "ts" },
+            keepNames: true,
+            treeShaking: false,
+            charset: "utf8",
+            minify: config.minify,
+        });
     }
     function makeGameFile() {
         console.log("Building game file...");
-        var buildStr = fs.readFileSync(outFile, "utf8");
-        // Explicit strict mode breaks the global TIC scope
-        buildStr = buildStr.replace('"use strict";', "");
-        var result = uglifyJS.minify(buildStr, {
-            compress: cCompress.compress
-                ? {
-                    join_vars: false,
-                }
-                : false,
-            mangle: cCompress.mangle
-                ? {
-                    toplevel: false,
-                    keep_fnames: true,
-                }
-                : false,
-            output: {
-                semicolons: false,
-                beautify: !(cCompress.mangle || cCompress.compress),
-                indent_level: cCompress.indentLevel,
-                // Always keep the significant comments: https://github.com/nesbox/TIC-80/wiki/The-Code
-                comments: cCompress.compress || cCompress.mangle
-                    ? RegExp(/title|author|desc|script|input|saveid|menu/)
-                    : true,
-            },
-        });
-        if (result.error) {
-            console.log(result.error);
-            return;
-        }
-        if (result.code.length < 10) {
+        var buildStr = fs
+            .readFileSync(config.outfile, "utf8")
+            // Explicit strict mode breaks the global TIC scope
+            .replace('"use strict";', "");
+        if (buildStr.length < 10) {
             console.log("empty code");
             console.log(buildStr);
         }
-        fs.writeFileSync(cCompress.compressedFile, result.code);
-        if (!cTic.ticExecutable) {
+        if (!config.ticExecutable) {
             console.log('Missing "ticExecutable" in tsc80-config.json');
             process.exit(0);
         }
         console.log("Build complete");
     }
     function launchTIC() {
-        var child = child_process.spawn(cTic.ticExecutable, [
+        var child = child_process.spawn(config.ticExecutable, [
             "--skip",
             "--keepcmd",
             "--fs=".concat(process.cwd()),
             "--cmd",
-            "load game.js & load ".concat(cCompress.compressedFile, " code & run"),
+            "load game.js & load ".concat(config.outfile, " code & run"),
         ], {
             stdio: "inherit",
         });

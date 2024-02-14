@@ -8,6 +8,7 @@ import * as uglifyJS from "uglify-js"
 import * as yesno from "yesno"
 import { Command } from "commander"
 import * as chokidar from "chokidar"
+import * as esbuild from "esbuild"
 
 const version: string = require("../package.json").version
 
@@ -101,25 +102,14 @@ function init(): void {
  * Compile, compress, run
  */
 function build({ run = false }): void {
-  const config: any = JSON.parse(
+  const config: {
+    ticExecutable: string
+    entry: string
+    outfile: string
+    minify: boolean
+  } = JSON.parse(
     stripJsonComments(fs.readFileSync("tsc80-config.json", "utf8"))
   )
-  const tsconfig: any = JSON.parse(
-    stripJsonComments(fs.readFileSync("tsconfig.json", "utf8"))
-  )
-
-  const cTic: {
-    ticExecutable: string
-  } = config["tic"]
-
-  const cCompress: {
-    compressedFile: string
-    indentLevel: number
-    compress: boolean
-    mangle: boolean
-  } = config["compression"]
-
-  const outFile: string = tsconfig["compilerOptions"]["outFile"]
   const toWatch = path.join(process.cwd(), "**/*.ts")
 
   if (run) {
@@ -146,52 +136,33 @@ function build({ run = false }): void {
   }
 
   function compile(): void {
-    console.log("Compiling TypeScript...")
-    child_process.execSync(`tsc`, { encoding: "utf-8" })
+    console.log("Bundling code...")
+    esbuild.buildSync({
+      entryPoints: [config.entry],
+      bundle: true,
+      format: "esm",
+      outfile: config.outfile,
+      loader: { ".ts": "ts" },
+      keepNames: true,
+      treeShaking: false,
+      charset: "utf8",
+      minify: config.minify,
+    })
   }
 
   function makeGameFile(): void {
     console.log("Building game file...")
-    let buildStr = fs.readFileSync(outFile, "utf8")
+    let buildStr = fs
+      .readFileSync(config.outfile, "utf8")
+      // Explicit strict mode breaks the global TIC scope
+      .replace('"use strict";', "")
 
-    // Explicit strict mode breaks the global TIC scope
-    buildStr = buildStr.replace('"use strict";', "")
-
-    const result = uglifyJS.minify(buildStr, {
-      compress: cCompress.compress
-        ? {
-            join_vars: false,
-          }
-        : false,
-      mangle: cCompress.mangle
-        ? {
-            toplevel: false,
-            keep_fnames: true,
-          }
-        : false,
-      output: {
-        semicolons: false, // Only works if `mangle` or `compress` are set to false
-        beautify: !(cCompress.mangle || cCompress.compress),
-        indent_level: cCompress.indentLevel,
-        // Always keep the significant comments: https://github.com/nesbox/TIC-80/wiki/The-Code
-        comments:
-          cCompress.compress || cCompress.mangle
-            ? RegExp(/title|author|desc|script|input|saveid|menu/)
-            : true,
-      },
-    })
-
-    if (result.error) {
-      console.log(result.error)
-      return
-    }
-    if (result.code.length < 10) {
+    if (buildStr.length < 10) {
       console.log("empty code")
       console.log(buildStr)
     }
-    fs.writeFileSync(cCompress.compressedFile, result.code)
 
-    if (!cTic.ticExecutable) {
+    if (!config.ticExecutable) {
       console.log('Missing "ticExecutable" in tsc80-config.json')
       process.exit(0)
     }
@@ -201,13 +172,13 @@ function build({ run = false }): void {
 
   function launchTIC() {
     let child = child_process.spawn(
-      cTic.ticExecutable,
+      config.ticExecutable,
       [
         "--skip",
         "--keepcmd",
         `--fs=${process.cwd()}`,
         "--cmd",
-        `load game.js & load ${cCompress.compressedFile} code & run`,
+        `load game.js & load ${config.outfile} code & run`,
       ],
       {
         stdio: "inherit",
