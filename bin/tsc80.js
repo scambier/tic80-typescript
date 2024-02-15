@@ -124,7 +124,7 @@ function build(_a) {
         return metadata;
     }
     function compile() {
-        console.log("\nBundling code...");
+        console.log("Building ".concat(config.outfile, "..."));
         esbuild.buildSync({
             entryPoints: [config.entry],
             bundle: true,
@@ -134,12 +134,13 @@ function build(_a) {
             keepNames: true,
             treeShaking: false,
             charset: "utf8",
-            minify: config.minify,
+            minifyIdentifiers: false,
+            minifyWhitespace: config.minify,
+            minifySyntax: config.minify,
             target: "es2020",
         });
     }
     function makeGameFile(metadata) {
-        console.log("Building game file...");
         var buildStr = fs
             .readFileSync(config.outfile, "utf8")
             // Explicit strict mode breaks the global TIC scope

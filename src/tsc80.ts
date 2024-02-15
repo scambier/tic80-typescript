@@ -144,7 +144,7 @@ function build({ run = false }): void {
   }
 
   function compile(): void {
-    console.log("\nBundling code...")
+    console.log(`Building ${config.outfile}...`)
     esbuild.buildSync({
       entryPoints: [config.entry],
       bundle: true,
@@ -154,13 +154,14 @@ function build({ run = false }): void {
       keepNames: true,
       treeShaking: false,
       charset: "utf8",
-      minify: config.minify,
+      minifyIdentifiers: false, // Or else global functions will be mangled https://esbuild.github.io/api/#minify-considerations
+      minifyWhitespace: config.minify,
+      minifySyntax: config.minify,
       target: "es2020",
     })
   }
 
   function makeGameFile(metadata: string): void {
-    console.log("Building game file...")
     const buildStr = fs
       .readFileSync(config.outfile, "utf8")
       // Explicit strict mode breaks the global TIC scope
