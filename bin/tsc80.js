@@ -31,21 +31,6 @@ program
     build({ run: true });
 });
 program.parse();
-// let arg = process.argv[2]
-// if (arg) {
-//   arg = arg.toLowerCase()
-//   if (arg === 'init') {
-//     init()
-//   }
-//   else if (arg === 'run') {
-//     run()
-//   }
-//   else {
-//     showHelp()
-//   }
-// } else {
-//   showHelp()
-// }
 /**
  * Initialization code
  * Copy required files to working dir
@@ -107,12 +92,39 @@ function build(_a) {
     }
     function compileAndRun(launch) {
         if (launch === void 0) { launch = true; }
+        var metadata = extractMetadata();
         compile();
-        makeGameFile();
+        makeGameFile(metadata);
         launch && launchTIC();
     }
+    function extractMetadata() {
+        var keys = [
+            "title",
+            "author",
+            "desc",
+            "site",
+            "license",
+            "version",
+            "script",
+            "input",
+            "saveid",
+        ];
+        var metadata = "";
+        var code = fs.readFileSync(config.entry, "utf8");
+        var lines = code.split("\n");
+        var _loop_1 = function (line) {
+            if (keys.find(function (k) { return line.startsWith("// ".concat(k, ":")); })) {
+                metadata += line + "\n";
+            }
+        };
+        for (var _i = 0, lines_1 = lines; _i < lines_1.length; _i++) {
+            var line = lines_1[_i];
+            _loop_1(line);
+        }
+        return metadata;
+    }
     function compile() {
-        console.log("Bundling code...");
+        console.log("\nBundling code...");
         esbuild.buildSync({
             entryPoints: [config.entry],
             bundle: true,
@@ -123,9 +135,10 @@ function build(_a) {
             treeShaking: false,
             charset: "utf8",
             minify: config.minify,
+            target: "es2020",
         });
     }
-    function makeGameFile() {
+    function makeGameFile(metadata) {
         console.log("Building game file...");
         var buildStr = fs
             .readFileSync(config.outfile, "utf8")
@@ -139,7 +152,8 @@ function build(_a) {
             console.log('Missing "ticExecutable" in tsc80-config.json');
             process.exit(0);
         }
-        console.log("Build complete");
+        fs.writeFileSync(config.outfile, metadata + buildStr);
+        console.log("Build complete.");
     }
     function launchTIC() {
         var child = child_process.spawn(config.ticExecutable, [

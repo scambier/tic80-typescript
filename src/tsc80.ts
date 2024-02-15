@@ -40,22 +40,6 @@ program
 
 program.parse()
 
-// let arg = process.argv[2]
-// if (arg) {
-//   arg = arg.toLowerCase()
-//   if (arg === 'init') {
-//     init()
-//   }
-//   else if (arg === 'run') {
-//     run()
-//   }
-//   else {
-//     showHelp()
-//   }
-// } else {
-//   showHelp()
-// }
-
 /**
  * Initialization code
  * Copy required files to working dir
@@ -130,13 +114,37 @@ function build({ run = false }): void {
   }
 
   function compileAndRun(launch = true) {
+    const metadata = extractMetadata()
     compile()
-    makeGameFile()
+    makeGameFile(metadata)
     launch && launchTIC()
   }
 
+  function extractMetadata(): string {
+    const keys = [
+      "title",
+      "author",
+      "desc",
+      "site",
+      "license",
+      "version",
+      "script",
+      "input",
+      "saveid",
+    ]
+    let metadata = ""
+    const code = fs.readFileSync(config.entry, "utf8")
+    const lines = code.split("\n")
+    for (const line of lines) {
+      if (keys.find((k) => line.startsWith(`// ${k}:`))) {
+        metadata += line + "\n"
+      }
+    }
+    return metadata
+  }
+
   function compile(): void {
-    console.log("Bundling code...")
+    console.log("\nBundling code...")
     esbuild.buildSync({
       entryPoints: [config.entry],
       bundle: true,
@@ -147,12 +155,13 @@ function build({ run = false }): void {
       treeShaking: false,
       charset: "utf8",
       minify: config.minify,
+      target: "es2020",
     })
   }
 
-  function makeGameFile(): void {
+  function makeGameFile(metadata: string): void {
     console.log("Building game file...")
-    let buildStr = fs
+    const buildStr = fs
       .readFileSync(config.outfile, "utf8")
       // Explicit strict mode breaks the global TIC scope
       .replace('"use strict";', "")
@@ -167,7 +176,9 @@ function build({ run = false }): void {
       process.exit(0)
     }
 
-    console.log("Build complete")
+    fs.writeFileSync(config.outfile, metadata + buildStr)
+
+    console.log("Build complete.")
   }
 
   function launchTIC() {
