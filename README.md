@@ -1,8 +1,12 @@
 # TSC-80 - TypeScript for the TIC-80
 
-![Maintenance](https://img.shields.io/maintenance/yes/2024)
-
 ![](logo.png)
+
+---
+
+_The documentation for TSC-80 **1.0** is available [here](https://github.com/scambier/tic80-typescript/tree/v1) - Projects created for TSC-80 1.0 are incompatible with 2.0_
+
+---
 
 Write your [TIC-80](https://tic80.com/) **PRO** games in TypeScript.
 
@@ -12,7 +16,7 @@ TSC-80 contains all the functions declarations (`.d.ts`) for the TIC-80 API, and
 
 ### Pre-requisites
 
-This tool has been tested with TIC-80 version 1.1.x (pro edition) on Windows 10, and should work on all platforms compatible with TIC-80 and TypeScript.
+This tool has been tested with TIC-80 version 1.2.x (pro edition) on Windows 10, and should work on all platforms compatible with TIC-80 and TypeScript.
 
 1. Install NodeJS LTS
 2. Install TypeScript: `npm install -g typescript`
@@ -29,15 +33,10 @@ You need to complete the `tsc80-config.json` for each project.
 
 ```js
 {
-  "tic": {
-    "ticExecutable": "path/to/tic/executable/file", // The file path to your TIC executable.
-  },
-  "compression": { // These settings will alter how the final js file will look like
-    "compressedFile": "build/compressed.js", // Path to compressed file. You should not have to change this.
-    "indentLevel": 1, // Ignored if `compress` or `mangle` are `true`
-    "compress": false,
-    "mangle": false // Compress a bit further
-  }
+  "ticExecutable": "path/to/tic/executable/file", // The file path to your TIC executable.
+  "entry": "main.ts", // The entry point of your game's code
+  "outfile": "build/output.js", // Path to bundled file. You should not have to change this.
+  "minify": false // If you want to minify your build. May provide very slight performances improvements
 }
 ```
 
@@ -53,45 +52,27 @@ Once that TIC-80 is running, all code changes in .ts files will be reflected aft
 `$ tsc80 run` continuously watches changes in your .ts files and compiles them on the fly. You then alt-tab to TIC-80, and hit `ctrl+r` to reload the game.
 This instructs TIC-80 to load `game.js` and inject the compiled code inside the cart.
 
-❗ You must **not** edit the compiled JavaScript code inside the TIC-80 editor. Your changes would be overwritten.
+❗ You **must not** edit the compiled JavaScript code inside the TIC-80 editor. Your changes would be overwritten.
 
-You must only edit **assets** (sprites, map, sounds, music) inside the TIC-80 editor. Don't forget to save your changes _before_ reloading the code.
+You **must** only edit **assets** (sprites, map, sounds, music) inside the TIC-80 editor. **Don't forget to save your changes _before_ reloading the code.**
 
-When you hit `ctrl+s` inside TIC-80, the `game.js` is updated as a standalone TIC-80 cart.
+When you hit `ctrl+s` inside TIC-80, `game.js` is saved as a standalone TIC-80 cart.
 
 #### Version control
 
-The `build` folder can be ignored, but you should definitely commit `game.js`, since it contains all non-code assets. `game.js` also contains the compiled code, which is useless for version control, but cannot be separated from the assets.
+The `build` folder can be ignored, but you **must** commit `game.js`, since it contains all non-code assets.
 
-## Compression options
+## Code & Modules
 
-The compression options in `tsc80-config.json` can help you to save a lot of space if you're running against TIC-80 limitations.
-
-- Default compiled file, straight from TypeScript: 100% of code size
-- `"indentLevel": 1` - 71% of original code size (that is the default)
-- `"compress": true` - 55%
-- `"mangle": true` - 44%
-
-(Your mileage may vary.)
-
-## Code organization & limitations
-
-_**See [this issue](https://github.com/scambier/tic80-typescript/issues/9) for a clear example on how to organize your code.**_
+If you know TypeScript and modern web development, writing your TIC-80 game with TSC-80 should be straightforward. It uses [esbuild](https://esbuild.github.io/) to compile and bundle the code, targets `ES2020` and uses the modern ESM syntax (`import` & `export`).
 
 `tsc80 build|run` only transpiles your TypeScript files to JavaScript, and compiles them together as a single output file. Internally, TIC-80 uses [QuickJS](https://github.com/nesbox/quickjs) as its JavaScript engine.
 
 The following limitations apply:
 
 - JS code up to ES2020. This tool does not provide polyfills.
-- Required to have a single file output (`compilerOptions.outFile` in `tsconfig.json`)
-- No modules, and no npm dependencies.
-- All declared variables and classes at file level (in all files) are public and share the same root namespace.
-- By default, files are compiled in an undefined order. This may cause problems, as some initialization code may be called before all the required classes/functions are read, leading to `undefined` errors.
-
-Some tips to ease development:
-
-- You can always use [TypeScript's triple-slash directives](https://www.typescriptlang.org/docs/handbook/triple-slash-directives.html) and [namespaces](https://www.typescriptlang.org/docs/handbook/namespaces.html) to manage dependencies order.
-- Don't compress the output file unless necessary; it will be harder to locate and fix runtime errors.
+- Required to have a single file output
+- Tree-shaking is disabled, as esbuild would strip important "unused" functions like `TIC()`
 
 ## Issues
 
@@ -106,6 +87,12 @@ $ cmake --build . --config MinSizeRel --parallel
 ```
 
 ## Changelog
+
+### 2.0.0 - 2024-02-16 - BREAKING CHANGES
+
+- Projects created for TSC-80 1.0 must be refactored to be compatible with 2.0
+- Builds are now done with esbuild, instead of `tsc`
+- Projects now use ESM, with `import` and `export`
 
 ### 1.1.0 - 2023-08-18
 
