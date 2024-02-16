@@ -3,9 +3,15 @@
 // desc:   short description
 // script: js
 
+import { printh } from "./helpers"
+
 let t = 0
 let x = 96
 let y = 24
+
+function BOOT() {
+  printh("Module import works!")
+}
 
 function TIC() {
   if (btn(0)) y--
