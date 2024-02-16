@@ -4,6 +4,12 @@
 
 ![](logo.png)
 
+---
+
+This is the documentation for TSC-80 1.0. The documentation for the latest version is available [here](https://github.com/scambier/tic80-typescript)
+
+---
+
 Write your [TIC-80](https://tic80.com/) **PRO** games in TypeScript.
 
 TSC-80 contains all the functions declarations (`.d.ts`) for the TIC-80 API, and will compile your TypeScript code in JavaScript to inject it into your TIC-80 cart.
@@ -16,7 +22,7 @@ This tool has been tested with TIC-80 version 1.1.x (pro edition) on Windows 10,
 
 1. Install NodeJS LTS
 2. Install TypeScript: `npm install -g typescript`
-3. Install TSC-80: `npm install -g tic80-typescript`
+3. Install TSC-80: `npm install -g tic80-typescript@1`
 
 ### Create a project
 
