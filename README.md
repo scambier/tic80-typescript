@@ -71,6 +71,7 @@ If you know TypeScript and modern web development, writing your TIC-80 game with
 The following limitations apply:
 
 - JS code up to ES2020. This tool does not provide polyfills.
+- ! No `export` from your entry file
 - Required to have a single file output
 - Tree-shaking is disabled by default, as esbuild would strip important "unused" functions like `TIC()`
 
