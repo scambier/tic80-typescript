@@ -125,6 +125,8 @@ function build(_a) {
     }
     function compile() {
         console.log("Building ".concat(config.outfile, "..."));
+        if (!!config.treeShaking)
+            console.log("Tree shaking enabled");
         esbuild.buildSync({
             entryPoints: [config.entry],
             bundle: true,
@@ -132,7 +134,7 @@ function build(_a) {
             outfile: config.outfile,
             loader: { ".ts": "ts" },
             keepNames: true,
-            treeShaking: false,
+            treeShaking: !!config.treeShaking,
             charset: "utf8",
             minifyIdentifiers: false,
             minifyWhitespace: config.minify,

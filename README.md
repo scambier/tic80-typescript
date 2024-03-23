@@ -72,7 +72,7 @@ The following limitations apply:
 
 - JS code up to ES2020. This tool does not provide polyfills.
 - Required to have a single file output
-- Tree-shaking is disabled, as esbuild would strip important "unused" functions like `TIC()`
+- Tree-shaking is disabled by default, as esbuild would strip important "unused" functions like `TIC()`
 
 ## Issues
 

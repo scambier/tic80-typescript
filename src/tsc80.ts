@@ -91,6 +91,12 @@ function build({ run = false }): void {
     entry: string
     outfile: string
     minify: boolean
+    /** 
+     * This option is not officially supported 
+     * because you need to make sure that
+     * top-level functions like TIC() are not removed
+     */
+    treeShaking: boolean
   } = JSON.parse(
     stripJsonComments(fs.readFileSync("tsc80-config.json", "utf8"))
   )
@@ -145,6 +151,7 @@ function build({ run = false }): void {
 
   function compile(): void {
     console.log(`Building ${config.outfile}...`)
+    if (!!config.treeShaking) console.log("Tree shaking enabled")
     esbuild.buildSync({
       entryPoints: [config.entry],
       bundle: true,
@@ -152,7 +159,7 @@ function build({ run = false }): void {
       outfile: config.outfile,
       loader: { ".ts": "ts" },
       keepNames: true,
-      treeShaking: false,
+      treeShaking: !!config.treeShaking,
       charset: "utf8",
       minifyIdentifiers: false, // Or else global functions will be mangled https://esbuild.github.io/api/#minify-considerations
       minifyWhitespace: config.minify,
