@@ -71,6 +71,7 @@ function init() {
 function build(_a) {
     var _b = _a.run, run = _b === void 0 ? false : _b;
     var config = JSON.parse(stripJsonComments(fs.readFileSync("tsc80-config.json", "utf8")));
+    var tsConfig = JSON.parse(stripJsonComments(fs.readFileSync("tsconfig.json", "utf-8")));
     var toWatch = path.join(process.cwd(), "**/*.ts");
     if (run) {
         // Watch changes
@@ -124,7 +125,9 @@ function build(_a) {
         return metadata;
     }
     function compile() {
-        console.log("Building ".concat(config.outfile, "..."));
+        var _a, _b;
+        var target = (_b = (_a = tsConfig === null || tsConfig === void 0 ? void 0 : tsConfig.compilerOptions) === null || _a === void 0 ? void 0 : _a.target) !== null && _b !== void 0 ? _b : "es2020";
+        console.log("Building ".concat(config.outfile, " to ").concat(target, "..."));
         if (!!config.treeShaking)
             console.log("Tree shaking enabled");
         esbuild.buildSync({
@@ -136,10 +139,10 @@ function build(_a) {
             keepNames: true,
             treeShaking: !!config.treeShaking,
             charset: "utf8",
-            minifyIdentifiers: false,
+            minifyIdentifiers: false, // Or else global functions will be mangled https://esbuild.github.io/api/#minify-considerations
             minifyWhitespace: config.minify,
             minifySyntax: config.minify,
-            target: "es2020",
+            target: target,
         });
     }
     function makeGameFile(metadata) {

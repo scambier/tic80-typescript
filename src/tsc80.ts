@@ -100,6 +100,8 @@ function build({ run = false }): void {
   } = JSON.parse(
     stripJsonComments(fs.readFileSync("tsc80-config.json", "utf8"))
   )
+  const tsConfig = JSON.parse(stripJsonComments(fs.readFileSync("tsconfig.json", "utf-8")))
+  
   const toWatch = path.join(process.cwd(), "**/*.ts")
 
   if (run) {
@@ -150,7 +152,8 @@ function build({ run = false }): void {
   }
 
   function compile(): void {
-    console.log(`Building ${config.outfile}...`)
+    const target = tsConfig?.compilerOptions?.target ?? "es2020"
+    console.log(`Building ${config.outfile} to ${target}...`)
     if (!!config.treeShaking) console.log("Tree shaking enabled")
     esbuild.buildSync({
       entryPoints: [config.entry],
@@ -164,7 +167,7 @@ function build({ run = false }): void {
       minifyIdentifiers: false, // Or else global functions will be mangled https://esbuild.github.io/api/#minify-considerations
       minifyWhitespace: config.minify,
       minifySyntax: config.minify,
-      target: "es2020",
+      target,
     })
   }
 
